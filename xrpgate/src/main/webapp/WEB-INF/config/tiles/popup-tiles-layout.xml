@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<definition name="popup" template="/WEB-INF/jsp/tiles/popup/templatePopup.jsp">
+<!-- 		<put-attribute name="header" value="/WEB-INF/jsp/tiles/popup/header.jsp" /> -->
+		<put-attribute name="body" value="/WEB-INF/jsp/tiles/popup/content.jsp" />
+	</definition>
+	
+	<definition name=".popup_*" extends="popup">
+		<put-attribute name="body" value="/WEB-INF/jsp/popup/{1}.jsp" />
+	</definition>
+	<definition name=".popup_*/*" extends="popup">
+		<put-attribute name="body" value="/WEB-INF/jsp/popup/{1}/{2}.jsp" />
+	</definition>
+	<definition name=".popup_*/*/*" extends="popup">
+		<put-attribute name="body" value="/WEB-INF/jsp/popup/{1}/{2}/{3}.jsp" />
+	</definition>
+</tiles-definitions>

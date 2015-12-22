@@ -1,0 +1,113 @@
+@charset "utf-8";
+@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
+/* CSS Document */
+
+*{margin:0; paddiing:0;}
+img{border:0;}
+li{list-style:none;}
+a{color:#333;text-decoration:none;}
+body{width:100%;height:100%;font-family: 'Jeju Gothic', sans-serif;}
+
+.wrap{width:1200px;margin:0 auto;}
+
+/*탑부분*/
+.top{background:#7196c3;height:60px;padding:10px;}
+.top_wrap{width:1200px;margin:0 auto;background:#7196c3;}
+.logo{width:190px;float:left;}
+
+/*메인 탑 메뉴 스타일*/
+.nav {
+	width:780px;
+	float:left;
+	height:58px;
+}
+.topnav{
+	text-align:center;
+	width:125px;
+	cursor:pointer;
+	float:left;
+}
+
+.navi_set{
+	float: left;
+	padding:0px 10px 10px 10px;
+	position: relative;
+	width:110px;
+	height:48px;
+}
+
+.subnav{
+	position: absolute;
+	left: 0; top: 50px;
+	background: #336699;
+	display: none;
+	z-index:99;
+	margin:0;
+	padding:0;
+	border:1px solid #184c80;
+	border-bottom:0;
+	
+
+}
+.subnav li{
+	padding:10px;
+	width:110px;
+	text-align:center;
+	border-bottom:1px solid #184c80;
+	cursor:pointer;
+	font-size:12px;
+}
+.subnav li a{color:#fff;display:block;}
+.subnav li:hover{background:#215283;}
+
+.top_small{width:219px;float:right;margin-top:20px;}
+.top_small li{float:left;width:60px;text-align:center;}
+
+/*거래량,현재가,시세 등등*/
+.middle_top{width:100%;background:#f6f6f6;height:200px;float:left;border-bottom:1px solid #336699;}
+.middle_in{width:1200px;margin:0 auto;}
+.middle_left{width:800px;border-right:1px solid #336699;float:left;height:200px;}
+
+.volume{width:250px;float:left;margin-top:25px;}
+.middle_title{width:250px;float:left;height:33px;margin-bottom:25px;}
+.volume_number{width:250px;float:left;}
+.volume_number li{float:left;font-size:25px;color:#333333;font-weight:bold;width:250px;margin-bottom:10px;text-align:right;}
+.volume_number li img{margin-left:10px;float:right;margin-top:13px;}
+
+.present{width:230px;float:left; background:#a6a6a6;padding:10px;height:180px;margin-left:10px;}
+.present_number{width:230px; float:left;text-align:center;}
+.present_number li{float:left;font-size:35px;color:#ffffff;font-weight:bold;width:230px;margin-bottom:10px;;}
+.present_number li img{margin-left:10px;}
+.present_title{width:230px;float:left;height:33px;margin-top:15px;}
+
+.contrast{width:230px;float:left;text-align:center;}
+.contrast_title{width:230px;text-align:center;float:left;margin-bottom:10px;margin-top:10px;}
+.contrast_number{width:80px;float:left;font-size:12px;}
+.contrast_number p{font-size:12px; color:#3e3e3e;width:45px;float:left;font-weight:bold;}
+
+.price{width:270px;float:left;margin-top:25px; margin-left:14px;}
+.price_title{width:230px;float:left;height:33px;}
+.price_graph{width:260px;height:115px;background:#fff;border:1px solid #bbbbbb;float:left;}
+
+.middle_right{width:399px;float:left;height:200px;}
+.chart_number{width:339px; float:left; padding:30px;}
+
+.chart_1{width:150px;float:left;text-align:center;margin-right:39px;margin-bottom:15px;}
+.chart_1 img{margin-right:5px;}
+.chart_1 li{ float:left;color:#336699;font-weight:bold;line-height:20px;}
+.chart_2{width:250px; float:left;text-align:center;margin-bottom:15px;}
+.chart_2 img{margin-right:5px;align:center;}
+.chart_2 li{ float:left;color:#336699;font-weight:bold;line-height:20px;}
+
+/*푸터*/
+.footer{width:100%;background:#dfdfdf;height:95px;padding-top:15px;padding-bottom:15px;float:left;}
+.footer-in{width:1200px;margin:0 auto;font-size:12px;color:#333;text-align:left;background:#dfdfdf;}
+.footer_btn{width:1200px;float:left;}
+.footer_btn li{float:left;}
+.footer_info{width:500px;float:left;margin-top:15px; color:#666;font-size:11px;}
+.footer_info li{float:left;height:18px;line-height:18px;}
+.foot_bar{width:10px;margin-right:5px;margin-left:5px;font-size:11px;height:14px;line-height:14px;text-align:center;}
+.icon{width:300px;float:right;}
+.icon li{float:left;margin-left:10px;}
+.cc{width:100%;background:#000000;height:20px;padding-top:10px;padding-bottom:5px;float:left;}
+.cc_in{width:1200px;margin:0 auto;font-size:11px;color:#fff;text-align:center;}

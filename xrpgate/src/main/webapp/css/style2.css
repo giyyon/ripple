@@ -1,0 +1,234 @@
+@charset "utf-8";
+*{margin:0; padding::0;}
+body{
+	font-family: "돋움",serif;
+	color: hsla(0,0%,40%,1);
+	font-size: 11px;
+	width: 1000px;
+	margin:auto;
+	background-position: center top;
+	background-repeat:repeat-x;
+}
+img{border;0;}
+
+p{
+	color: #000;
+	font-size:15px;
+	font-family: "굴림";
+	line-height:160%;
+	}
+	
+#p3{color:#FFF;
+	font-size:12px;
+	font-family: "굴림";
+	text-align:center;
+	}
+
+
+#text01{
+	width: 620px;
+	height: 53px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-left: 0px;
+	position: absolute;
+	top: 102px;
+	left: 124px;
+	}
+
+#header3{
+	width:1000px;
+	height:35px; 
+	margin:0 auto;   
+	position: relative;
+	}
+		
+
+#section{
+	width: 1000px;
+	height: 250px;
+	margin-top: 0px;
+	margin-right: auto;
+	float: left;
+	overflow:hidden;
+	}
+#aside{
+	width: 255px;
+	height: 640px;
+	position: relative;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: auto;
+	float:left;
+	}	
+
+#aside01{
+	width:255px;
+	height:120px; 
+	margin:0 auto;  
+	position:relative;
+	float:left;
+	}
+
+#aside02{
+	width:255px;
+	height:400px; 
+	margin:0 auto;  
+	position:relative;
+	float:left;
+	}	
+
+#aside03{
+	width:255px;
+	height:120px;
+    margin:0 auto; 
+	position:relative; 
+	float:left;
+	}	
+
+
+#section00{
+	width: 790px;
+	height: 250px;
+	position: relative;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: 0px;
+	float: left;
+	}
+	#section01{
+	width: 220px;
+	height: 30px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-left: 0px;
+	position: absolute;
+	top: 115px;
+	left: 170px;
+	}
+	#section02{
+	width: 220px;
+	height: 30px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-left: 10px;
+	position: absolute;
+	top: 115px;
+	left: 400px;
+	}	
+	#section03{
+	width:255px; height:120px; margin-top:10px; 
+	margin-right: auto; margin-left:0px; float:left;
+	}
+	#section04{
+	width:255px; height:120px; margin-top:10px; 
+	margin-right: auto; margin-left:10px; float:left;
+	}	
+	#section05{
+	width:255px; height:120px; margin-top:10px; 
+	margin-right: auto; margin-left:0px; float:left;
+	}	
+	#section06{
+	width:255px; height:120px; margin-top:10px; 
+	margin-right: auto; margin-left:10px; float:left;
+	}
+	#section07{
+	width:255px; height:120px; margin-top:10px; 
+	margin-right: auto; margin-left:0px; float:left;
+	}	
+	#section08{
+	width:255px; height:120px; margin-top:10px; 
+	margin-right: auto; margin-left:10px; float:left;
+	}			
+		
+#rightmenu{
+	width: 200px;
+	height: 250px;
+	position: relative;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left:10px;
+	float: left;
+	}
+	#rightmenu01{
+	width:95px; height:120px; margin-top:0px; 
+	margin-right:auto; margin-left:0px; float:left;
+	}
+	#rightmenu02{
+	width:95px; height:120px; margin-top:0px; 
+	margin-right:auto; margin-left:10px; float:left;
+	}		
+	#rightmenu03{
+	width:95px; height:120px; margin-top:10px; 
+	margin-right:auto; margin-left:0px; float:left;
+	}		
+	#rightmenu04{
+	width:95px; height:120px; margin-top:10px; 
+	margin-right:auto; margin-left:10px; float:left;
+	}		
+	#rightmenu05{
+	width:95px; height:120px; margin-top:10px; 
+	margin-right:auto; margin-left:0px; float:left;
+	}		
+	#rightmenu06{
+	width:95px; height:120px; margin-top:10px; 
+	margin-right:auto; margin-left:10px; float:left;
+	}		
+	#rightmenu07{
+	width:95px; height:120px; margin-top:10px; 
+	margin-right:auto; margin-left:0px; float:left;
+	}		
+	#rightmenu08{
+	width:95px; height:120px; margin-top:10px; 
+	margin-right:auto; margin-left:10px; float:left;
+	}		
+	#rightmenu09{
+	width:95px; height:120px; margin-top:10px; 
+	margin-right:auto; margin-left:0px; float:left;
+	}		
+	#rightmenu10{
+	width:95px; height:120px; margin-top:10px; 
+	margin-right:auto; margin-left:10px; float:left;
+	}				
+
+
+#Footer{
+	width: 1000px;
+	height: 470px;
+	margin-top: 10px;
+	margin-right: auto;
+	float: left;
+	overflow:hidden;
+    }
+
+#Footer1{
+	width: 1000px;
+	height: 250px;
+	position: relative;
+	margin-top:0px;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: 0px;
+	float:left;
+	}
+#Footer2{
+	width: 1000px;
+	height: 220px;
+	position: relative;
+	margin-top:0px;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: 0px;
+	float:left;
+	}
+
+
+
+
+
+
+
+	

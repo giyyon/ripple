@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Trade">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="TradeVO" type="xrpgate.trade.service.TradeVO"/>
+	<typeAlias  alias="TradeDetailVO" type="xrpgate.trade.service.TradeDetailVO"/>
+
+	<resultMap id="tradeVOList" class="xrpgate.trade.service.TradeVO">
+    <result property="tradeId"         column="TRADE_ID"           columnIndex="1"/>                     
+    <result property="tradeType"       column="TRADE_TYPE"         columnIndex="1"/>                                  
+    <result property="requestBuyMoney" column="REQUEST_BUY_MONEY"  columnIndex="1"/>                              
+    <result property="requestSellQty"  column="REQUEST_SELL_QTY"   columnIndex="1"/>                             
+    <result property="resultUnitPrice" column="RESULT_UNIT_PRICE"  columnIndex="1"/>                              
+    <result property="resultQty"       column="RESULT_QTY"         columnIndex="1"/>                       
+    <result property="resultTotMoney"  column="RESULT_TOT_MONEY"   columnIndex="1"/>                             
+    <result property="fee"             column="FEE"                columnIndex="1"/>                
+    <result property="status"          column="STATUS"             columnIndex="1"/>                   
+    <result property="requestDt"       column="REQUEST_DT"         columnIndex="1"/>                       
+    <result property="requestErId"       column="REQUEST_ER_ID"         columnIndex="1"/>                       
+    <result property="updateDt"        column="UPDATE_DT"          columnIndex="1"/>                      
+    <result property="updateErId"        column="UPDATE_ER_ID"          columnIndex="1"/>
+    <result property="mberNm"          column="MBER_NM"            columnIndex="1"/>
+    <result property="moblphonNo"          column="MBTLNUM"            columnIndex="1"/>
+    <result property="rippleTradeId"   column="RIPPLE_TRADE_ID"    columnIndex="1"/>
+    <result property="rippleTradeEmail" column="RIPPLE_TRADE_EMAIL" columnIndex="1"/>
+    <result property="dumPointCardNo"  column="DUM_POINT_CARD_NO"  columnIndex="1"/>
+	</resultMap>
+	
+	<resultMap id="tradePotalVO" class="xrpgate.trade.service.TradeVO">
+    <result property="requestBuyMoney" column="REQUEST_BUY_MONEY"  columnIndex="1"/>                              
+    <result property="requestSellQty"  column="REQUEST_SELL_QTY"   columnIndex="1"/>                             
+	</resultMap>
+
+ 	<update id="TradeManageDAO.deleteRippleTrade" parameterClass="TradeDetailVO">
+ 		<![CDATA[
+		DELETE FROM RIPPLE_TRADE
+		WHERE TRADE_ID = #tradeId#
+ 		]]>
+ 	</update>
+ 	
+	<insert id="TradeManageDAO.insertRippleTrade" parameterClass="TradeDetailVO" >
+		<selectKey resultClass="java.lang.Long" keyProperty="tradeId">
+			SELECT IFNULL(MAX(TRADE_ID),0)+1 AS TRADE_ID  FROM RIPPLE_TRADE
+		</selectKey>
+		<![CDATA[
+			INSERT INTO RIPPLE_TRADE
+			(TRADE_ID,TRADE_TYPE,REQUEST_BUY_MONEY,REQUEST_SELL_QTY
+			 ,RESULT_UNIT_PRICE,RESULT_QTY,RESULT_TOT_MONEY,FEE
+			 ,STATUS,REQUEST_DT,REQUEST_ER_ID)
+			VALUES
+			( #tradeId#, #tradeType#, #requestBuyMoney#, #requestSellQty#, #resultUnitPrice#, #resultQty#
+			, #resultTotMoney#, #fee#, 'N', SYSDATE(), #requestErId#
+			 )			
+		]]>
+	</insert>
+
+	<select id="TradeManageDAO.selectTotalBookingRippleTrade" parameterClass="TradeDetailVO" resultMap="tradePotalVO" >
+		<![CDATA[
+			SELECT IFNULL(sum(REQUEST_BUY_MONEY),0) as REQUEST_BUY_MONEY, IFNULL(sum(REQUEST_SELL_QTY), 0) as REQUEST_SELL_QTY
+			FROM   RIPPLE_TRADE 
+			WHERE REQUEST_ER_ID = #requestErId#
+			AND    STATUS = 'N'
+		]]>
+	</select>	
+
+
+	<select id="TradeManageDAO.selectRippleTrade" parameterClass="TradeDetailVO" resultMap="tradeVOList" >
+		<![CDATA[
+			SELECT TRADE_ID,TRADE_TYPE,REQUEST_BUY_MONEY,REQUEST_SELL_QTY
+				      ,RESULT_UNIT_PRICE,RESULT_QTY,RESULT_TOT_MONEY,FEE
+				      ,STATUS,REQUEST_DT,REQUEST_ER_ID, UPDATE_DT, UPDATE_ER_ID
+				      ,MEMBER.MBER_NM AS MBER_NM
+				      ,MEMBER.RIPPLE_TRADE_ID AS RIPPLE_TRADE_ID
+				      ,MEMBER.RIPPLE_TRADE_EMAIL AS RIPPLE_TRADE_EMAIL
+				      ,MEMBER.DUM_POINT_CARD_NO AS DUM_POINT_CARD_NO
+			FROM RIPPLE_TRADE TRADE
+			     JOIN COMTNGNRLMBER MEMBER ON TRADE.REQUEST_ER_ID = MEMBER.MBER_ID
+			WHERE TRADE.TRADE_ID = #tradeId#
+		]]>
+	</select>	
+	
+	<select id="TradeManageDAO.selectRippleTradeList" parameterClass="TradeDetailVO" resultMap="tradeVOList" >
+		<![CDATA[
+			SELECT TRADE_ID, TRADE_TYPE, IFNULL(REQUEST_BUY_MONEY, 0) AS REQUEST_BUY_MONEY, IFNULL(REQUEST_SELL_QTY, 0) AS REQUEST_SELL_QTY
+				      ,IFNULL(RESULT_UNIT_PRICE, 0) AS RESULT_UNIT_PRICE, IFNULL(RESULT_QTY, 0) AS RESULT_QTY, IFNULL(RESULT_TOT_MONEY, 0) AS RESULT_TOT_MONEY, IFNULL(FEE, 0) AS FEE
+				      ,STATUS,REQUEST_DT,REQUEST_ER_ID, UPDATE_DT, UPDATE_ER_ID
+				      ,MEMBER.MBER_NM AS MBER_NM
+				      ,MEMBER.MBTLNUM AS MBTLNUM
+				      ,MEMBER.RIPPLE_TRADE_ID AS RIPPLE_TRADE_ID
+				      ,MEMBER.RIPPLE_TRADE_EMAIL AS RIPPLE_TRADE_EMAIL
+				      ,MEMBER.DUM_POINT_CARD_NO AS DUM_POINT_CARD_NO
+			FROM RIPPLE_TRADE TRADE
+			     JOIN COMTNGNRLMBER MEMBER ON TRADE.REQUEST_ER_ID = MEMBER.MBER_ID
+			WHERE 1=1
+		]]>
+			<isNotEmpty property="tradeType">
+				AND TRADE.TRADE_TYPE = #tradeType#
+			</isNotEmpty>
+			<isNotEmpty property="requestErId">
+				AND TRADE.REQUEST_ER_ID = #requestErId#
+			</isNotEmpty>
+		<![CDATA[
+			ORDER BY TRADE.TRADE_ID DESC 
+			LIMIT #recordCountPerPage# OFFSET #firstIndex#
+		]]>				
+	</select>	
+	
+	<select id="TradeManageDAO.selectRippleTradeListCnt" parameterClass="TradeDetailVO" resultClass="java.lang.Integer" >
+		<![CDATA[
+			SELECT 
+				COUNT(TRADE_ID)
+			FROM RIPPLE_TRADE TRADE
+			WHERE 1=1
+		]]>
+			<isNotEmpty property="tradeType">
+				AND TRADE.TRADE_TYPE = #tradeType#
+			</isNotEmpty>
+			<isNotEmpty property="requestErId">
+				AND TRADE.REQUEST_ER_ID = #requestErId#
+			</isNotEmpty>
+	</select>	
+
+ 	<update id="TradeManageDAO.updateRippleTrade" parameterClass="TradeDetailVO">
+ 		<![CDATA[
+			UPDATE RIPPLE_TRADE SET 
+				RESULT_UNIT_PRICE = #resultUnitPrice#,
+				RESULT_QTY = #resultQty#, 
+				RESULT_TOT_MONEY = #resultTotMoney#,
+				FEE = #fee#,
+				STATUS = #status#,
+				UPDATE_ER_ID = #updateErId#,
+				UPDATE_DT = SYSDATE()
+			WHERE TRADE_ID = #tradeId#
+ 		]]>
+ 	</update>
+</sqlMap>

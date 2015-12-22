@@ -1,0 +1,427 @@
+@charset "utf-8";
+*{margin:0; padding::0;}
+body{
+	font-family: "돋움",serif;
+	color: hsla(0,0%,40%,1);
+	font-size: 11px;
+	width: 1000px;
+	margin:auto;
+	background-position: center top;
+	background-repeat:repeat-x;
+}
+img{border;0;}
+
+p{
+	color: #000;
+	font-size:15px;
+	font-family: "굴림";
+	}
+
+#p2{
+	color: #000;
+	font-size:12px;
+	font-family: "굴림";
+	text-align:center;
+	}
+#p3{color:#FFF;
+	font-size:12px;
+	font-family: "굴림";
+	text-align:center;
+	}
+
+#header3{
+	width:1000px;
+	height:35px; 
+	margin:0 auto;   
+	position: relative;
+	}
+	
+#p3{color:#FFF;
+	font-size:12px;
+	font-family: "굴림";
+	text-align:center;
+	}
+
+#section{
+	width: 1000px;
+	height:1000px;
+	margin-top: 0px;
+	margin-right: auto;
+	position: relative;
+}
+
+	#section1{
+	width: 45px;
+	height: 20px;
+	position: absolute;
+	top: 83px;
+	left: 75px;
+	}
+	
+	#section2{
+	width: 151px;
+	height: 20px;
+	position: absolute;
+	top: 132px;
+	left: 75px;
+	}
+	
+	#section3{
+	width: 101px;
+	height: 20px;
+	position: absolute;
+	top: 177px;
+	left: 75px;
+	}
+	
+	#section4{
+	width: 130px;
+	height: 20px;
+	position: absolute;
+	top: 231px;
+	left: 75px;
+	}
+	
+	#section5{
+	width: 152px;
+	height: 20px;
+	position: absolute;
+	top: 386px;
+	left: 76px;
+	}
+	
+	#section6{
+	width: 90px;
+	height: 20px;
+	position: absolute;
+	top: 386px;
+	left: 541px;
+	}
+	
+	#section7{
+	width: 60px;
+	height: 20px;
+	position: absolute;
+	top: 528px;
+	left: 65px;
+	}
+	
+	#section8{
+	width: 60px;
+	height: 20px;
+	position: absolute;
+	top: 579px;
+	left: 65px;
+	}
+	
+	#section9{
+	width: 60px;
+	height: 20px;
+	position: absolute;
+	top: 628px;
+	left: 65px;
+	}
+	
+	#section10{
+	width: 110px;
+	height: 20px;
+	position: absolute;
+	top: 677px;
+	left: 65px;
+	}
+	#section11{
+	width: 110px;
+	height: 20px;
+	position: absolute;
+	top: 728px;
+	left: 65px;
+	}
+	#section12{
+	width: 110px;
+	height: 20px;
+	position: absolute;
+	top: 778px;
+	left: 65px;
+	}
+		#section13{
+	width: 135px;
+	height: 20px;
+	position: absolute;
+	top: 828px;
+	left: 65px;
+	}
+		#section14{
+	width: 136px;
+	height: 20px;
+	position: absolute;
+	top: 878px;
+	left: 65px;
+	}
+		#section15{
+	width: 120px;
+	height: 20px;
+	position: absolute;
+	top: 928px;
+	left: 65px;
+	}
+		#section16{
+	width: 130px;
+	height: 20px;
+	position: absolute;
+	top: 968px;
+	left: 65px;
+	}
+		#section17{
+	width: 110px;
+	height: 20px;
+	position: absolute;
+	top: 875px;
+	left: 243px;
+	}
+		#section18{
+	width: 110px;
+	height: 20px;
+	position: absolute;
+	top: 928px;
+	left: 243px;
+	}
+		#section19{
+	width: 110px;
+	height: 20px;
+	position: absolute;
+	top: 968px;
+	left: 243px;
+	}
+
+#header3{
+	width:1000px;
+	height:35px; 
+	margin:0 auto;   
+	position: relative;
+	}
+	
+
+#section{
+	width: 1000px;
+	height:1000px;
+	margin-top: 0px;
+	margin-right: auto;
+	position: relative;
+}
+
+	#section01{
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: 83px;
+	left: 247px;
+	}
+	
+	#section02{
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: 83px;
+	left: 360px;
+	}
+	
+	#section03{
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: 132px;
+	left: 247px;
+	}
+	
+	#section04{
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: 132px;
+	left: 360px;
+	}
+	
+	#section05{
+	width: 180px;
+	height: 20px;
+	position: absolute;
+	top: 177px;
+	left: 245px;
+	}
+	
+	#section06{
+	width: 60px;
+	height: 20px;
+	position: absolute;
+	top: 177px;
+	left: 467px;
+	}
+	
+	#section07{
+	width: 60px;
+	height: 20px;
+	position: absolute;
+	top: 177px;
+	left: 586px;
+	}
+	
+	#section08{
+	width: 60px;
+	height: 20px;
+	position: absolute;
+	top: 231px;
+	left: 248px;
+	}
+	
+	#section09{
+	width: 60px;
+	height: 20px;
+	position: absolute;
+	top: 231px;
+	left: 331px;
+	}
+	
+	#section010{
+	width: 100px;
+	height: 20px;
+	position: absolute;
+	top: 228px;
+	left: 417px;
+	}
+	
+	#section011{
+	width: 100px;
+	height: 20px;
+	position: absolute;
+	top: 228px;
+	left: 543px;
+	}
+	
+    #section012{
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: 386px;
+	left: 252px;
+	}
+	
+	#section013{
+	width: 160px;
+	height: 20px;
+	position: absolute;
+	top: 528px;
+	left: 188px;
+	}
+	
+	#section014{
+	width: 160px;
+	height: 20px;
+	position: absolute;
+	top: 574px;
+	left: 188px;
+	}
+	
+	  #section015{
+	width: 160px;
+	height: 20px;
+	position: absolute;
+	top: 574px;
+	left: 381px;
+	}
+	
+	#section016{
+	width: 380px;
+	height: 20px;
+	position: absolute;
+	top: 627px;
+	left: 188px;
+	}
+	
+	#section017{
+	width: 180px;
+	height: 20px;
+	position: absolute;
+	top: 678px;
+	left: 188px;
+	}
+	
+	#section018{
+	width: 180px;
+	height: 20px;
+	position: absolute;
+	top: 725px;
+	left: 188px;
+	}
+	
+	
+	#section019{
+	width: 60px;
+	height: 20px;
+	position: absolute;
+	top: 779px;
+	left: 188px;
+	}
+	
+	#section020{
+	width: 210px;
+	height: 20px;
+	position: absolute;
+	top: 777px;
+	left: 262px;
+	}
+	
+	#section021{
+	width: 450px;
+	height: 20px;
+	position: absolute;
+	top: 830px;
+	left: 188px;
+	}
+	#section022{
+	width: 450px;
+	height: 20px;
+	position: absolute;
+	top: 863px;
+	left: 188px;
+	}	
+	
+	#Footer{
+	width: 1000px;
+	height: 470px;
+	margin-top: 10px;
+	margin-right: auto;
+	float: left;
+	overflow:hidden;
+    }
+
+#Footer1{
+	width: 1000px;
+	height: 250px;
+	position: relative;
+	margin-top:0px;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: 0px;
+	float:left;
+	}
+#Footer2{
+	width: 1000px;
+	height: 220px;
+	position: relative;
+	margin-top:0px;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: 0px;
+	float:left;
+	}
+
+		
+
+
+
+
+
+
+
+
+	

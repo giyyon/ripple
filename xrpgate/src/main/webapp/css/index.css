@@ -1,0 +1,43 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*아이콘메뉴*/
+
+.icon_menu{width:100%;background:#9bbbe1;height:250px;float:left;margin-bottom:20px;}
+.icon_menu_in{width:1200px;margin:0 auto;}
+.icon_menu_in p{font-size:12px; font-weight:bold; color:#333;text-align:Center;margin-bottom:35px;margin-top:15px;}
+.icon_menu_img{float:left;width:900px;margin-left:100px;}
+.icon_menu_img li{float:left; margin-left:100px;} 
+
+/*트레이드 시세*/
+
+.trade_price{width:1200px;margin:0 auto;}
+.trade_price p{width:1200px; text-align:center;margin-bottom:20px;}
+.trade_graph{width:1200px; margin:0 auto;height:500px; border:1px solid #666; margin-bottom:20px;}
+
+/*국제시세*/
+.ripple_world{width:100%;float:left;height:317px;}
+
+/*하단표*/
+
+.tranding_record{width:100%; background:#b9cfea;height:360px;float:left;}
+.tranding_record_in{width:1200px; margin:0 auto;padding-top:20px;}
+.table_box{width:400px;float:left;}
+.table_box p{margin-bottom:20px;}
+
+.record_table{width:350px;float:left;}
+.record_table table{width:350px; border:1px solid #164680; border-right:0;border-bottom:0;}
+.record_table table td{
+	height:30px;
+	 line-height:30px;
+	 border-right:1px solid #164680;
+	 border-bottom:1px solid #164680;
+	 width:110px;
+	 padding:5px;
+	 }
+.table_title{background:#1a324e;color:#fff;font-size:14px;text-align:center;}
+.table_con{color:#333;font-size:13px;background:#f6f6f6;}
+
+.con_center{text-align:center;}
+.con_right{text-align:right;}
+.con_center div,.con_right div{width:110px;overflow:hidden;}

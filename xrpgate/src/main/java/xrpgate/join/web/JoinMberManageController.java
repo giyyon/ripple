@@ -118,14 +118,38 @@ public class JoinMberManageController {
 
 	/**
 	 * 일반회원, 기업회원 선정 화면으로 이동한다.
+	 * @return joinStep1
+	 * @throws Exception
+	 */
+	@RequestMapping("/joinStep1.do")
+	public String userSeChoose()
+			throws Exception {
+		
+		return ".basic_join/joinStep1";
+	}
+	
+	/**
+	 * 약관 동의 화면으로 이동한다.
+	 * @return joinStep1
+	 * @throws Exception
+	 */
+	@RequestMapping("/mem_join_chk.do")
+	public String mem_join_chk()
+			throws Exception {
+		
+		return ".basic_join/mem_join_chk";
+	}
+	
+	/**
+	 * 일반회원, 기업회원 선정 화면으로 이동한다.
 	 * @param userSearchVO 검색조건정보
 	 * @param mberManageVO 일반회원초기화정보
 	 * @param model 화면모델
 	 * @return uss/umt/EgovMberInsert
 	 * @throws Exception
 	 */
-	@RequestMapping("/joinStep1.do")
-	public String userSeChoose(@ModelAttribute("mberManageVO") MberManageVO mberManageVO,
+	@RequestMapping("/mem_join_p.do")
+	public String mem_join_chk(@ModelAttribute("mberManageVO") MberManageVO mberManageVO,
 										KcpCertVO certVO, Model model)
 			throws Exception {
 		
@@ -145,8 +169,19 @@ public class JoinMberManageController {
 		
 		model.addAttribute("day_result", day_result);
 
-		return ".basic_join/joinStep1";
-//		return ".popup_join/joinStep1";
+		return ".basic_join/mem_join_p";
+	}
+	
+	/**
+	 * 회원 가입 완료 화면으로 이동한다.
+	 * @return joinStep1
+	 * @throws Exception
+	 */
+	@RequestMapping("/memjoin_end.do")
+	public String memjoin_end()
+			throws Exception {
+		
+		return ".basic_join/memjoin_end";
 	}
 	
 	

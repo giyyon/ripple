@@ -118,6 +118,7 @@ public class MberManageVO extends UserDefaultVO{
 	 */
 	private String commId;	
 	
+	
 	/**
 	 * 연계정보
 	 */
@@ -143,13 +144,29 @@ public class MberManageVO extends UserDefaultVO{
 	 */
 	private String dumPointCardNo;	
 	
+	/**
+	 * 은행코드
+	 */
+	private String bankId;	
+	
+	/**
+	 * 은행계좌번호
+	 */
+	private String account;	
+	
 	
 	/**
 	 * 최근 로그인 일자
 	 */
 	private String loginDe;
 	
-
+	public String getBankId() {
+		return bankId;
+	}
+	public void setBankId(String bankId) {
+		this.bankId = bankId;
+	}
+	
 	public String getLoginDe() {
 		return loginDe;
 	}
@@ -506,5 +523,11 @@ public class MberManageVO extends UserDefaultVO{
 	public void setMberEmailAdres(String mberEmailAdres) {
 		this.mberEmailAdres = mberEmailAdres;
 	}
-
+	public String getAccount() {
+		return account;
+	}
+	public void setAccount(String account) {
+		this.account = account;
+	}
+	
 }

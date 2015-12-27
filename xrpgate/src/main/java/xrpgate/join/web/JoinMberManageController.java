@@ -27,6 +27,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
@@ -388,7 +389,7 @@ public class JoinMberManageController {
 	 * @exception Exception
 	 */
 
-	@RequestMapping(value = "/chkDuplicationGnrId.do")
+	@RequestMapping(value = "/chkDuplicationGnrId.do", method = RequestMethod.POST)
 	public ResponseEntity<String>  chkDuplicationGnrId(
 			@ModelAttribute("mberManageVO") MberManageVO mberManageVO) throws Exception {
 

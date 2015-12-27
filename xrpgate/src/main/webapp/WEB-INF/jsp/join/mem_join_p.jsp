@@ -1,13 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="../include/taglib.jsp" %>
 
+
+
 <div class="con_title">
   <li>
     <img src="/images/sub/mem_join_title.png" />
   </li>
 </div> 
+
+<form:form commandName="mberManageVO"  id="form" method="POST">
 <div class="content">
-	<form:form commandName="mberManageVO"  id="form">
     <div class="content_in">
         <div class="con_info">
         	<div class="join_turn">
@@ -19,7 +22,7 @@
                         <Td class="join_important">★</Td>
                         <td class="join_table_title">리플지갑주소</td>
                         <td class="join_table_info">
-                            <li><input type="text" /></li>
+                            <li><input type="text" name="rippleTradeEmail" /></li>
                             <li><a href="#"><img src="/images/btn/rippleadd_chk.png" /></a></li>
                             <li>리플 주소를 입력해 주세요. (ex > rPxU6acYni7FcXzPCMeaPSwKcuS1GTtNVN )</li>
                         </td>
@@ -79,13 +82,14 @@
                         <td class="join_table_title">이메일</td>
                         <td class="join_table_info">
                             <li>
-								<input type="text" name="emailHead" id="emailHead"/> @ 
-								<input type="text" name="emailTail" id="emailTail"/>
+								<input type="text" name="emailHead" id="emailHead" required /> @ 
+								<input type="text" name="emailTail" id="emailTail" required />
 							</li>
                             <li>
                                 <select name="emailTail2">
-                                    <option>naver.com</option>
-                                    <option>hanmail.net</option>
+                                	<option value="">-직접입력-</option>
+                                    <option value="naver.com">naver.com</option>
+                                    <option value="hanmail.net">hanmail.net</option>
                                 </select>                                        
                             </li>
                             <li>거래를 위한 거래소 아이디를 생성합니다. 리플트레이드 아이디와 별도의 아이디 입니다.</li>
@@ -181,7 +185,11 @@
                         <Td class="join_important"></Td>
                         <td class="join_table_title">파일첨부</td>
                         <td class="join_table_info">
-                            <li><input type="file" style="margin-top:13px;"/></li>
+                            <li>
+                            	<form:hidden path="atchFileId" />
+									<input name="file1_text" type="text" class="w400"/>
+									<img name="btnFileUpload" src="${contextPath}/img/btn_find.png" data_fileMax="1" data_category="news"  data_type="file"  alt="찾아보기"   />
+							</li>>
                             <li>본인인증이 어려우신 분이나 외국인은 신분증 및 본인을 증명할 수 있는 증명서를 스캔하여 첨부하거나 FAX로 보내주세요.</li>
                         </td>
                     </tr>
@@ -209,8 +217,8 @@
                                 </select>                                        
                             </li>
                             <li>
-								<input type="text" name="mbtlnumMiddle"  id="mbtlnumMiddle" style="width:80px;"/> - 
-								<input type="text" name="mbtlnumMTail"  id="mbtlnumTail" style="width:80px;"/></li>
+								<input type="text" name="mbtlnumMiddle"  maxlength="4" id="mbtlnumMiddle" style="width:80px;"/> - 
+								<input type="text" name="mbtlnumMTail"  maxlength="4" id="mbtlnumTail" style="width:80px;"/></li>
                             <li class="phone_confirm" id ="certPage" ><a href="javascript:goKcpStartPage();">인증하기</a></li>
                         </td>
                     </tr>
@@ -239,8 +247,8 @@
 								</form:select>                                        
                             </li>
                             <li>
-								<input type="text" name="middleTelno" readOnly="true" style="width:80px;"/> - 
-								<input type="text" name="endTelno" readOnly="true" style="width:80px;"/>
+								<input type="text" name="middleTelno" maxlength="4"  style="width:80px;"/> - 
+								<input type="text" name="endTelno" maxlength="4"  style="width:80px;"/>
 							</li>
                         </td>
                     </tr>
@@ -256,6 +264,7 @@
 	<input type="hidden" id="userSe" name="userSe"  value="GNR"> <!--사용자구분 -->
 	<input type="hidden" id="ihidnum" name="ihidnum" > <!--주민번호 -->
 	 <input type="hidden" id="moblphonNo"  name="moblphonNo"  > <!--핸드폰번호 -->
+	 <input type="hidden" id="mberEmailAdres"  name="mberEmailAdres"  > <!--이메일주소 -->
 	 <input type="hidden" name="req_tx"       value="cert"/>
 	<!-- 요청구분 -->
 	<input type="hidden" name="cert_method"  value="01"/>
@@ -300,8 +309,9 @@
 	<input type="hidden" name="phone_no" value="" size="40" />
 	<iframe id="iframe_auth"  name="iframe_auth" width="0"  height="0" frameborder="0">
 	</iframe>
-	</form:form>
+	
 </div>
+</form:form>
 
 <script type="text/javaScript" language="javascript">
 	$(function(){
@@ -315,13 +325,116 @@
 			$('#resultChkID').html('');
 		});
 		
+		//생년월일
 		$( "#birthYear,#birthMonth, #birthDay" ) .change(function () {
-			$("#ihidnum").val(  $( "#birthYear option:selected" ).val() + $( "#birthMonth option:selected" ).val() + $( "#birthDay option:selected" ).val() );
+			$("#ihidnum").val(  $( "#birthYear option:selected" ).val() + $( "#month_select option:selected" ).val() + $( "#day_select option:selected" ).val() );
 		});
 		
-		
+		// 핸드폰 번호 
 		$( "#mbtlnumHead, #mbtlnumMiddle,  #mbtlnumTail" ) .change(function () {
 			$("#moblphonNo").val(  $( "#mbtlnumHead" ).val() +'-'+ $( "#mbtlnumMiddle" ).val() +'-'+ $( "#mbtlnumTail" ).val() );
+		});
+		
+		$( "[name='emailTail2']").change(function(){
+			
+			var $emailAddr =  $("input[name='emailTail']");
+			
+			if($(this).val() == "" ||  $(this).val() == null) {
+				$emailAddr.prop("readOnly", false);
+			} else { 
+				$emailAddr.prop("readOnly", true);
+				$emailAddr.val($(this).val());
+			}
+			
+			$("#mberEmailAdres").val( $("#emailHead").val() + '@' + $emailAddr.val());
+			
+		});
+		
+		//파일 업로드 처리
+		$("img").on("click", function(e) {
+			
+			var offset = $(this).offset();
+			var currPlace = $('body').scrollTop();
+			var thisType = $(this).attr('data_type');
+			var category = $(this).attr('data_category');
+			var fileMax = $(this).attr('data_fileMax');
+			
+			var $imgId = $(this).parent().find(':hidden');
+			var $fileNmme = $(this).parent('').find('[name=file1_text]');
+			var $imgDiv = $(this).closest('dl').find('dt');
+			
+			var params = fn_dataParamSetting(category, fileMax, thisType, $imgId.val());
+			e.preventDefault();
+					
+			var options = {
+				url : '<c:url value="/files/uploadPage.do" />',
+				width : 650,
+				height : 350,
+				closeCallback : closeCallback,
+				title : '[파일 올리기]',
+				data : params,
+				buttonType : 0
+			};
+			var $dialog = BIT.modalDialog(options);
+			
+			function closeCallback(returnValue) {
+				if (returnValue != null && returnValue.length > 0) {
+					var files = returnValue;
+					var fileIds = '';
+					var fileNames = '';
+					//단일 이미지 처리시에만 적용 올려진 썸네일 이미지를 리턴받아 화면상에 이미지 영역에 뿌려줌
+					var imgUrl = "";
+					
+					for (var i = 0; i < files.length; i++) {
+						if (fileIds) {
+							fileIds = files[i].atchFileId;
+							fileNames += ',' + files[i].orignlFileNm;
+						} else {
+							fileIds = files[i].atchFileId;
+							fileNames = files[i].orignlFileNm;
+							imgUrl =   '<c:url value="/files/imageSrc.do?path=" />'+files[i].category  +'/thumnails&physical=' + files[i].streFileNm;    
+	// 						imgUrl =  '<c:url value="/webAttach/thumnails/" />' + files[i].streFileNm;
+						}
+					}
+					var options = {"background":"url("+imgUrl+")", 'background-repeat' : 'no-repeat', 'background-position':'center'};
+					$imgId.val(fileIds);
+					$fileNmme.val(fileNames);
+					if(thisType == 'img'){
+						$imgDiv.css(options);
+					}
+					
+				} else {
+					$imgId.val('');
+					$fileNmme.val('');
+					if(thisType == 'img'){
+						$imgDiv.css('background', 'url(/img/noimg.png)');
+					}
+					
+				}
+			}
+		});
+
+		$('[name=btnFileDownload]').click(function(e) {
+			e.preventDefault();
+			var category = $(this).attr('data_category');
+			var $imgId = $(this).parent().find(':hidden');
+			COM.openFileListPopup(category, $imgId.val());
+		});
+	
+		$('[name=btnImgDelete]').click(function(e){
+			$(this).parent().find(':hidden').val('');
+			$(this).parent('').find('[name=file1_text]').val('');
+		});
+		
+		$('[name=btnFileDelete]').click(function(e){
+			var $imgId = $(this).parent().find(':hidden');
+			var $fileNmme = $(this).parent('').find('[name=file1_text]');
+			var $imgDiv = $(this).closest('dl').find('dt');
+			
+			$imgId.val('');
+			$fileNmme.val('')
+			var basicImg = '<c:url value="/webAttach/thumnails/" />'
+			$imgDiv.css
 		});
 		
 	});
@@ -394,6 +507,7 @@
   	}
   	
 	function goSave(){
+		/* 휴대폰 인증
 		var diVal = $("[name=di]").val();
 		var rtn ;
 		if(diVal.length > 0) {
@@ -406,11 +520,14 @@
 			
 			return;
 		}
-		var  result = isOkAllproperty() ;
+		*/
+		
 		
 		if(result == 'OK'){
-			$("form").attr({action:"${contextPath}/join/gnrMberInsertMain.do", target:""});
-			$("form").submit();
+			$("#form").attr({action:"${contextPath}/join/gnrMberInsertMain.do"});
+			alert();
+			return;
+			$("#form").submit();
 		}else{
 			alert(result);
 		}
@@ -443,8 +560,8 @@
  	
  	function goKcpStartPage(){
 
- 		$("form").attr({"action": "${contextPath}/join/kcpCertStart.do" , "target":"iframe_auth" });
- 		$("form").submit();
+ 		$("#form").attr({"action": "${contextPath}/join/kcpCertStart.do" , "target":"iframe_auth" });
+ 		$("#form").submit();
 
  		return;
  	}
@@ -477,6 +594,36 @@
  		
  		alert(showVal);
  	}
+ 	
+ 	function replaceModalwindow(offset, currPlace) {
+		$('.ui-dialog').css('top', offset.top +'px');
+		$( 'html, body' ).animate( { scrollTop : currPlace }, 0);
+	}
+
+	function fn_dataParamSetting(category, fileMax, type, filesIds){
+		var fileExtn = '';
+		
+		if(type == "img"){
+			fileExtn = 'jpg|jpeg|png|bmp|gif';
+		} else {
+			fileExtn = '';
+		}
+		
+		var params = {
+				Category : category,
+				Accept : fileExtn,
+				Max : Number(fileMax),
+				Type : type,
+				FileIds : filesIds
+			}
+		
+		return params;
+	}
+	
+   	function doSync(){
+//		 goJsonSave();
+ //  		goPost('01');
+	}
 
 	</script>
 

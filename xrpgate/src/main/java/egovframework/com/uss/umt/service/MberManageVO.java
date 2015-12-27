@@ -156,6 +156,11 @@ public class MberManageVO extends UserDefaultVO{
 	
 	
 	/**
+	 * 사용자 첨부파일
+	 */
+	private String atchFileId;	
+	
+	/**
 	 * 최근 로그인 일자
 	 */
 	private String loginDe;
@@ -529,5 +534,12 @@ public class MberManageVO extends UserDefaultVO{
 	public void setAccount(String account) {
 		this.account = account;
 	}
+	public String getAtchFileId() {
+		return atchFileId;
+	}
+	public void setAtchFileId(String atchFileId) {
+		this.atchFileId = atchFileId;
+	}
+	
 	
 }

@@ -263,7 +263,7 @@ FROM(
             SELECT
                     PASSWORD          password 
             FROM    COMTNGNRLMBER
-            WHERE   ESNTL_ID=#uniqId#
+            WHERE   MBER_ID=#mberId#
         ]]>
     </select>
     

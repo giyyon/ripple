@@ -525,8 +525,6 @@
 		
 		if(result == 'OK'){
 			$("#form").attr({action:"${contextPath}/join/gnrMberInsertMain.do"});
-			alert();
-			return;
 			$("#form").submit();
 		}else{
 			alert(result);

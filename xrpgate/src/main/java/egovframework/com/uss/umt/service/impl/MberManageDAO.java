@@ -129,7 +129,7 @@ public class MberManageDAO extends EgovComAbstractDAO{
     }
 
     /**
-     * 일반회원이 비밀번호를 기억하지 못할 때 비밀번호를 찾을 수 있도록 함
+     * 일반회원 비밀번호 조회
      * @param mberManageVO 일반회원암호 조회조건정보
      * @return MberManageVO 일반회원 암호정보
      */

@@ -193,6 +193,59 @@ public class MyInfoController {
 		return ".basic_myInfo/myRippleTradeList";
     }    
 	
+    /**
+     * 마이페이지 이동전 비밀번호 체크 페이지 이동
+	 * @param mberManageVO 
+	 * @return ResponseEntity
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/memberChk.do")
+	public String  gomemberChkPage ( @ModelAttribute("mberManageVO") MberManageVO mberManageVO) throws Exception {
+
+    	return ".basic_myInfo/meminfo_chk";
+	}
+    
+    /**
+     * 마이페이지 이동전 비밀번호 체크
+	 * @param mberManageVO 
+	 * @return ResponseEntity
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/memberPasswordChk.do")
+	public String  memberPasswordChk( @ModelAttribute("mberManageVO") MberManageVO mberManageVO) throws Exception {
+
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
+		LOGGER.debug("getPassword정보 : "+mberManageVO.getPassword());
+		LOGGER.debug("getOldPassword정보 : "+mberManageVO.getOldPassword());
+		boolean isCorrectPassword = false;
+		
+		mberManageVO.setMberId(user.getId());
+		// 기존 비밀번호 조회
+		MberManageVO resultVO = mberManageService.selectPassword(mberManageVO);
+		//패스워드 암호화
+		String encryptPass = EgovFileScrty.encryptPassword(mberManageVO.getPassword(), mberManageVO.getMberId());
+		
+		// 조회된 비밀번호와 입력된 비밀번호 비교
+		if (encryptPass.equals(resultVO.getPassword())) {
+			isCorrectPassword = true;
+		} else {
+			//비밀번호 불일치
+			isCorrectPassword = false;
+		}
+
+		String returnUrl = "";
+    	if(isCorrectPassword  ){
+			
+    		returnUrl = "redirect:/myInfo/myInfoInqire.do";
+    		
+    	}else{
+    		returnUrl = ".basic_myInfo/meminfo_chk";
+    	
+    	}
+    	return returnUrl;
+	}	
+	
 	/**
 	 * @param mberManageVO 일반회원수정정보(비밀번호)
 	 * @return ResponseEntity

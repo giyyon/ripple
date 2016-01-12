@@ -189,7 +189,7 @@
                             	<form:hidden path="atchFileId" />
 									<input name="file1_text" type="text" class="w400"/>
 									<img name="btnFileUpload" src="${contextPath}/img/btn_find.png" data_fileMax="1" data_category="news"  data_type="file"  alt="찾아보기"   />
-							</li>>
+							</li>
                             <li>본인인증이 어려우신 분이나 외국인은 신분증 및 본인을 증명할 수 있는 증명서를 스캔하여 첨부하거나 FAX로 보내주세요.</li>
                         </td>
                     </tr>
@@ -351,7 +351,7 @@
 		});
 		
 		//파일 업로드 처리
-		$("img").on("click", function(e) {
+		$("img[name=btnFileUpload]").on("click", function(e) {
 			
 			var offset = $(this).offset();
 			var currPlace = $('body').scrollTop();
@@ -522,7 +522,7 @@
 		}
 		*/
 		
-		
+		var  result = isOkAllproperty() ;
 		if(result == 'OK'){
 			$("#form").attr({action:"${contextPath}/join/gnrMberInsertMain.do"});
 			$("#form").submit();

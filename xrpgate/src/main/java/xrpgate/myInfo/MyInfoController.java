@@ -137,18 +137,35 @@ public class MyInfoController {
 		LOGGER.debug("loginVOgetid정보"+loginVO.getId());
 		LOGGER.debug("loginVOgetuserSe 정보"+loginVO.getUserSe());
 		
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		
 		//일반 회원
 		if(loginVO.getUserSe().equals("GNR")){			
-			TradeDetailVO tradeDetailVO = new TradeDetailVO();
-			TradeVO tradeVO = new TradeVO();
-			tradeDetailVO.setRequestErId(loginVO.getId());	
+			//TradeDetailVO tradeDetailVO = new TradeDetailVO();
+			//TradeVO tradeVO = new TradeVO();
+			//tradeDetailVO.setRequestErId(loginVO.getId());	
 			
 			MberManageVO mberManageVO = mberManageService.selectMberById(loginVO.getId());
-			tradeVO = tradeManageService.selectTotalBookingRippleTrade(tradeDetailVO);
+			//tradeVO = tradeManageService.selectTotalBookingRippleTrade(tradeDetailVO);
 			
 			model.addAttribute("mberManageVO", mberManageVO);
-			model.addAttribute("tradeVO", tradeVO);
+			//model.addAttribute("tradeVO", tradeVO);
 		}
+		
+		//년도목록
+		vo.setCodeId("RIP901");
+		List<?> year_result = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("year_result", year_result); 
+		//월목록
+		vo.setCodeId("RIP902");
+		List<?> month_result = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("month_result", month_result); 
+		//일목록
+		vo.setCodeId("RIP903");
+		List<?> day_result = cmmUseService.selectCmmCodeDetail(vo);
+		
+		model.addAttribute("day_result", day_result);
+		
 		return ".basic_myInfo/myInfoInqire";
 	}
 	
@@ -261,9 +278,11 @@ public class MyInfoController {
 		LOGGER.debug("getOldPassword정보 : "+mberManageVO.getOldPassword());
 		boolean isCorrectPassword = false;
 	
+		mberManageVO.setMberId(user.getId());
 		MberManageVO resultVO = mberManageService.selectPassword(mberManageVO);
 		//패스워드 암호화
-		String encryptPass = EgovFileScrty.encryptPassword(mberManageVO.getOldPassword());
+		String encryptPass = EgovFileScrty.encryptPassword(mberManageVO.getOldPassword(), mberManageVO.getMberId());
+		
 		if (encryptPass.equals(resultVO.getPassword())) {
 			isCorrectPassword = true;
 		} else {
@@ -276,7 +295,7 @@ public class MyInfoController {
 		HashMap<String, Object> total  = new HashMap<String, Object>();
 		
     	if(isCorrectPassword  ){
-			mberManageVO.setPassword(EgovFileScrty.encryptPassword(mberManageVO.getPassword()));
+			mberManageVO.setPassword(EgovFileScrty.encryptPassword(mberManageVO.getPassword(), mberManageVO.getMberId()));
 			mberManageService.updatePassword(mberManageVO);
     		
     		//비밀번호 일치
@@ -302,25 +321,19 @@ public class MyInfoController {
 	 */
 	@RequestMapping("/updateGnrMyInfo.do")
 	public String updateGnrMyInfo(@ModelAttribute("mberManageVO") MberManageVO mberManageVO,
-																 @RequestParam("progressStauts") String progressStauts,
-																 Model model) throws Exception {
+		 Model model) throws Exception {
 		
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		LOGGER.debug("loginVOgetid정보"+loginVO.getId());
 		LOGGER.debug("loginVOgetuserSe 정보"+loginVO.getUserSe());
 		
-		mberManageService.updateMberMain(mberManageVO);
+		mberManageVO.setMberId(loginVO.getId());
+		mberManageService.updateMber(mberManageVO);
 		//Exception 없이 진행시 수정성공메시지
 		model.addAttribute("resultMsg", "success.common.update");
 		
-        if("F".equals(progressStauts)){
-			return "forward:/myInfo/myInfoView.do";
-   			
-        }else{
-    		//"H".equals(progressStauts)
-        	return  ".basic_myInfo/grnMberMyInfoSub"; 
-        }
+		return  "redirect:/";
 	}
 
 	

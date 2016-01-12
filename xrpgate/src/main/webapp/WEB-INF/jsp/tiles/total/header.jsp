@@ -72,10 +72,10 @@
                         </a>
                    </div>
                    <ul class="subnav">  
-                      <li><a href="html/marketprice.html">시세</a></li>  
-                      <li><a href="html/deposit-draw.html">예탁</a></li> 
-                      <li><a href="html/deposit-draw.html">인출</a></li>
-                      <li><a href="html/deal.html">거래하기</a></li>
+                      <li><a href="${contextPath}/trade/callAccountTransactions.do">예탁</a></li>  
+                      <li><a href="${contextPath}/trade/callAccountTransactions.do">예탁</a></li> 
+                      <li><a href="${contextPath}/trade/callAccountTransactions.do">인출</a></li>
+                      <li><a href="${contextPath}/trade/callXrpTrade.do">거래하기</a></li>
                       <li><a href="html/proxy.html">리플구매대행</a></li>
                       <li><a href="html/fees.html">수수료정책</a></li>
                    </ul>  
@@ -88,10 +88,10 @@
                         </a>
                    </div>
                    <ul class="subnav">  
-                      <li><a href="html/FAQ.html">FAQ</a></li>  
-                      <li><a href="html/news.html">리플소식</a></li> 
-                      <li><a href="html/notice.html">공지사항</a></li> 
-                      <li><a href="html/library.html">자료실</a></li> 
+                      <li><a href="${contextPath}/customer/phoneQnAList.do">FAQ</a></li>  
+                      <li><a href="${contextPath}/customer/rippleNewsList.do">리플소식</a></li> 
+                      <li><a href="${contextPath}/customer/rippleNoticeList.do">공지사항</a></li> 
+                      <li><a href="${contextPath}/company/about.do">자료실</a></li> 
                    </ul>  
                 </li>
                 

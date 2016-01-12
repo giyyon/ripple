@@ -26,17 +26,17 @@ public class TradeVO  implements Serializable {
 
 	private String tradeType = "";
 		
-	private long requestBuyMoney = 0L;
+	private double requestBuyMoney = 0L;
 
-	private long requestSellQty =0L;
+	private double requestSellQty =0L;
 
-	private long resultUnitPrice = 0L;
+	private double resultUnitPrice = 0L;
 
 	private long resultQty = 0L;
 
-	private long resultTotMoney = 0L;
+	private double resultTotMoney = 0L;
 
-	private long fee = 0L;
+	private double fee = 0L;
 
 	private String status = "";
 
@@ -58,6 +58,25 @@ public class TradeVO  implements Serializable {
 	
 	private String dumPointCardNo = "";
 
+	/**
+	 * 요청 수량
+	 */
+	private String requestQty = "";
+	
+	/**
+	 * 요청 금액
+	 */
+	private double requestMoney = 0L;
+	
+	/**
+	 * 거래 상품 유형
+	 */
+	private String productType;
+	
+	/**
+	 * 결재 통화 유형
+	 */
+	private String paymentCurrency;
 	
 	public String getMoblphonNo() {
 		return moblphonNo;
@@ -91,7 +110,7 @@ public class TradeVO  implements Serializable {
 		}
 	}
 
-	public long getRequestBuyMoneyOrSellQty() {
+	public double getRequestBuyMoneyOrSellQty() {
 		if (this.tradeType.equals("B")){
 			return getRequestBuyMoney();
 		}else{
@@ -99,7 +118,7 @@ public class TradeVO  implements Serializable {
 		}
 	}
 	
-	public long getRequestBuyMoney() {
+	public double getRequestBuyMoney() {
 		return requestBuyMoney;
 	}
 
@@ -107,23 +126,23 @@ public class TradeVO  implements Serializable {
 		this.requestBuyMoney = requestBuyMoney;
 	}
 
-	public long getRequestSellQty() {
+	public double getRequestSellQty() {
 		return requestSellQty;
 	}
 
-	public void setRequestSellQty(long requestSellQty) {
+	public void setRequestSellQty(double requestSellQty) {
 		this.requestSellQty = requestSellQty;
 	}
 
-	public long getResultUnitPrice() {
+	public double getResultUnitPrice() {
 		return resultUnitPrice;
 	}
 
-	public void setResultUnitPrice(long resultUnitPrice) {
+	public void setResultUnitPrice(double resultUnitPrice) {
 		this.resultUnitPrice = resultUnitPrice;
 	}
 
-	public long getResultQty() {
+	public double getResultQty() {
 		return resultQty;
 	}
 
@@ -131,19 +150,19 @@ public class TradeVO  implements Serializable {
 		this.resultQty = resultQty;
 	}
 
-	public long getResultTotMoney() {
+	public double getResultTotMoney() {
 		return resultTotMoney;
 	}
 
-	public void setResultTotMoney(long resultTotMoney) {
+	public void setResultTotMoney(double resultTotMoney) {
 		this.resultTotMoney = resultTotMoney;
 	}
 
-	public long getFee() {
+	public double getFee() {
 		return fee;
 	}
 
-	public void setFee(long fee) {
+	public void setFee(double fee) {
 		this.fee = fee;
 	}
 
@@ -217,6 +236,42 @@ public class TradeVO  implements Serializable {
 
 	public void setDumPointCardNo(String dumPointCardNo) {
 		this.dumPointCardNo = dumPointCardNo;
+	}
+
+	public String getRequestQty() {
+		return requestQty;
+	}
+
+	public void setRequestQty(String requestQty) {
+		this.requestQty = requestQty;
+	}
+
+	public double getRequestMoney() {
+		return requestMoney;
+	}
+
+	public void setRequestMoney(double requestMoney) {
+		this.requestMoney = requestMoney;
+	}
+
+	public String getProductType() {
+		return productType;
+	}
+
+	public void setProductType(String productType) {
+		this.productType = productType;
+	}
+
+	public String getPaymentCurrency() {
+		return paymentCurrency;
+	}
+
+	public void setPaymentCurrency(String paymentCurrency) {
+		this.paymentCurrency = paymentCurrency;
+	}
+
+	public void setRequestBuyMoney(double requestBuyMoney) {
+		this.requestBuyMoney = requestBuyMoney;
 	}
 	
 }

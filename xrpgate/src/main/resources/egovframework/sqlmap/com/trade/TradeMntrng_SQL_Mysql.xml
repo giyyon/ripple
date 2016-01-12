@@ -6,6 +6,7 @@
 	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
 	<typeAlias  alias="TradeVO" type="xrpgate.trade.service.TradeVO"/>
 	<typeAlias  alias="TradeDetailVO" type="xrpgate.trade.service.TradeDetailVO"/>
+	<typeAlias  alias="AccountVO" type="xrpgate.trade.service.AccountVO"/>
 
 	<resultMap id="tradeVOList" class="xrpgate.trade.service.TradeVO">
     <result property="tradeId"         column="TRADE_ID"           columnIndex="1"/>                     
@@ -26,6 +27,10 @@
     <result property="rippleTradeId"   column="RIPPLE_TRADE_ID"    columnIndex="1"/>
     <result property="rippleTradeEmail" column="RIPPLE_TRADE_EMAIL" columnIndex="1"/>
     <result property="dumPointCardNo"  column="DUM_POINT_CARD_NO"  columnIndex="1"/>
+    <result property="requestQty"  column="REQUEST_QTY"  columnIndex="1"/>
+    <result property="requestMoney"  column="REQUEST_MONEY"  columnIndex="1"/>
+    <result property="productType"  column="PRODUCT_TYPE"  columnIndex="1"/>
+    <result property="paymentCurrency"  column="PAYMENT_CURRENCY"  columnIndex="1"/>
 	</resultMap>
 	
 	<resultMap id="tradePotalVO" class="xrpgate.trade.service.TradeVO">
@@ -48,10 +53,15 @@
 			INSERT INTO RIPPLE_TRADE
 			(TRADE_ID,TRADE_TYPE,REQUEST_BUY_MONEY,REQUEST_SELL_QTY
 			 ,RESULT_UNIT_PRICE,RESULT_QTY,RESULT_TOT_MONEY,FEE
-			 ,STATUS,REQUEST_DT,REQUEST_ER_ID)
+			 ,STATUS,REQUEST_DT,REQUEST_ER_ID
+			 , REQUEST_QTY 
+				      , REQUEST_MONEY 
+				      , PRODUCT_TYPE 
+				      , PAYMENT_CURRENCY )
 			VALUES
 			( #tradeId#, #tradeType#, #requestBuyMoney#, #requestSellQty#, #resultUnitPrice#, #resultQty#
 			, #resultTotMoney#, #fee#, 'N', SYSDATE(), #requestErId#
+			, #requestQty#, #requestMoney#, #productType#, #paymentCurrency#
 			 )			
 		]]>
 	</insert>
@@ -75,6 +85,10 @@
 				      ,MEMBER.RIPPLE_TRADE_ID AS RIPPLE_TRADE_ID
 				      ,MEMBER.RIPPLE_TRADE_EMAIL AS RIPPLE_TRADE_EMAIL
 				      ,MEMBER.DUM_POINT_CARD_NO AS DUM_POINT_CARD_NO
+				      , REQUEST_QTY AS REQUEST_QTY
+				      , REQUEST_MONEY AS REQUEST_MONEY
+				      , PRODUCT_TYPE AS PRODUCT_TYPE
+				      , PAYMENT_CURRENCY AS PAYMENT_CURRENCY
 			FROM RIPPLE_TRADE TRADE
 			     JOIN COMTNGNRLMBER MEMBER ON TRADE.REQUEST_ER_ID = MEMBER.MBER_ID
 			WHERE TRADE.TRADE_ID = #tradeId#
@@ -91,6 +105,10 @@
 				      ,MEMBER.RIPPLE_TRADE_ID AS RIPPLE_TRADE_ID
 				      ,MEMBER.RIPPLE_TRADE_EMAIL AS RIPPLE_TRADE_EMAIL
 				      ,MEMBER.DUM_POINT_CARD_NO AS DUM_POINT_CARD_NO
+				      , REQUEST_QTY AS REQUEST_QTY
+				      , REQUEST_MONEY AS REQUEST_MONEY
+				      , PRODUCT_TYPE AS PRODUCT_TYPE
+				      , PAYMENT_CURRENCY AS PAYMENT_CURRENCY
 			FROM RIPPLE_TRADE TRADE
 			     JOIN COMTNGNRLMBER MEMBER ON TRADE.REQUEST_ER_ID = MEMBER.MBER_ID
 			WHERE 1=1
@@ -135,4 +153,120 @@
 			WHERE TRADE_ID = #tradeId#
  		]]>
  	</update>
+ 	
+ 	<select id="TradeManageDAO.selectAccountInfo" resultClass="AccountVO">
+ 		SELECT DEPOSIT AS deposit
+ 				, XRP_DEPOSIT AS xrpDeposit
+ 				, CHARGE AS charge
+ 		FROM RIPPLE_MEMBER_ACCOUNT
+ 		WHERE MBER_ID = #mberId#
+ 	</select>
+ 	
+ 	<insert id="TradeManageDAO.insertTransactionInfo" parameterClass="AccountVO">
+ 		INSERT INTO RIPPLE_ACCOUNT_TRANSACTIONS 
+ 			(
+ 				 TRADE_TYPE
+ 				, TRANSACTION_MONEY
+ 				, REQUEST_ID
+ 				, CHARGE
+ 				, STATUS
+ 				, REQUEST_DT
+ 				, FEE
+ 			)
+ 			VALUES 
+ 			(
+ 				 #tradeType#
+ 				, #transactionsMoney#
+ 				, #mberId#
+ 				, #tradeCharge#
+ 				, #status#
+ 				, SYSDATE()
+ 				, #fee#
+ 			)
+ 	</insert>
+ 	
+ 	<select id="TradeManageDAO.selectTransactionInfo" resultClass="AccountVO">
+ 		SELECT TA.*
+		FROM(
+			SELECT T.*,
+					(@rownum :=  @rownum +1) AS RANK
+			FROM (
+		 		SELECT TRADE_ID 
+						, CASE WHEN TRADE_TYPE = 'D' THEN '예탁'
+							ELSE '인출'
+						  END		as tradeType
+				        , TRANSACTION_MONEY	as transactionsMoney
+				        , REQUEST_ID	AS requestId
+				        , CHARGE		AS tradeCharge
+				        , B.CODE_NM AS status
+				        , FEE		AS fee
+				        , date_format(REQUEST_DT, '%Y.%m.%d')	AS requestDt
+				        , date_format(TRADE_COMPLETE_DT, '%Y %m %d') AS tradeCompleteDt
+				        , REMARK			AS remark
+				FROM ripple_account_transactions A
+				LEFT OUTER JOIN (
+							SELECT A.CODE_NM
+									, A.CODE
+							FROM comtccmmndetailcode A
+							INNER JOIN comtccmmncode B
+							ON A.CODE_ID = B.CODE_ID
+							WHERE B.CODE_ID ='RIP904'
+				) B
+				ON A.STATUS = B.CODE 
+				ORDER BY  REQUEST_DT DESC
+ 				) T,
+			(
+			SELECT @ROWNUM := 0 
+			) R 
+		) TA
+		WHERE RANK &lt; 4
+ 	</select>
+ 	
+ 	<select id="TradeManageDAO.selectXrpTradeList" resultClass="TradeVO">
+ 		SELECT TA.*
+		FROM(
+			SELECT T.*,
+					(@rownum :=  @rownum +1) AS RANK
+			FROM (
+		 		SELECT TRADE_ID 
+						, CASE WHEN TRADE_TYPE = 'S' THEN '구매'
+							ELSE '판매'
+						  END		as tradeType
+				        , ifnull(REQUEST_MONEY, 0)	AS requestMoney
+				        , REQUEST_QTY	AS requestQty
+				        , PRODUCT_TYPE		AS productType
+				        , B.CODE_NM AS status
+				        , ifnull(FEE, 0)		AS fee
+				        , date_format(REQUEST_DT, '%Y.%m.%d')	AS requestDt
+				        , PAYMENT_CURRENCY AS paymentCurrency
+				        , MEMBER.MBER_NM AS MBER_NM
+				FROM RIPPLE_TRADE TRADE
+				INNER JOIN COMTNGNRLMBER MEMBER 
+				ON TRADE.REQUEST_ER_ID = MEMBER.MBER_ID
+				LEFT OUTER JOIN (
+							SELECT A.CODE_NM
+									, A.CODE
+							FROM comtccmmndetailcode A
+							INNER JOIN comtccmmncode B
+							ON A.CODE_ID = B.CODE_ID
+							WHERE B.CODE_ID ='RIP904'
+				) B
+				ON TRADE.STATUS = B.CODE 
+				WHERE REQUEST_ER_ID = #requestErId#
+				ORDER BY  TRADE_ID DESC
+ 				) T,
+			(
+			SELECT @ROWNUM := 0 
+			) R 
+		) TA
+		WHERE RANK &lt; 6
+ 	</select>
+ 		
+ 	<update id="TradeManageDAO.updateXrpTradeInfo">
+ 	
+ 	</update>
+ 	
+ 	<delete id="TradeManageDAO.deleteXrpTradeInfo">
+ 	
+ 	</delete>
 </sqlMap>

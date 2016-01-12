@@ -118,7 +118,6 @@ public class MberManageVO extends UserDefaultVO{
 	 */
 	private String commId;	
 	
-	
 	/**
 	 * 연계정보
 	 */
@@ -154,7 +153,6 @@ public class MberManageVO extends UserDefaultVO{
 	 */
 	private String account;	
 	
-	
 	/**
 	 * 사용자 첨부파일
 	 */
@@ -164,6 +162,16 @@ public class MberManageVO extends UserDefaultVO{
 	 * 최근 로그인 일자
 	 */
 	private String loginDe;
+	
+	/**
+	 * 회원 등급
+	 */
+	private String memberGrade;
+	
+	/**
+	 * 국가
+	 */
+	private String state;
 	
 	public String getBankId() {
 		return bankId;
@@ -539,6 +547,18 @@ public class MberManageVO extends UserDefaultVO{
 	}
 	public void setAtchFileId(String atchFileId) {
 		this.atchFileId = atchFileId;
+	}
+	public String getMemberGrade() {
+		return memberGrade;
+	}
+	public void setMemberGrade(String memberGrade) {
+		this.memberGrade = memberGrade;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
 	}
 	
 	

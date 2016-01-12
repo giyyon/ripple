@@ -20,6 +20,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import xrpgate.trade.service.AccountVO;
 import xrpgate.trade.service.TradeDetailVO;
 import xrpgate.trade.service.TradeManageService;
 import xrpgate.trade.service.TradeVO;
@@ -111,4 +112,36 @@ public class TradeManageServiceImpl extends EgovAbstractServiceImpl implements T
 	public void updateRippleTrade(TradeDetailVO tradeDetailVO) throws Exception {
     	tradeMngDAO.updateRippleTrade(tradeDetailVO);
 	}
+
+
+	@Override
+	public AccountVO selectAccountInfo(AccountVO accountVO) throws Exception {
+		// TODO Auto-generated method stub
+		return tradeMngDAO.selectAccountInfo(accountVO);
+	}
+
+
+	@Override
+	public void insertTransactionInfo(AccountVO accountVO) throws Exception {
+		// TODO Auto-generated method stub
+		tradeMngDAO.insertTransactitionInfo(accountVO);
+	}
+
+
+	@Override
+	public ArrayList<AccountVO> selectTransactionInfo(AccountVO accountVO) throws Exception {
+		// TODO Auto-generated method stub
+		return tradeMngDAO.selectTransactionInfo(accountVO);
+	}
+
+
+	@Override
+	public ArrayList<TradeVO> selectXrpTradeList(TradeVO tradeVo)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return tradeMngDAO.selectXrpTradeList(tradeVo);
+	}
+	
+	
+	
 }

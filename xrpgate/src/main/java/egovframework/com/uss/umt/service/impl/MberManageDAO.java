@@ -86,15 +86,7 @@ public class MberManageDAO extends EgovComAbstractDAO{
     public void updateMber(MberManageVO mberManageVO){
         update("mberManageDAO.updateMber_S",mberManageVO);
     }
-    
-    /**
-     * 화면에 조회된일반회원의 기본정보를 수정하여 항목의 정합성을 체크하고 수정된 데이터를 데이터베이스에 반영
-     * @param mberManageVO 일반회원수정정보
-     */
-    public void updateMberMain(MberManageVO mberManageVO){
-        update("mberManageDAO.updateMber_Main",mberManageVO);
-    }
-    
+
     /**
      * 화면에 조회된일반회원의 기본정보를 수정하여 항목의 정합성을 체크하고 수정된 데이터를 데이터베이스에 반영
      * @param mberManageVO 일반회원수정정보

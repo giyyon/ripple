@@ -317,7 +317,7 @@
 /*게시글 보기*/
 .board_view{width:1000px;margin:0 auto;}
 .board_view table{width:1000px; border-top:1px solid #666}
-.board_view table td{height:25px;line-height:25px;}
+/*.board_view table td{height:25px;line-height:25px;} */
 .board_view thead{background:#fcfcfc}
 .board_view thead td{border-bottom:1px solid #d4d4d4;}
 .board_view table td li{float:left;}

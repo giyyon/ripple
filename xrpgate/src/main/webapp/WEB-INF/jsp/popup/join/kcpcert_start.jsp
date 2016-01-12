@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" %>
+<%@ page language="java" contentType="text/html; charset=euc-kr" %>
 <%
     /* ============================================================================== */
     /* =   PAGE : 인증 요청 PAGE                                                    = */
@@ -25,9 +25,9 @@
     /* = -------------------------------------------------------------------------- = */
 
     //  운영반영시에만 운영사이트 코드 적용
-    //String site_cd   = "V3704";
+    String site_cd   = "V3704";
 	// 개발시 사용 코드
-	String site_cd   = "S6186";
+	//String site_cd   = "S6186";
 
 
     /* = -------------------------------------------------------------------------- = */
@@ -84,7 +84,7 @@
                                 <!-- 명의자명 -->
                                 <tr>
                                     <td class="sub_title1">성명</td>
-                                    <td class="sub_content1"><input type="text" name="user_name" value="" size="20" maxlength="20" class="frminput" /></td>
+                                    <td class="sub_content1"><input type="text" name="user_name" value="${certVO.user_name }" size="20" maxlength="20" class="frminput" /></td>
                                 </tr>
                                 <!-- 생년월일 -->
                                 <tr>
@@ -144,7 +144,7 @@
                 <!-- 사이트코드 -->
                 <input type="hidden" name="site_cd"      value="<%= site_cd %>" />
                 <!-- Ret_URL : 인증결과 리턴 페이지 ( 가맹점 URL 로 설정해 주셔야 합니다. ) -->
-				<input type="hidden" name="Ret_URL" value="http://219.254.215.233:8080/join/kcpCertProcRes.do" />      
+				<input type="hidden" name="Ret_URL" value="http://219.254.215.233:8081/join/kcpCertProcRes.do" />      
                 <!-- <input type="hidden" name="Ret_URL"      value="http://xrpgate.com/join/kcpCertProcRes.do" />  -->
                 <!-- cert_otp_use 필수 ( 메뉴얼 참고)
                      Y : 실명 확인 + OTP 점유 확인 , N : 실명 확인 only

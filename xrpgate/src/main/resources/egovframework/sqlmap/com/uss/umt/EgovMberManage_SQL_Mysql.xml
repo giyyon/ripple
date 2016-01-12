@@ -107,7 +107,11 @@ FROM(
 					DI,
 					RIPPLE_TRADE_ID,
 					RIPPLE_TRADE_EMAIL,
-					DUM_POINT_CARD_NO
+					DUM_POINT_CARD_NO,
+					ATCHFILEID ,
+					STATE,
+					BANK_ID,
+					ACCOUNT	
                     )
               VALUES(
                     #uniqId#,
@@ -136,7 +140,11 @@ FROM(
 					#di#,
 					#rippleTradeId#,
 					#rippleTradeEmail#,
-					#dumPointCardNo#
+					#dumPointCardNo#,
+					#atchFileId#,
+					#state#,
+					#bankId#,
+					#account#
                      )              
         ]]>
     </insert>
@@ -208,34 +216,39 @@ FROM(
 					RIPPLE_TRADE_ID          rippleTradeId,
 					RIPPLE_TRADE_EMAIL    rippleTradeEmail,
 					DUM_POINT_CARD_NO dumPointCardNo			,
-					LOGIN_DE                   loginDe
+					LOGIN_DE                   loginDe,
+					ATCHFILEID			AS atchFileId,
+					MEMBER_GRADE		AS memberGrade,
+					STATE				AS state,
+					BANK_ID				as bankId,
+					ACCOUNT				as account
             FROM COMTNGNRLMBER               
             WHERE MBER_ID=#mberId#           
         ]]>                                  
     </select>    
     
-    <update id="mberManageDAO.updateMber_S">
-        <![CDATA[
+    <update id="mberManageDAO.updateMber_S" parameterClass="mberVO">
             UPDATE COMTNGNRLMBER 
-            SET MBER_ID          = #mberId#,
-                MBER_NM          = #mberNm#,
-                PASSWORD_HINT    = #passwordHint#,
-                PASSWORD_CNSR    = #passwordCnsr#,
-                IHIDNUM          = #ihidnum#,
+            SET IHIDNUM          = #ihidnum#,
                 SEXDSTN_CODE     = #sexdstnCode#,
                 ZIP              = #zip#,
                 ADRES            = #adres#,
                 AREA_NO          = #areaNo#,
-                MBER_STTUS       = #mberSttus#,
+                --MBER_STTUS       = #mberSttus#,
                 DETAIL_ADRES     = #detailAdres#,
                 END_TELNO        = #endTelno#,
-                MBTLNUM      = #moblphonNo#,
+                MBTLNUM      	 = #moblphonNo#,
                 GROUP_ID         = #groupId#,
                 MBER_FXNUM       = #mberFxnum#,
                 MBER_EMAIL_ADRES = #mberEmailAdres#,
-                MIDDLE_TELNO     = #middleTelno#
-            WHERE ESNTL_ID=#uniqId#
-        ]]>
+                MIDDLE_TELNO     = #middleTelno#,
+                RIPPLE_TRADE_EMAIL = #rippleTradeEmail#,
+                ATCHFILEID		 = #atchFileId#,
+				MEMBER_GRADE	 = #memberGrade#,
+				STATE			 = #state#,
+				BANK_ID			 = #bankId#,
+				ACCOUNT 		 = #account#
+            WHERE MBER_ID=#mberId# 
     </update>
     
     <select id="mberManageDAO.selectStplat_S" resultMap="stplatMap">
@@ -254,7 +267,7 @@ FROM(
             UPDATE COMTNGNRLMBER 
             SET 
                    PASSWORD   =  #password#
-            WHERE  ESNTL_ID  = #uniqId#
+            WHERE  MBER_ID=#mberId# 
         ]]>
     </update>
     

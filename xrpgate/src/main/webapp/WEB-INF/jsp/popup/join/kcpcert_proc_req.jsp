@@ -189,9 +189,9 @@
                 {
                 	window.opener.document.forms[0].veri_up_hash.value = frm.up_hash.value; // up_hash 데이터 검증을 위한 필드
                  	// 테스트 사이트
-                	 frm.action="https://testcert.kcp.co.kr/kcp_cert/cert_view.jsp";
+                	 //frm.action="https://testcert.kcp.co.kr/kcp_cert/cert_view.jsp";
                 	// 운영 사이트
-                	//frm.action= "https://cert.kcp.co.kr/kcp_cert/cert_view.jsp";
+                	frm.action= "https://cert.kcp.co.kr/kcp_cert/cert_view.jsp";
                     
                     frm.submit();
                 }
@@ -200,9 +200,9 @@
                 else if ( ( frm.req_tx.value == "auth" || frm.req_tx.value == "otp_auth" ) )
                 {
                     //개발시
-                	//frm.action= "http://221.140.209.100:8091/join/kcpCertProcRes.do";
+                	frm.action= "http://219.254.215.233:8091/join/kcpCertProcRes.do";
                     //운영시
-                    frm.action= "http://xrpgate.com/join/kcpCertProcRes.do";
+                    //frm.action= "http://xrpgate.com/join/kcpCertProcRes.do";
                     frm.submit();
                 }
                 else

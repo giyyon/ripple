@@ -605,6 +605,52 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
 
     	return ".basic_admin/phoneQnAList";
     }
+    
+    /**
+     * 리플뉴스에 대한 상세 정보를 조회한다.
+     * 
+     * @param boardVO
+     * @param sessionVO
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/phoneQnADetail.do")
+    public String phoneQnADetail(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
+	// 조회수 증가 여부 지정
+	boardVO.setPlusCount(true);
+
+	//---------------------------------
+	// 2009.06.29 : 2단계 기능 추가
+	//---------------------------------
+	if (!boardVO.getSubPageIndex().equals("")) {
+	    boardVO.setPlusCount(false);
+	}
+	////-------------------------------
+
+	//QnA 게시판 아이디 : BBSMSTR_000000000001
+	if("".equals(boardVO.getBbsId()))
+			boardVO.setBbsId("BBSMSTR_000000000001");
+	
+	// 신규 등록 화면에서 등록 후  redirect 된 경우 nttId를 model 객체에서 뽑아와야 한다.
+	if(model.get("nttId") != null){
+		long nttId = (Long.parseLong(model.get("nttId").toString()));
+		if(nttId != 0){
+			boardVO.setNttId(nttId);
+		}	
+	}
+	
+	BoardVO vo = bbsMngService.selectBoardArticle(boardVO);
+
+	model.addAttribute("result", vo);
+	
+	//CommandMap의 형태로 개선????
+
+	model.addAttribute("sessionUniqId", user.getUniqId());
+	return ".basic_admin/qnaDetailView";
+    }
 	  
        /**
      * 게시물에 대한 내용을 삭제한다.

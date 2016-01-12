@@ -1,5 +1,6 @@
 package xrpgate.trade.service.Impl;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -7,8 +8,10 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardVO;
 
+import org.antlr.grammar.v3.ANTLRParser.exceptionGroup_return;
 import org.springframework.stereotype.Repository;
 
+import xrpgate.trade.service.AccountVO;
 import xrpgate.trade.service.TradeDetailVO;
 import xrpgate.trade.service.TradeVO;
 
@@ -102,5 +105,35 @@ public class TradeManageDAO extends EgovComAbstractDAO {
      */
     public void updateRippleTrade(TradeDetailVO tradeDetailVO) throws Exception {
     	update("TradeManageDAO.updateRippleTrade", tradeDetailVO);
+    }
+    
+    
+    /** 회원 계좌의 예탁금 및 수수료율 조회
+     * @param accountVO
+     * @return
+     * @throws Exception
+     */
+    public AccountVO selectAccountInfo(AccountVO accountVO) throws Exception {
+    	
+    	return (AccountVO) select("TradeManageDAO.selectAccountInfo", accountVO);
+    }
+    
+    /**
+     * 회원 계좌 예탁/ 인출 신청 저장
+     * @param accountVO
+     * @throws Exception
+     */
+    public void insertTransactitionInfo(AccountVO accountVO) throws Exception{
+    	
+    	insert("TradeManageDAO.insertTransactionInfo", accountVO);
+    }
+    
+    @SuppressWarnings("unchecked")
+	public ArrayList<AccountVO> selectTransactionInfo(AccountVO accountVO) throws Exception {
+    	return (ArrayList<AccountVO>) list("TradeManageDAO.selectTransactionInfo", accountVO);
+    }
+    
+    public ArrayList<TradeVO> selectXrpTradeList(TradeVO tradeVo) throws Exception {
+    	return (ArrayList<TradeVO>) list("TradeManageDAO.selectXrpTradeList", tradeVo);
     }
 }

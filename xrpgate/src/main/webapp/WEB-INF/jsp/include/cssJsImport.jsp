@@ -43,7 +43,7 @@
 <link href="<c:url value='/css/jquery.fileupload-ui.css'/>" rel="stylesheet" />
 <link href="<c:url value='/css/jquery-ui-1.10.3.custom.min.css'/>" rel="stylesheet" />
 
-
+<script src="<c:url value='/js/common.js'/>"></script>
 <script type="text/javascript">
 var canvas, stage, exportRoot;
 </script>

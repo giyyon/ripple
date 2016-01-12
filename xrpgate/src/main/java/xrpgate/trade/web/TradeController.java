@@ -1,5 +1,7 @@
 package xrpgate.trade.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -17,11 +19,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import xrpgate.customer.web.CustomerController;
+import xrpgate.trade.service.AccountVO;
 import xrpgate.trade.service.TradeDetailVO;
 import xrpgate.trade.service.TradeManageService;
+import xrpgate.trade.service.TradeVO;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.Board;
@@ -122,7 +127,7 @@ public class TradeController implements ApplicationContextAware, InitializingBea
     
 	
     /**
-     * 리플 트레이드 구매 신청 화면 이동.
+     * 리플 트레이드 예탁 화면 이동.
      * 
      * @param boardVO
      * @param sessionVO
@@ -130,19 +135,61 @@ public class TradeController implements ApplicationContextAware, InitializingBea
      * @return
      * @throws Exception
      */
-    @RequestMapping("/callRippleTradeBuyModify.do")
-    public String callRippleTradeBuyModify(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+    @RequestMapping("/callAccountTransactions.do")
+    public String callRippleTradeBuyModify( ModelMap model) throws Exception {
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-    	MberManageVO mberManageVO = null;
-		//로그인유저
-		mberManageVO = mberManageService.selectMberById(user.getId());
 		
-        boardVO.setMoblphonNo(mberManageVO.getMoblphonNo());
-        boardVO.setNtcrNm(user.getName());
+    	AccountVO accountVO = new AccountVO();
+    	ArrayList<AccountVO> listVo = new ArrayList<AccountVO>();
+    	try {
+    		accountVO.setMberId(user.getId());
+        	
+        	accountVO = tradeManageService.selectAccountInfo(accountVO);
+        	// 최근 3번째까지의 계좌 예탁/인출 정보
+        	listVo = tradeManageService.selectTransactionInfo(accountVO);
+        	
+    	} catch( Exception e){
+    		System.out.print(e.getMessage());
+    	}
+    	
 		
-    	model.addAttribute("boardVO", boardVO);
-    	return ".basic_trade/rippleTradeBuy";
+    	model.addAttribute("accountVO", accountVO);
+    	model.addAttribute("listVo", listVo);
+		
+    	
+    	return ".basic_trade/rippleAccountTrade";
     }	
+    
+    /**
+     * 예탁 / 인출 거래 요청 정보를 저장한다.
+     * @param accountVO
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="insertTransactionInfo.do")
+    @ResponseBody
+    public HashMap<String, Object> insertTransactionInfo(AccountVO accountVO) throws Exception {
+    	
+    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    	
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	
+    	try{
+    		accountVO.setMberId(user.getId());
+    		
+    		tradeManageService.insertTransactionInfo(accountVO);
+    		
+    		ArrayList<AccountVO> listVo = tradeManageService.selectTransactionInfo(accountVO);
+    		
+    		map.put("isSuccess", true);
+    		map.put("listVo", listVo);
+    	} catch(Exception e){
+    		System.out.print(e.getMessage());
+    		map.put("isSuccess", true);
+    	}
+    	
+    	return map;
+    }
 	
     /**
      * 리플 트레이드 판매 신청을 등록한다.
@@ -184,9 +231,9 @@ public class TradeController implements ApplicationContextAware, InitializingBea
     @SuppressWarnings("unchecked")
     @RequestMapping("/insertRippleTradeBuy.do")
     public String insertRippleTradeBuy(
-                                                      @ModelAttribute("tradeDetailVO") TradeDetailVO tradeDetailVO,
-                                                      RedirectAttributes redirectAttributes,
-                                                      ModelMap model) throws Exception {
+          @ModelAttribute("tradeDetailVO") TradeDetailVO tradeDetailVO,
+          RedirectAttributes redirectAttributes,
+          ModelMap model) throws Exception {
 		
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -287,5 +334,40 @@ public class TradeController implements ApplicationContextAware, InitializingBea
 	return ".basic_customer/noticeInqire";
     }
 	
+    /**
+     * 리플 트레이드 예탁 화면 이동.
+     * 
+     * @param boardVO
+     * @param sessionVO
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/callXrpTrade.do")
+    public String callRippleXrpTrade( ModelMap model) throws Exception {
+    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		
+    	AccountVO accountVO = new AccountVO();
+    	TradeVO tradeVo = new TradeVO();
+    	ArrayList<TradeVO> tradeList = new ArrayList<TradeVO>();
+    	
+    	try {
+    		accountVO.setMberId(user.getId());
+    		tradeVo.setRequestErId(user.getId());
+    		
+        	accountVO = tradeManageService.selectAccountInfo(accountVO);
+        	tradeList = tradeManageService.selectXrpTradeList(tradeVo);
+        	
+    	} catch( Exception e){
+    		System.out.print(e.getMessage());
+    	}
+    	
+		
+    	model.addAttribute("accountVO", accountVO);
+    	model.addAttribute("tradeList", tradeList);
+		
+    	
+    	return ".basic_trade/rippleXrpTrade";
+    }	
     
 }

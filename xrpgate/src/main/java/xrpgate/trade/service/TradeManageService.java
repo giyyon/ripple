@@ -1,5 +1,6 @@
 package xrpgate.trade.service;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 
@@ -72,4 +73,30 @@ public interface TradeManageService {
      * @throws Exception
      */
     public Map<String, Object> selectRippleTradeList(TradeDetailVO tradeDetailVO) throws Exception;
+    
+    /**
+     * 회원 계좌 예탁금 수수료율 조회
+     * @param accountVO
+     * @return
+     * @throws Exception
+     */
+    public AccountVO selectAccountInfo(AccountVO accountVO) throws Exception;
+    
+    
+    /**
+     * 회원 계좌에 예탁/인출 거래 신청 정보 입력
+     * @param accountVO
+     * @throws Exception
+     */
+    public void insertTransactionInfo(AccountVO accountVO) throws Exception;
+    
+    public ArrayList<AccountVO> selectTransactionInfo(AccountVO accountVO) throws Exception;
+    
+    /**
+     * 회원의 xrp 거래 리스트를 가져온다.
+     * @param tradeVo
+     * @return
+     * @throws Exception
+     */
+    public ArrayList<TradeVO> selectXrpTradeList(TradeVO tradeVo) throws Exception;
 }

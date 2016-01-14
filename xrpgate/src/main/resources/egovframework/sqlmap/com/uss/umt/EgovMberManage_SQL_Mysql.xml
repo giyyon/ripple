@@ -234,7 +234,6 @@ FROM(
                 ZIP              = #zip#,
                 ADRES            = #adres#,
                 AREA_NO          = #areaNo#,
-                --MBER_STTUS       = #mberSttus#,
                 DETAIL_ADRES     = #detailAdres#,
                 END_TELNO        = #endTelno#,
                 MBTLNUM      	 = #moblphonNo#,

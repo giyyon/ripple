@@ -33,7 +33,7 @@
                 
                 <div class="price">
                 	<div class="price_title"><img src="images/common/market_price.png" /></div>
-                    <div class="price_graph">                    </div>
+                    <div class="price_graph" id="container2" style="heilght:110px; weight:270px">                    </div>
                 </div>
             </div>
             <div class="middle_right">
@@ -214,6 +214,16 @@
 	<!--본문 끝-->
 
 <script type="text/javaScript" language="javascript">
+
+	$(document).ready(function(){
+	               exrp.GetRippleChartData();
+	               exrp.asks(1,'S');
+	               exrp.asks(2,'S');
+	               exrp.GetRippleCurrentData();
+	//exrp.drawingChart(0,-1,0);
+	exrp.drawingChart2(0,-1,0);
+		
+	});
 	//설명 동영상용 이미지 롤링 기능 <-Start->
 	var $list = $('ul.album');
 	var size = $list.children().outerWidth();

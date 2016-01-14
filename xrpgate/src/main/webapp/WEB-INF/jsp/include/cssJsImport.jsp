@@ -43,7 +43,11 @@
 <link href="<c:url value='/css/jquery.fileupload-ui.css'/>" rel="stylesheet" />
 <link href="<c:url value='/css/jquery-ui-1.10.3.custom.min.css'/>" rel="stylesheet" />
 
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="<c:url value='/js/common.js'/>"></script>
+<script src="<c:url value='/js/exrp.js'/>"></script>
+
 <script type="text/javascript">
 var canvas, stage, exportRoot;
 </script>

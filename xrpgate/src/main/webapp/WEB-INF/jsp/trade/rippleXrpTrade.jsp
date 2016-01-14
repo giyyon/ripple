@@ -307,20 +307,22 @@
 		var status = "S01"; // 처리중비중 
 		
 		
-		var url = "${contextPath}/trade/insertTransactionInfo.do";
+		var url = "${contextPath}/trade/insertXrpTrade.do";
 		var para = {
 				tradeType : tradeType
 				, requestQty : requestQty
 				, requestMoney : requestMoney
 				, status : status
-				, fee : fee
+				, productType : "XRP"
+				, paymentCurrency : "KRW"
 		}
 		
-		sendPost(url, para, "fn_insertTransactionResult");
+		sendPost(url, para, "fn_insertTradeResult");
 	}
 	
-	function fn_insertTransactionResult(data){
+	function fn_insertTradeResult(data){
 		var html="";
+		return;
 		if(data.isSuccess){
 			for(var i = 0 ; i < data.listVo.length;i++){
 				html += '<tr class="my_title data" >';

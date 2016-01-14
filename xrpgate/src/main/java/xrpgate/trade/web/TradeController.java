@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.antlr.grammar.v3.ANTLRParser.exceptionGroup_return;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -192,7 +193,7 @@ public class TradeController implements ApplicationContextAware, InitializingBea
     }
 	
     /**
-     * 리플 트레이드 판매 신청을 등록한다.
+     * 리플 트레이드 신청을 등록한다.
      * 
      * @param boardVO
      * @param board
@@ -201,21 +202,36 @@ public class TradeController implements ApplicationContextAware, InitializingBea
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unchecked")
-    @RequestMapping("/insertRippleTradeSell.do")
-    public String insertRippleTradeSell(
+    @RequestMapping("/insertXrpTrade.do")
+    @ResponseBody
+    public HashMap<String, Object> insertRippleTradeSell(
             @ModelAttribute("tradeDetailVO") TradeDetailVO tradeDetailVO,
             RedirectAttributes redirectAttributes,
             ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		
-		tradeDetailVO.setTradeType("S");
-		tradeDetailVO.setRequestErId(user.getId());
-		tradeManageService.insertRippleTrade(tradeDetailVO);	
+		HashMap<String, Object> map = new HashMap<String, Object>();
+			
 		
-		redirectAttributes.addFlashAttribute("message","리플 판매 신청이 등록되었습니다. 처리 결과는 마이페이지에서 확인 가능합니다.");
-		return "redirect:/";
+		String message = "";
+		
+		try {
+			tradeDetailVO.setRequestErId(user.getId());
+			tradeManageService.insertRippleTrade(tradeDetailVO);
+			
+			if("S".equals(tradeDetailVO.getTradeType())){
+				message = "리플 판매 신청이 등록되었습니다. 처리 결과는 마이페이지에서 확인 가능합니다.";
+			} else {
+				message = "리플 구매 신청이 등록되었습니다. 처리 결과는 마이페이지에서 확인 가능합니다.";
+			}
+			
+			map.put("isSuccess", true);
+			map.put("message", message);
+		} catch(Exception e){
+			map.put("isSuccess", false);
+		}
+		return map;
 	}    
     
     /**
@@ -369,5 +385,11 @@ public class TradeController implements ApplicationContextAware, InitializingBea
     	
     	return ".basic_trade/rippleXrpTrade";
     }	
+    
+    @RequestMapping(value="/callMarketPriece.do")
+    public String getMarketPrice() throws Exception {
+    	
+    	return ".basic_trade/marketprice";
+    }
     
 }

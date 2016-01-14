@@ -67,12 +67,12 @@
                 
                 <li class="navi_set">  
                    <div class="topnav">
-                       <a href="html/marketprice.html">
+                       <a href="${contextPath}/trade/callMarketPriece.do">
                        		<img src="/images/common/main_03_off.png" onmouseover="this.src='/images/common/main_03_on.png'"onmouseout="this.src='/images/common/main_03_off.png'" />
                         </a>
                    </div>
                    <ul class="subnav">  
-                      <li><a href="${contextPath}/trade/callAccountTransactions.do">예탁</a></li>  
+                      <li><a href="${contextPath}/trade/callMarketPriece.do">시세</a></li>  
                       <li><a href="${contextPath}/trade/callAccountTransactions.do">예탁</a></li> 
                       <li><a href="${contextPath}/trade/callAccountTransactions.do">인출</a></li>
                       <li><a href="${contextPath}/trade/callXrpTrade.do">거래하기</a></li>

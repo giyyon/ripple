@@ -1,0 +1,151 @@
+@charset "utf-8";\
+@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
+/* CSS Document */
+
+*{margin:0; padding:0;}
+img{border:0;}
+li{list-style:none;}
+a{color:#333;text-decoration:none;}
+body{width:100%;height:100%;font-family: 'Jeju Gothic', sans-serif;padding:0;margin:0;}
+
+.wrap{width:1100px;margin:0 auto;}
+
+/*탑부분*/
+.top{background:#7196c3;height:60px;padding:10px;}
+.top_wrap{width:1100px;margin:0 auto;background:#7196c3;}
+.logo{width:190px;float:left;}
+
+/*메인 탑 메뉴 스타일*/
+.nav {
+	width:900px;
+	float:left;
+	height:58px;
+}
+.topnav{
+	text-align:center;
+	width:125px;
+	cursor:pointer;
+	float:left;
+}
+
+.navi_set{
+	float: left;
+	padding:0px 10px 10px 10px;
+	position: relative;
+	width:110px;
+	height:48px;
+}
+
+.subnav{
+	position: absolute;
+	left: 0; top: 50px;
+	background: #336699;
+	display: none;
+	z-index:99;
+	margin:0;
+	padding:0;
+	border:1px solid #184c80;
+	border-bottom:0;
+	
+
+}
+.subnav li{
+	padding:10px;
+	width:110px;
+	text-align:center;
+	border-bottom:1px solid #184c80;
+	cursor:pointer;
+	font-size:12px;
+}
+.subnav li a{color:#fff;display:block;}
+.subnav li:hover{background:#215283;}
+
+.top_small{width:219px;float:right;margin-top:20px;}
+.top_small li{float:left;width:60px;text-align:center;}
+
+
+/*컨텐츠 영역*/
+.content{width:1100px; margin:0 auto;}
+.content_in{width:1100px;float:left; margin-top:20px; margin-bottom:30px;}
+.admin_main_con{width:800px; margin:0 auto;}
+.admin_title{float:left; width:990px; margin-bottom:20px;}
+
+.admin_faq{width:1060px;margin:0 auto;}
+.admin_mem{width:1100px; margin:0 auto;}
+.admin_deposit{width:840px;margin:0 auto;}
+.admin_faq table,.admin_mem table,.admin_deposit table,.admin_deal table{
+	border-top:1px solid #999;
+	border-left:1px solid #999;
+	}
+.admin_faq table td,.admin_mem table td,.admin_deposit table td,.admin_deal table td{
+	border-right:1px solid #999;
+	padding:3px;
+	border-bottom:1px solid #999;
+	height:20px;
+	font-size:13px;
+	text-align:center;
+	}
+.admin_table_title{font-size:13px; font-weight:bold;background:#f8f8f8;text-align:center;}
+.admin_btn{text-align:center;}
+.admin_btn li{float:left; margin-left:5px;margin-top:4px;height:29px;}
+
+.de_box{width:1100px; margin-bottom:20px; float:left;}
+.draw_box{width:1100px; margin-bottom:10px; float:left;}
+.table_text li{width:800px; height:17px; overflow:hidden;word-break:break-all;cursor : pointer;}
+.deposit_text{font-weight:bold;color:#336699;}
+.write_btn{width:1070px; float:left;text-align:right;margin-bottom:10px;}
+.admin_enter_btn{width:70px;float:left;}
+
+
+/*XRPGATE 계좌 및 계정정보 변경*/
+.account_chn{width:100%;float:left; border:2px solid #336699;margin-top:50px;padding:10px;}
+.account_chn_in{float:left;width:100%;}
+.account_chn_in table{width:100%;float:left; border-top:1px solid #666;}
+.account_chn_in table thead td{background:#f5f5f5; border-bottom:1px solid #666;height:35px; font-size:14px;text-align:center;border-right:1px solid #999;font-weight:bold;}
+.account_chn_in table tbody td{border-bottom:1px solid #666;height:30px; font-size:14px;text-align:center;border-right:1px solid #999;}
+/*페이징*/
+.paging{width:400px;margin:0 auto; margin-top:10px;  text-align:center;}
+.page{display:inline;}
+.page li{display:inline;margin-left:5px;text-align:center;}
+.page li a{font-size:11px;}
+.page .selected a{color:#336699; font-weight:bold;border:1px solid #336699;padding:5px;}
+
+
+/*관리자 로그인*/
+.admin_login{width:400px;margin:0 auto;}
+.admin_login_in{width:340px;float:left; border:1px solid #666;margin-top:50px;height:160px;padding-left:80px;padding-top:50px;border-radius:5px;}
+.id_box{width:300px;float:left;}
+.id_box li{float:left;}
+.pw_box{width:300px;float:left;margin-top:10px;}
+.pw_box li{float:left;}
+.log_title{width:80px;font-size:13px;font-weight:bold;}
+.log_btn{width:243px;height:30px;float:left; background:#336699;padding:5px;text-align:center;line-height:25px; margin-top:20px;}
+.log_btn a{color:#fff;font-weight:800;font-size:16px;display:block;}
+
+/*푸터*/
+
+.cc{width:100%;background:#000000;height:20px;padding-top:10px;padding-bottom:5px;float:left;}
+.pop_cc{width:100%;background:#000000;height:20px;padding-top:10px;padding-bottom:5px;float:left;position:absolute;bottom:0;left:0;}
+.cc_in{width:1100px;margin:0 auto;font-size:11px;color:#fff;text-align:center;}
+.pop_cc_in{width:1000px;margin:0 auto;font-size:11px;color:#fff;text-align:center;}
+
+/*게시판 팝업창*/
+.chn_pop_box{width:940px;float:left;padding:30px;}
+.pop_title{width:100%;float:left;font-size:18px;font-weight:bold;color:#fff;height:20px;line-height:20px;text-align:center; background:#336699;padding:15px 0px 15px 0;}
+.pop_title_2{margin-top:30px; float:left;width:100%;float:left;font-size:14px;font-weight:bold;color:#333;height:15px;line-height:14px;text-align:center; border-top:2px solid #336699;padding:10px 0px 10px 0;}
+.pop_table{width:940px;float:left;margin-top:20px;font-size:12px;}
+.pop_table_person{width:940px;float:left;margin-top:20px;font-size:12px;}
+.pop_table_person table{border-top:1px dotted #999;}
+.pop_table_person table td{border-bottom:1px dotted #999;padding:5px;height:20px;line-height:25px;border-right:1px dotted #999;}
+.pop_table_title{font-size:13px;font-weight:bold;text-align:center;color:#333}
+.pop_table_title_mem{background:#06F;color:#fff;font-weight:bold;text-align:center;}
+.pop_table table{border-top:1px solid #999;border-left:1px solid #999}
+.pop_table table td{border-bottom:1px solid #999;border-right:1px solid #999;padding:5px;height:20px;line-height:25px;} 
+.pop_btn{width:140px;margin:0 auto;}
+.pop_btn li{float:left; margin-top:15px;}
+
+/*회원관리 팝업*/
+.phone_number li{floaT:left;margin-left:5px;line-height:19px;}
+.bank_no li {floaT:left;margin-left:5px;line-height:19px;}
+
+

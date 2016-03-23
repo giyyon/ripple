@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Trade">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="TradeVO" type="xrpgate.trade.service.TradeVO"/>
+	<typeAlias  alias="TradeDetailVO" type="xrpgate.trade.service.TradeDetailVO"/>
+	<typeAlias  alias="AccountVO" type="xrpgate.trade.service.AccountVO"/>
+
+	<resultMap id="tradeVOList" class="xrpgate.trade.service.TradeVO">
+    <result property="tradeId"         column="TRADE_ID"           columnIndex="1"/>                     
+    <result property="tradeType"       column="TRADE_TYPE"         columnIndex="1"/>                                  
+    <result property="requestBuyMoney" column="REQUEST_BUY_MONEY"  columnIndex="1"/>                              
+    <result property="requestSellQty"  column="REQUEST_SELL_QTY"   columnIndex="1"/>                             
+    <result property="resultUnitPrice" column="RESULT_UNIT_PRICE"  columnIndex="1"/>                              
+    <result property="resultQty"       column="RESULT_QTY"         columnIndex="1"/>                       
+    <result property="resultTotMoney"  column="RESULT_TOT_MONEY"   columnIndex="1"/>                             
+    <result property="fee"             column="FEE"                columnIndex="1"/>                
+    <result property="status"          column="STATUS"             columnIndex="1"/>                   
+    <result property="requestDt"       column="REQUEST_DT"         columnIndex="1"/>                       
+    <result property="requestErId"       column="REQUEST_ER_ID"         columnIndex="1"/>                       
+    <result property="updateDt"        column="UPDATE_DT"          columnIndex="1"/>                      
+    <result property="updateErId"        column="UPDATE_ER_ID"          columnIndex="1"/>
+    <result property="mberNm"          column="MBER_NM"            columnIndex="1"/>
+    <result property="moblphonNo"          column="MBTLNUM"            columnIndex="1"/>
+    <result property="rippleTradeId"   column="RIPPLE_TRADE_ID"    columnIndex="1"/>
+    <result property="rippleTradeEmail" column="RIPPLE_TRADE_EMAIL" columnIndex="1"/>
+    <result property="dumPointCardNo"  column="DUM_POINT_CARD_NO"  columnIndex="1"/>
+    <result property="requestQty"  column="REQUEST_QTY"  columnIndex="1"/>
+    <result property="requestMoney"  column="REQUEST_MONEY"  columnIndex="1"/>
+    <result property="productType"  column="PRODUCT_TYPE"  columnIndex="1"/>
+    <result property="paymentCurrency"  column="PAYMENT_CURRENCY"  columnIndex="1"/>
+	</resultMap>
+	
+	<resultMap id="tradePotalVO" class="xrpgate.trade.service.TradeVO">
+    <result property="requestBuyMoney" column="REQUEST_BUY_MONEY"  columnIndex="1"/>                              
+    <result property="requestSellQty"  column="REQUEST_SELL_QTY"   columnIndex="1"/>                             
+	</resultMap>
+
+ 	
+ 	<insert id="TradeManageDAO.insertAdminXrpTrade" parameterClass="TradeDetailVO" >
+		<![CDATA[
+			INSERT INTO RIPPLE_ADMIN_XRP_TRADE
+			(TRADE_TYPE
+			 , REQUEST_DT,REQUEST_ID
+			 , REQUEST_QTY , REQUEST_MONEY
+			 , REQUEST_TIME 
+			)
+			VALUES
+			( #tradeType#
+			, #requestDt#, #requestId#
+			, #requestQty#, #requestMoney#
+			, #requestTime#
+			 )			
+		]]>
+	</insert>
+
+	<select id="TradeManageDAO.selectAdminXrpTrade" parameterClass="TradeDetailVO" resultClass="TradeDetailVO" >
+		<![CDATA[
+			SELECT TRADE_ID	as tradeId
+					, TRADE_TYPE	as tradeType
+					, REQUEST_DT	as requestDt
+					, REQUEST_ID	as requestId
+					, IFNULL(REQUEST_MONEY,0) as requestMoney
+					, IFNULL(REQUEST_QTY, 0) as requestQty
+					, REQUEST_TIME 	as requestTime
+					, MEMBER.MBER_NM AS mberNm
+			FROM   RIPPLE_ADMIN_XRP_TRADE TRADE
+			INNER JOIN COMTNGNRLMBER MEMBER 
+			ON TRADE.REQUEST_ID = MEMBER.MBER_ID 
+			WHERE TRADE_ID = #tradeId#
+		]]>
+	</select>
+	
+	<select id="TradeManageDAO.selectAdminXrpTradeSumQty"  resultClass="java.lang.Integer" >
+		SELECT 
+				IFNULL(SUM(REQUEST_QTY),0)
+			FROM RIPPLE_ADMIN_XRP_TRADE TRADE
+			WHERE TRADE_TYPE = #tradeType#
+	</select>	
+	<select id="TradeManageDAO.selectAdminXrpTradeList" parameterClass="TradeDetailVO" resultClass="TradeDetailVO" >
+		SELECT TA.*
+		FROM(
+			SELECT T.*
+					, (@rownum :=  @rownum +1) AS rowNum
+					, ROUND((@ROWSUM := @ROWSUM + requestQty), 4) AS accumulateQty
+			FROM (
+					SELECT TRADE_ID		as tradeId
+							, TRADE_TYPE	as tradeType
+							, date_format(REQUEST_DT, '%Y.%m.%d') as requestDt
+							, REQUEST_ID			as requestId
+							, IFNULL(REQUEST_MONEY,0) as requestMoney
+							, IFNULL(REQUEST_QTY, 0) as requestQty
+							, REQUEST_TIME		as requestTime
+							, MEMBER.MBER_NM AS mberNm
+					FROM RIPPLE_ADMIN_XRP_TRADE TRADE
+				    INNER JOIN COMTNGNRLMBER MEMBER 
+				    ON TRADE.REQUEST_ID = MEMBER.MBER_ID
+					WHERE 1=1
+					<isNotEmpty property="tradeType">
+						AND TRADE.TRADE_TYPE = #tradeType#
+					</isNotEmpty>
+					ORDER BY TRADE_ID DESC
+					) T,
+					(
+					SELECT @ROWNUM := 0 
+							, @ROWSUM :=0
+					) R 
+				) TA
+		LIMIT #recordCountPerPage# OFFSET #firstIndex#
+	</select>	
+	
+	<select id="TradeManageDAO.selectAdminXrpTradeListCnt" parameterClass="TradeDetailVO" resultClass="java.lang.Integer" >
+		<![CDATA[
+			SELECT 
+				COUNT(TRADE_ID)
+			FROM RIPPLE_ADMIN_XRP_TRADE TRADE
+			WHERE 1=1
+		]]>
+			<isNotEmpty property="tradeType">
+				AND TRADE.TRADE_TYPE = #tradeType#
+			</isNotEmpty>
+	</select>	
+
+ 	<update id="TradeManageDAO.updateAdminXrpTrade" parameterClass="TradeDetailVO">
+ 		<![CDATA[
+			UPDATE RIPPLE_ADMIN_XRP_TRADE 
+				SET 
+					REQUEST_MONEY = #requestMoney#
+					, REQUEST_QTY = #requestQty#
+					, REQUEST_DT = #requestDt#
+					, REQUEST_TIME = #requestTime#
+			WHERE TRADE_ID = #tradeId#
+ 		]]>
+ 	</update>
+ 	
+ 	<delete id="TradeManageDAO.deleteAdminXrpTrade">
+ 		DELETE FROM RIPPLE_ADMIN_XRP_TRADE
+ 		WHERE TRADE_ID = #tradeId#
+ 	</delete>
+ 	
+ 	<select id="TradeManageDAO.selectAdminAccountInfo" resultClass="AccountVO">
+ 		SELECT DEPOSIT AS deposit
+ 				, XRP_DEPOSIT AS xrpDeposit
+ 				, CHARGE AS charge
+ 		FROM RIPPLE_MEMBER_ACCOUNT
+ 		WHERE MBER_ID = #mberId#
+ 	</select>
+ 	
+ 	<insert id="TradeManageDAO.insertAdminTransactionInfo" parameterClass="AccountVO">
+ 		INSERT INTO RIPPLE_ACCOUNT_TRANSACTIONS 
+ 			(
+ 				 TRADE_TYPE
+ 				, TRANSACTION_MONEY
+ 				, REQUEST_ID
+ 				, CHARGE
+ 				, STATUS
+ 				, REQUEST_DT
+ 				, FEE
+ 			)
+ 			VALUES 
+ 			(
+ 				 #tradeType#
+ 				, #transactionsMoney#
+ 				, #mberId#
+ 				, #tradeCharge#
+ 				, #status#
+ 				, SYSDATE()
+ 				, #fee#
+ 			)
+ 	</insert>
+ 	
+ 	<select id="TradeManageDAO.selectAdminAccountList" resultClass="AccountDetailVO">
+ 		SELECT TA.*
+		FROM(
+			SELECT T.*,
+					(@rownum :=  @rownum +1) AS rowNum
+			FROM (
+		 		SELECT TRADE_ID as tradeId
+						, CASE WHEN TRADE_TYPE = 'D' THEN '예탁'
+							ELSE '인출'
+						  END		as tradeType
+				        , IFNULL(TRANSACTION_MONEY, 0)	as transactionsMoney
+				        , REQUEST_ID	AS requestId
+				        , IFNULL(CHARGE, 0)		AS tradeCharge
+				        , B.CODE_NM AS status
+				        , IFNULL(FEE, 0)		AS fee
+				        , date_format(REQUEST_DT, '%Y.%m.%d')	AS requestDt
+				        , date_format(TRADE_COMPLETE_DT, '%Y %m %d') AS tradeCompleteDt
+				        , REMARK			AS remark
+				        , MB.MBER_NM		AS mberNm
+				        , MB.RIPPLE_TRADE_EMAIL AS rippleTradeEmail
+				FROM RIPPLE_ACCOUNT_TRANSACTIONS A
+				INNER JOIN COMTNGNRLMBER MB
+				ON A.REQUEST_ID = MB.MBER_ID 
+				LEFT OUTER JOIN (
+							SELECT A.CODE_NM
+									, A.CODE
+							FROM comtccmmndetailcode A
+							INNER JOIN comtccmmncode B
+							ON A.CODE_ID = B.CODE_ID
+							WHERE B.CODE_ID ='RIP904'
+				) B
+				ON A.STATUS = B.CODE 
+				WHERE 1=1
+				<isNotEmpty property="tradeType">
+				AND A.TRADE_TYPE = #tradeType#
+				</isNotEmpty>
+				ORDER BY A.TRADE_ID DESC 
+ 				) T,
+			(
+			SELECT @ROWNUM := 0 
+			) R 
+		) TA
+		
+		LIMIT #recordCountPerPage# OFFSET #firstIndex#
+ 	</select>
+ 	
+ 	<select id="TradeManageDAO.selectAdminAccountDetail" resultClass="AccountDetailVO" >
+		SELECT TRADE_ID as tradeId
+				, TRADE_TYPE					as tradeType
+		        , IFNULL(TRANSACTION_MONEY, 0)	as transactionsMoney
+		        , REQUEST_ID	AS requestId
+		        , IFNULL(CHARGE, 0)		AS tradeCharge
+		        , STATUS AS status
+		        , IFNULL(FEE, 0)		AS fee
+		        , date_format(REQUEST_DT, '%Y.%m.%d')	AS requestDt
+		        , date_format(TRADE_COMPLETE_DT, '%Y %m %d') AS tradeCompleteDt
+		        , REMARK			AS remark
+		        , MB.MBER_NM		AS mberNm
+		        , MB.RIPPLE_TRADE_EMAIL AS rippleTradeEmail
+		FROM RIPPLE_ACCOUNT_TRANSACTIONS A
+		INNER JOIN COMTNGNRLMBER MB
+		ON A.REQUEST_ID = MB.MBER_ID 
+		LEFT OUTER JOIN (
+					SELECT A.CODE_NM
+							, A.CODE
+					FROM comtccmmndetailcode A
+					INNER JOIN comtccmmncode B
+					ON A.CODE_ID = B.CODE_ID
+					WHERE B.CODE_ID ='RIP904'
+		) B
+		ON A.STATUS = B.CODE 
+		WHERE A.TRADE_ID = #tradeId#
+	</select>
+	
+	<select id="TradeManageDAO.selectAdminAccountListCnt"  resultClass="java.lang.Integer" >
+		<![CDATA[
+			SELECT 
+				COUNT(TRADE_ID)
+			FROM RIPPLE_ACCOUNT_TRANSACTIONS A
+			WHERE 1=1
+		]]>
+			<isNotEmpty property="tradeType">
+				AND A.TRADE_TYPE = #tradeType#
+			</isNotEmpty>
+	</select>
+	
+	<update id="TradeManageDAO.updateMberTransaction" >
+		UPDATE RIPPLE_ACCOUNT_TRANSACTIONS
+			SET STATUS = #status#
+				, TRANSACTION_MONEY = #transactionsMoney#
+			<isEqual property="status" compareValue="S03">
+				, TRADE_COMPLETE_DT = SYSDATE()
+			</isEqual>
+		WHERE TRADE_ID = #tradeId#
+	</update>
+	
+	<update id="TradeManageDAO.updateMberAccount" >
+		UPDATE RIPPLE_MEMBER_ACCOUNT
+			SET 
+			<isEqual property="tradeType" compareValue="D">
+			DEPOSIT = DEPOSIT + #transactionsMoney#
+			</isEqual>
+			<isEqual property="tradeType" compareValue="W">
+			DEPOSIT = DEPOSIT - #transactionsMoney#
+			</isEqual>
+		WHERE MBER_ID = #mberId#
+	</update>
+	
+	<update id="TradeManageDAO.updateAdminAccount" >
+		UPDATE RIPPLE_MEMBER_ACCOUNT
+			SET DEPOSIT = DEPOSIT + #fee#
+		WHERE MBER_ID = 'ADMIN_MASTER'
+	</update>
+ 	
+ 	<select id="TradeManageDAO.selectAdminXrpBuyTrade" resultClass="TradeVO">
+ 		SELECT TA.*
+		FROM(
+			SELECT T.*
+					, (@rownum :=  @rownum +1) AS RANK
+					, ROUND((@ROWSUM := @ROWSUM + requestQty)) AS rowSum
+			FROM (
+		 		SELECT TRADE_ID 
+						, CASE WHEN TRADE_TYPE = 'B' THEN '구매'
+							ELSE '판매'
+						  END		as tradeType
+				        , ifnull(REQUEST_MONEY, 0)	AS requestMoney
+				        , ifnull(REQUEST_QTY, 0)	AS requestQty
+				        , PRODUCT_TYPE		AS productType
+				        , B.CODE_NM AS status
+				        , ifnull(FEE, 0)		AS fee
+				        , date_format(REQUEST_DT, '%Y.%m.%d')	AS requestDt
+				        , PAYMENT_CURRENCY AS paymentCurrency
+				        , MEMBER.MBER_NM AS MBER_NM
+				FROM RIPPLE_TRADE TRADE
+				INNER JOIN COMTNGNRLMBER MEMBER 
+				ON TRADE.REQUEST_ER_ID = MEMBER.MBER_ID
+				LEFT OUTER JOIN (
+							SELECT A.CODE_NM
+									, A.CODE
+							FROM comtccmmndetailcode A
+							INNER JOIN comtccmmncode B
+							ON A.CODE_ID = B.CODE_ID
+							WHERE B.CODE_ID ='RIP904'
+				) B
+				ON TRADE.STATUS = B.CODE 
+				WHERE TRADE_TYPE IN ('B', 'P')
+				<isNotEmpty property="requestErId">
+				AND REQUEST_ER_ID = #requestErId#
+				</isNotEmpty>
+				ORDER BY  TRADE_ID DESC, REQUEST_MONEY
+ 				) T,
+			(
+			SELECT @ROWNUM := 0 
+					, @ROWSUM :=0
+			) R 
+		) TA
+		WHERE RANK &lt; 6
+ 	</select>
+ 	
+ 	<select id="TradeManageDAO.selectAdminXrpSellTrade" resultClass="TradeVO">
+ 		SELECT TA.*
+		FROM(
+			SELECT T.*
+					, (@rownum :=  @rownum +1) AS RANK
+					, ROUND((@ROWSUM := @ROWSUM + requestQty)) AS rowSum
+			FROM (
+		 		SELECT TRADE_ID 
+				        , ifnull(REQUEST_MONEY, 0)	AS requestMoney
+				        , ifnull(REQUEST_QTY, 0)	AS requestQty
+				        , PRODUCT_TYPE		AS productType
+				        , B.CODE_NM AS status
+				        , ifnull(FEE, 0)		AS fee
+				        , date_format(REQUEST_DT, '%Y.%m.%d')	AS requestDt
+				        , PAYMENT_CURRENCY AS paymentCurrency
+				        , MEMBER.MBER_NM AS MBER_NM
+				FROM RIPPLE_TRADE TRADE
+				INNER JOIN COMTNGNRLMBER MEMBER 
+				ON TRADE.REQUEST_ER_ID = MEMBER.MBER_ID
+				LEFT OUTER JOIN (
+							SELECT A.CODE_NM
+									, A.CODE
+							FROM comtccmmndetailcode A
+							INNER JOIN comtccmmncode B
+							ON A.CODE_ID = B.CODE_ID
+							WHERE B.CODE_ID ='RIP904'
+				) B
+				ON TRADE.STATUS = B.CODE 
+				WHERE TRADE_TYPE IN ('S')
+				<isNotEmpty property="requestErId">
+				AND REQUEST_ER_ID = #requestErId#
+				</isNotEmpty>
+				ORDER BY  TRADE_ID DESC, REQUEST_MONEY DESC
+ 				) T,
+			(
+			SELECT @ROWNUM := 0 
+					, @ROWSUM :=0
+			) R 
+		) TA
+		WHERE RANK &lt; 6
+ 	</select>
+ 	
+ 	<select id="TradeManageDAO.selectAdminXrpCompleteTrade" resultClass="TradeVO">
+ 		SELECT TA.*
+		FROM(
+			SELECT T.*
+					, (@rownum :=  @rownum +1) AS RANK
+					, ROUND((@ROWSUM := @ROWSUM + requestQty)) AS rowSum
+			FROM (
+		 		SELECT TRADE_ID 
+				        , ifnull(REQUEST_MONEY, 0)	AS requestMoney
+				        , ifnull(REQUEST_QTY, 0)	AS requestQty
+				        , PRODUCT_TYPE		AS productType
+				        , B.CODE_NM AS status
+				        , ifnull(FEE, 0)		AS fee
+				        , date_format(REQUEST_DT, '%Y.%m.%d')	AS requestDt
+				        , PAYMENT_CURRENCY AS paymentCurrency
+				        , MEMBER.MBER_NM AS MBER_NM
+				FROM RIPPLE_TRADE TRADE
+				INNER JOIN COMTNGNRLMBER MEMBER 
+				ON TRADE.REQUEST_ER_ID = MEMBER.MBER_ID
+				LEFT OUTER JOIN (
+							SELECT A.CODE_NM
+									, A.CODE
+							FROM comtccmmndetailcode A
+							INNER JOIN comtccmmncode B
+							ON A.CODE_ID = B.CODE_ID
+							WHERE B.CODE_ID ='RIP904'
+				) B
+				ON TRADE.STATUS = B.CODE 
+				WHERE TRADE.STATUS = 'S03'
+				ORDER BY  TRADE_ID DESC
+ 				) T,
+			(
+			SELECT @ROWNUM := 0 
+					, @ROWSUM :=0
+			) R 
+		) TA
+		WHERE RANK &lt; 6
+ 	</select>
+ 	
+ 	<select id="TradeManageDAO.selectMberXrpTrade" parameterClass="TradeDetailVO" resultClass="TradeDetailVO" >
+		<![CDATA[
+			SELECT TRADE_ID as tradeId
+			        , ifnull(REQUEST_MONEY, 0)	AS requestMoney
+			        , ifnull(REQUEST_QTY, 0)	AS requestQty
+			        , ifnull(RESULT_TOT_MONEY, 0)	AS resultTotMoney
+			        , PRODUCT_TYPE		AS productType
+			        , STATUS AS status
+			        , ifnull(FEE, 0)		AS fee
+			        , date_format(REQUEST_DT, '%Y.%m.%d')	AS requestDt
+			        , date_format(REQUEST_DT, '%H:%i')	AS requestTime
+			        , PAYMENT_CURRENCY AS paymentCurrency
+			        , MEMBER.MBER_NM AS mberNm
+			        , REQUEST_ER_ID as requestId
+			        , TRADE_TYPE as tradeType
+			        , RIPPLE_TRADE_EMAIL AS rippleTradeEmail
+			        , CD.CODE_NM AS bankNm 
+			        , MEMBER.ACCOUNT AS account
+			FROM RIPPLE_TRADE TRADE
+			INNER JOIN COMTNGNRLMBER MEMBER 
+			ON TRADE.REQUEST_ER_ID = MEMBER.MBER_ID
+			LEFT OUTER JOIN (
+						SELECT A.CODE_NM
+								, A.CODE
+						FROM comtccmmndetailcode A
+						INNER JOIN comtccmmncode B
+						ON A.CODE_ID = B.CODE_ID
+						WHERE B.CODE_ID ='RIP904'
+			) B
+			ON TRADE.STATUS = B.CODE
+			LEFT OUTER JOIN (
+								SELECT A.CODE_NM
+										, A.CODE
+								FROM comtccmmndetailcode A
+								INNER JOIN comtccmmncode B
+								ON A.CODE_ID = B.CODE_ID
+								WHERE B.CODE_ID ='RIP905'
+					) CD
+					ON MEMBER.BANK_ID = CD.CODE
+			WHERE TRADE_ID = #tradeId#
+		]]>
+	</select>
+	
+	<select id="TradeManageDAO.selectMberXrpTradeSumQty"  resultClass="java.lang.Integer" >
+		SELECT 
+				IFNULL(XRP_DEPOSIT,0)
+			FROM RIPPLE_MEMBER_ACCOUNT 
+			WHERE MBER_ID = #requestId#
+	</select>	
+	<select id="TradeManageDAO.selectMberXrpTradeList" parameterClass="TradeDetailVO" resultClass="TradeDetailVO" >
+		SELECT TA.*
+		FROM(
+			SELECT T.*
+					, (@rownum :=  @rownum +1) AS rowNum
+					, ROUND((@ROWSUM := @ROWSUM + requestQty), 4) AS accumulateQty
+			FROM (
+					SELECT TRADE_ID as tradeId
+					        , ifnull(REQUEST_MONEY, 0)	AS requestMoney
+					        , ifnull(REQUEST_QTY, 0)	AS requestQty
+					        , PRODUCT_TYPE		AS productType
+					        , B.CODE_NM AS status
+					        , ifnull(FEE, 0)		AS fee
+					        , date_format(REQUEST_DT, '%Y.%m.%d')	AS requestDt
+					        , date_format(REQUEST_DT, '%H:%i')	AS requestTime
+					        , PAYMENT_CURRENCY AS paymentCurrency
+					        , MEMBER.MBER_NM AS mberNm
+					        , REQUEST_ER_ID AS requestErId
+					        , RESULT_TOT_MONEY AS resultTotMoney 
+					FROM RIPPLE_TRADE TRADE
+					INNER JOIN COMTNGNRLMBER MEMBER 
+					ON TRADE.REQUEST_ER_ID = MEMBER.MBER_ID
+					LEFT OUTER JOIN (
+								SELECT A.CODE_NM
+										, A.CODE
+								FROM comtccmmndetailcode A
+								INNER JOIN comtccmmncode B
+								ON A.CODE_ID = B.CODE_ID
+								WHERE B.CODE_ID ='RIP904'
+					) B
+					ON TRADE.STATUS = B.CODE
+					WHERE 1=1
+					<isEqual property="tradeType" compareValue="B">
+						AND TRADE.TRADE_TYPE IN ('B','P')
+					</isEqual>
+					<isEqual property="tradeType" compareValue="S">
+						AND TRADE.TRADE_TYPE = 'S'
+					</isEqual>
+					ORDER BY TRADE_ID DESC
+					) T,
+					(
+					SELECT @ROWNUM := 0 
+							, @ROWSUM :=0
+					) R 
+				) TA
+		LIMIT #recordCountPerPage# OFFSET #firstIndex#
+	</select>	
+	
+	<select id="TradeManageDAO.selectMberXrpTradeListCnt" parameterClass="TradeDetailVO" resultClass="java.lang.Integer" >
+		<![CDATA[
+			SELECT 
+				COUNT(TRADE_ID)
+			FROM RIPPLE_TRADE TRADE
+			WHERE 1=1
+		]]>
+			<isNotEmpty property="tradeType">
+				AND TRADE.TRADE_TYPE = #tradeType#
+			</isNotEmpty>
+	</select>	
+
+ 	<update id="TradeManageDAO.updateMberXrpTrade" parameterClass="TradeDetailVO">
+ 		<![CDATA[
+			UPDATE RIPPLE_TRADE 
+				SET 
+					STATUS = #status#
+			WHERE TRADE_ID = #tradeId#
+ 		]]>
+ 	</update>
+ 	
+ 	<delete id="TradeManageDAO.deleteMberXrpTrade">
+ 		DELETE FROM RIPPLE_TRADE
+ 		WHERE TRADE_ID = #tradeId#
+ 	</delete>
+ 	
+	<update id="TradeManageDAO.updateMberBuyXrpAccount" >
+		UPDATE RIPPLE_MEMBER_ACCOUNT
+			SET 
+				 DEPOSIT = DEPOSIT - #resultTotMoney#
+				, XRP_DEPOSIT = XRP_DEPOSIT + #requestQty#
+		WHERE MBER_ID = #requestId#
+	</update>
+	
+	<update id="TradeManageDAO.updateMberBuyXrpAccountTemp" >
+		UPDATE RIPPLE_MEMBER_ACCOUNT
+			SET 
+				 DEPOSIT = 0
+				, XRP_DEPOSIT = 0
+		WHERE MBER_ID = #requestId#
+	</update>
+	
+	<update id="TradeManageDAO.updateMberSellXrpAccount" >
+		UPDATE RIPPLE_MEMBER_ACCOUNT
+			SET 
+				 DEPOSIT = DEPOSIT + #resultTotMoney#
+				, XRP_DEPOSIT = XRP_DEPOSIT - #requestQty#
+		WHERE MBER_ID = #requestId#
+	</update>
+	
+	<update id="TradeManageDAO.updateMberSellXrpAccountTemp" >
+		UPDATE RIPPLE_MEMBER_ACCOUNT
+			SET 
+				 DEPOSIT = #resultTotMoney#
+				, XRP_DEPOSIT = 0
+		WHERE MBER_ID = #requestId#
+	</update>
+	
+	<update id="TradeManageDAO.updateMberBuyXrpByadmin" >
+		UPDATE RIPPLE_MEMBER_ACCOUNT
+			SET DEPOSIT = DEPOSIT + #fee#
+		WHERE MBER_ID = 'ADMIN_MASTER'
+	</update>
+	
+	<delete id="TradeManageDAO.deleteAccountTrade">
+ 		DELETE FROM RIPPLE_ACCOUNT_TRANSACTIONS
+ 		WHERE TRADE_ID = #tradeId#
+ 	</delete>
+</sqlMap>

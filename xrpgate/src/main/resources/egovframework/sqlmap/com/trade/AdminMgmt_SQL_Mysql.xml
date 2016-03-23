@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="AdminMgmt">
+
+	<typeAlias  alias="AdminAccountVO" type="xrpgate.admin.web.service.AdminAccountVO"/>
+	<typeAlias  alias="XrpChartVO" type="xrpgate.admin.web.service.XrpChartVO"/>
+	<typeAlias  alias="TradeDetailVO" type="xrpgate.trade.service.TradeDetailVO"/>
+	<typeAlias  alias="AccountVO" type="xrpgate.trade.service.AccountVO"/>
+	
+	<resultMap id="xrpVo" class="XrpChartVO">
+    <result property="closeVolume" column="closeVolume"  columnIndex="1" nullValue="0"/>                              
+	</resultMap>
+
+	<select id="AdminManageDAO.selectRippleAccountInfo" resultClass="AdminAccountVO">
+		SELECT BANK_ID		as bankId
+				, BANK_NM	as bankNm
+				, ACCOUNT	as account
+				, RIPPLE_TRADE	as rippleTrade
+		FROM RIPPLE_ACCOUNT_INFO
+	</select>
+	
+	<update id="AdminManageDAO.updateRippleAccountInfo" parameterClass="AdminAccountVO">
+		UPDATE RIPPLE_ACCOUNT_INFO
+			SET 
+				BANK_ID		= #bankId#
+				, BANK_NM	= #bankNm#
+				, ACCOUNT	= #account#
+				, RIPPLE_TRADE = #rippleTrade#
+			WHERE ID = 1
+	</update>
+ 	
+ 	<select id="AdminManageDAO.selectXrpLowVolume" resultClass="java.lang.Double">
+ 		SELECT IFNULL(MIN(REQUEST_MONEY),0) AS LOWVOLUME
+		FROM RIPPLE_ADMIN_XRP_TRADE
+		WHERE REQUEST_DT = (
+							SELECT DATE_FORMAT(SYSDATE(), '%Y%m%d')
+							)
+ 	</select>
+ 	
+ 	<select id="AdminManageDAO.selectXrpHighVolume" resultClass="java.lang.Double">
+ 		SELECT IFNULL(MAX(REQUEST_MONEY),0) AS HIGHVOLUME
+		FROM RIPPLE_ADMIN_XRP_TRADE
+		WHERE REQUEST_DT = (
+							SELECT DATE_FORMAT(SYSDATE(), '%Y%m%d')
+							)
+ 	</select>
+ 	
+ 	<select id="AdminManageDAO.selectXrpAsksVolume" resultClass="java.lang.Double">
+ 		SELECT IFNULL(MAX(REQUEST_MONEY),0) AS ASKSVOLUME
+		FROM RIPPLE_ADMIN_XRP_TRADE
+		WHERE REQUEST_DT = (
+							SELECT DATE_FORMAT(SYSDATE(), '%Y%m%d')
+							)
+		AND TRADE_TYPE='B'
+ 	</select>
+ 	
+ 	<select id="AdminManageDAO.selectXrpBidsVolume" resultClass="java.lang.Double">
+ 		SELECT IFNULL(MIN(REQUEST_MONEY),0) AS BIDSVOLUME
+		FROM RIPPLE_ADMIN_XRP_TRADE
+		WHERE REQUEST_DT = (
+							SELECT DATE_FORMAT(SYSDATE(), '%Y%m%d')
+							)
+		AND TRADE_TYPE='S'
+ 	</select>
+ 	
+ 	<select id="AdminManageDAO.selectXrpSpreadsVolume" resultClass="java.lang.Double">
+ 		SELECT IFNULL(
+				SELECT MIN(REQUEST_MONEY) AS LOWVOLUME
+				FROM RIPPLE_ADMIN_XRP_TRADE
+				WHERE TRADE_TYPE='S'
+				AND REQUEST_DT = (
+							SELECT DATE_FORMAT(SYSDATE(), '%Y%m%d')
+							)
+				) - 
+				(SELECT MAX(REQUEST_MONEY) AS HIGHVOLUME
+				FROM RIPPLE_ADMIN_XRP_TRADE
+				WHERE TRADE_TYPE='B'
+				AND REQUEST_DT = (
+							SELECT DATE_FORMAT(SYSDATE(), '%Y%m%d')
+							)
+				),0) AS SPREADSVOLUME
+ 	</select>
+ 	
+ 	<select id="AdminManageDAO.selectXrpCloseVolume" resultClass="java.lang.String">
+ 		SELECT IFNULL(REQUEST_MONEY,0) AS closeVolume
+		FROM RIPPLE_ADMIN_XRP_TRADE
+		WHERE TRADE_ID = (
+						    SELECT MAX(TRADE_ID)
+						    FROM RIPPLE_ADMIN_XRP_TRADE
+						    WHERE TRADE_TYPE = 'C'
+						    AND REQUEST_DT = (
+							SELECT DATE_FORMAT(SYSDATE(), '%Y%m%d')
+							)
+						)
+ 	</select>
+ 	
+ 	<select id="AdminManageDAO.selectXrpYesterDatCloseVolume" resultClass="java.lang.String">
+ 		SELECT IFNULL(REQUEST_MONEY, 0) AS beforeCloseVolume
+		FROM RIPPLE_ADMIN_XRP_TRADE
+		WHERE TRADE_ID = (
+						    SELECT MAX(TRADE_ID)
+						    FROM RIPPLE_ADMIN_XRP_TRADE
+						    WHERE TRADE_TYPE = 'C'
+						    AND REQUEST_DT = (
+							SELECT DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -1 DAY), '%Y%m%d')
+							)
+						)
+ 	</select>
+ 	
+ 	<select id="AdminManageDAO.selectXrpVolume" resultClass="XrpChartVO">
+		SELECT IFNULL(SUM(RESULT_TOT_MONEY), 0) AS counterVolume
+		        , IFNULL(SUM(REQUEST_QTY),0) AS baseVolume
+		FROM RIPPLE_TRADE
+		WHERE TRADE_TYPE IN ('B', 'S')
+		AND DATE_FORMAT(REQUEST_DT, '%Y%m%d') = (
+												SELECT DATE_FORMAT(SYSDATE(), '%Y%m%d')
+												)
+	</select>
+	
+	<select id="AdminManageDAO.selectXrpChartDataW" resultClass="XrpChartVO" parameterClass="java.lang.String">
+		SELECT REQUEST_MONEY AS closeVolume
+		        , STR_TO_DATE(CONCAT( REQUEST_DT, REQUEST_TIME),'%Y%m%d%k%i') AS startTime
+		FROM RIPPLE_ADMIN_XRP_TRADE
+		WHERE TRADE_TYPE = 'C'
+		<isNotEmpty >
+			<isEqual  compareValue="d">
+			AND REQUEST_DT >= DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -1 DAY), '%Y%m%d')
+			</isEqual>
+			<isEqual  compareValue="w">
+			AND REQUEST_DT >= DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -6 DAY), '%Y%m%d')
+			</isEqual>
+			<isEqual  compareValue="m">
+			AND REQUEST_DT >= DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -1 month), '%Y%m%d')
+			</isEqual>
+			<isEqual  compareValue="y">
+			AND REQUEST_DT >= DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -1 YEAR), '%Y%m%d')
+			</isEqual>
+		</isNotEmpty>
+		ORDER BY TRADE_ID
+	</select>
+	
+	<select id="AdminManageDAO.selectXrpChartDataD" resultClass="XrpChartVO">
+		SELECT REQUEST_MONEY AS closeVolume
+		        , STR_TO_DATE(CONCAT( REQUEST_DT, REQUEST_TIME),'%Y%m%d%k%i') AS startTime
+		FROM RIPPLE_ADMIN_XRP_TRADE
+		WHERE TRADE_TYPE = 'C'
+		AND REQUEST_DT >= DATE_FORMAT(SYSDATE(), '%Y%m%d')
+		ORDER BY TRADE_ID
+	</select>
+	
+	<update id="AdminManageDAO.updateMberAtchFileInfo" >
+		UPDATE COMTNGNRLMBER
+			SET ATCHFILEID		= #atchFileId#
+				, ATCHFILEID1	= #atchFileId1#
+				, ATCHFILEID2	= #atchFileId2#
+				, ATCHFILEID3	= #atchFileId3#
+		WHERE MBER_ID=#mberId#
+	</update>
+</sqlMap>

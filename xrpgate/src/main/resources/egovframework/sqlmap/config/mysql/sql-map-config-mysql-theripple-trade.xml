@@ -4,4 +4,7 @@
 
 <sqlMapConfig>
     <sqlMap resource="egovframework/sqlmap/com/trade/TradeMntrng_SQL_Mysql.xml"/>
+    <sqlMap resource="egovframework/sqlmap/com/trade/AdminTradeMgmt_SQL_Mysql.xml"/>
+    <sqlMap resource="egovframework/sqlmap/com/trade/AdminMgmt_SQL_Mysql.xml"/>
+    
 </sqlMapConfig>

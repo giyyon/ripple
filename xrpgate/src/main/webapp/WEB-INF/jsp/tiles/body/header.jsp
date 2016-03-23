@@ -9,6 +9,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
+<link href="/css/admin.css" rel="stylesheet" type="text/css" />
+
 <script>
 if('${message}'  != null  &&'${message}' != '')
 	alert('${message}');

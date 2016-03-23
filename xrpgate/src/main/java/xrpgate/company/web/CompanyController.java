@@ -166,5 +166,38 @@ public class CompanyController {
 	public String rippledouble() throws Exception {
 		return ".basic_company/rippledouble";
 	}
+	
+	/**
+	 * 리플 본인 인증
+	 * @param 
+	 * @return 
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "/ripplePersonCert.do")
+	public String ripplePersonCert() throws Exception {
+		return ".basic_company/ripplePersonCert";
+	}
+	
+	/**
+	 * 리플 비밀 번호 변경 & 이중인증
+	 * @param 
+	 * @return 
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "/ripplePwChgCert.do")
+	public String ripplePwChgCert() throws Exception {
+		return ".basic_company/ripplePwChgCert";
+	}
+	
+	/**
+	 * 리플 비밀번호 복구
+	 * @param 
+	 * @return 
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "/ripplePwRestore.do")
+	public String ripplePwRestore() throws Exception {
+		return ".basic_company/ripplePwRestore";
+	}
 		
 }

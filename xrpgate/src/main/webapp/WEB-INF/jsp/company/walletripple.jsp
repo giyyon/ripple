@@ -27,38 +27,18 @@
                     </a>
             	</li>
                 <li>
-                    <a href="${contextPath}/company/ripplebuy.do">
-                        <img src="/images/sub/side_04_off.png" onmouseover="this.src='/images/sub/side_04_on.png'"onmouseout="this.src='/images/sub/side_04_off.png'"/>
+                    <a href="${contextPath}/company/ripplePersonCert.do">
+                        <img src="../images/sub/side_07_off.png" onmouseover="this.src='../images/sub/side_07_on.png'"onmouseout="this.src='../images/sub/side_07_off.png'"/>
                     </a>
             	</li>
                 <li>
-                    <a href="${contextPath}/company/ripplesell.do">
-                        <img src="/images/sub/side_05_off.png" onmouseover="this.src='/images/sub/side_05_on.png'"onmouseout="this.src='/images/sub/side_05_off.png'"/>
+                    <a href="${contextPath}/company/ripplePwChgCert.do">
+                        <img src="../images/sub/side_08_off.png" onmouseover="this.src='../images/sub/side_08_on.png'"onmouseout="this.src='../images/sub/side_08_off.png'"/>
                     </a>
             	</li>
                 <li>
-                    <a href="${contextPath}/company/gateway.do">
-                        <img src="/images/sub/side_06_off.png" onmouseover="this.src='/images/sub/side_06_on.png'"onmouseout="this.src='/images/sub/side_06_off.png'"/>
-                    </a>
-            	</li>
-                <li>
-                    <a href="${contextPath}/company/ripplebalance.do">
-                        <img src="/images/sub/side_07_off.png" onmouseover="this.src='/images/sub/side_07_on.png'"onmouseout="this.src='/images/sub/side_07_off.png'"/>
-                    </a>
-            	</li>
-                <li>
-                    <a href="${contextPath}/company/ripplepw.do">
-                        <img src="/images/sub/side_08_off.png" onmouseover="this.src='/images/sub/side_08_on.png'"onmouseout="this.src='/images/sub/side_08_off.png'"/>
-                    </a>
-            	</li>
-                <li>
-                    <a href="${contextPath}/company/rippledouble.do">
-                        <img src="/images/sub/side_09_off.png" onmouseover="this.src='/images/sub/side_09_on.png'"onmouseout="this.src='/images/sub/side_09_off.png'"/>
-                    </a>
-            	</li>
-                <li>
-                    <a href="https://rippletrade.com/#/" target="_blank">
-                        <img src="/images/sub/trade_link.png" />
+                    <a href="${contextPath}/company/ripplePwRestore.do">
+                        <img src="../images/sub/side_09_off.png" onmouseover="this.src='../images/sub/side_09_on.png'"onmouseout="this.src='../images/sub/side_09_off.png'"/>
                     </a>
             	</li>
             </div>

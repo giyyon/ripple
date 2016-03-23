@@ -64,6 +64,12 @@ public class FileVO implements Serializable {
 	private String contentType;
 	private long size;
 	private String category;
+	
+	private String isUpdate;
+	/**
+	 * 첨부파일 아이디 담을 필드
+	 */
+	private String fieldId;
 	/**
 	 * @return the fileId
 	 */
@@ -401,11 +407,27 @@ public class FileVO implements Serializable {
 	this.streFileNm = streFileNm;
     }
 
-    /**
+    public String getFieldId() {
+		return fieldId;
+	}
+
+	public void setFieldId(String fieldId) {
+		this.fieldId = fieldId;
+	}
+
+	/**
      * toString 메소드를 대치한다.
      */
     public String toString() {
 	return ToStringBuilder.reflectionToString(this);
     }
+
+	public String getIsUpdate() {
+		return isUpdate;
+	}
+
+	public void setIsUpdate(String isUpdate) {
+		this.isUpdate = isUpdate;
+	}
 	
 }

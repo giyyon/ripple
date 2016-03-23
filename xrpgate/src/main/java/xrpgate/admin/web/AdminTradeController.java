@@ -1,5 +1,7 @@
 package xrpgate.admin.web;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -22,11 +24,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import xrpgate.admin.web.service.AdminAccountVO;
+import xrpgate.admin.web.service.AdminMgmtService;
 import xrpgate.common.model.JsonObject;
 import xrpgate.customer.web.CustomerController;
+import xrpgate.trade.service.AccountDetailVO;
+import xrpgate.trade.service.AccountVO;
 import xrpgate.trade.service.TradeDetailVO;
 import xrpgate.trade.service.TradeManageService;
+import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
@@ -44,6 +52,10 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 
 
+/**
+ * @author park
+ *
+ */
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminTradeController implements ApplicationContextAware, InitializingBean {
@@ -63,7 +75,13 @@ public class AdminTradeController implements ApplicationContextAware, Initializi
     
     @Resource(name = "tradeManageService")
     private TradeManageService tradeManageService;
+    
+    @Resource(name = "adminMgmtService")
+    private AdminMgmtService adminMgmtService;
 
+    /** cmmUseService */
+	@Resource(name = "EgovCmmUseService")
+	private EgovCmmUseService cmmUseService;
     
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -80,8 +98,43 @@ public class AdminTradeController implements ApplicationContextAware, Initializi
 	}
 	
 	@RequestMapping(value="/main.do", method = RequestMethod.GET)
-	public String index(ModelMap model) {
-		return "forward:/admin/tradeList.do";
+	public String index(ModelMap model) throws Exception {
+		//return "forward:/admin/tradeList.do";
+		AdminAccountVO accountVo = adminMgmtService.selectRippleAccountInfo();
+		
+		model.put("accountVo", accountVo);
+		return ".admin_admin/adminMain";
+	}
+	
+	@RequestMapping(value="/callAccountInsertPage.do")
+	public String callInsertPage(ModelMap model) throws Exception {
+		
+		AdminAccountVO accountVo = new AdminAccountVO();
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		accountVo = adminMgmtService.selectRippleAccountInfo();
+		// 은행목록
+		vo.setCodeId("RIP905");
+		List<?> bank_result = cmmUseService.selectCmmCodeDetail(vo);
+		
+		model.addAttribute("bank_result", bank_result);
+		model.put("accountVo", accountVo);
+		return ".popup_admin/adminAccountModifyView";
+	}
+	
+	@RequestMapping(value="/insertRippleAccount.do")
+	@ResponseBody
+	public HashMap<String, Object> insertRippleAccountInfo(AdminAccountVO accountVo) throws Exception{
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		try{
+			adminMgmtService.insertRippleAccountInfo(accountVo);
+			
+			map.put("isSuccess", true);
+		}catch(Exception e){
+			System.out.print(e.getMessage());
+			map.put("isSuccess", false);
+		}
+		
+		return map;
 	}
 	
     @SuppressWarnings("unchecked")
@@ -148,8 +201,8 @@ public class AdminTradeController implements ApplicationContextAware, Initializi
 		return jo;
 	}	
     
-    /**
-     * 리플 판매 요청 목록을 조회한다.
+	/**
+     * 회원 계좌 예탁/ 인출 리스트
      * 
      * @param boardVO
      * @param sessionVO
@@ -157,15 +210,23 @@ public class AdminTradeController implements ApplicationContextAware, Initializi
      * @return
      * @throws Exception
      */
-    @RequestMapping("/rippleSellReqList.do")
-    public String rippleSellReqList(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+    @RequestMapping("/accountMgmt.do")
+    public String accountMgmt(TradeDetailVO tradeVo, ModelMap model) throws Exception {
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	return ".basic_customer/noticeList";
+    	String url = "";
+    	try{
+    		
+    		
+    	}catch (Exception e){
+    		System.out.print(e.getMessage());
+    	}
+    	
+    	
+	return ".admin_admin/adminAccountMgmt";
     }
-
-
+    
     /**
-     * 리플 구매 요청 목록을 조회한다.
+     * 회원 계좌 예탁/ 인출 리스트
      * 
      * @param boardVO
      * @param sessionVO
@@ -173,13 +234,415 @@ public class AdminTradeController implements ApplicationContextAware, Initializi
      * @return
      * @throws Exception
      */
-    @RequestMapping("/rippleBuyReqList.do")
-    public String rippleBuyReqList(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+    @RequestMapping("/accountList.do")
+    public String rippleSellReqList(AccountDetailVO accountDeatailVo, ModelMap model) throws Exception {
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    	String url = "";
+    	try{
+    		
+    		accountDeatailVo.setPageUnit(propertyService.getInt("pageUnit"));
+        	accountDeatailVo.setPageSize(propertyService.getInt("pageSize"));
+        	
+        	PaginationInfo paginationInfo = new PaginationInfo();
+        	
+        	paginationInfo.setCurrentPageNo(accountDeatailVo.getPageIndex());
+        	paginationInfo.setRecordCountPerPage(accountDeatailVo.getPageUnit());
+        	paginationInfo.setPageSize(accountDeatailVo.getPageSize());
 
-	return ".basic_customer/noticeList";
+        	accountDeatailVo.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        	accountDeatailVo.setLastIndex(paginationInfo.getLastRecordIndex());
+        	accountDeatailVo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+
+    		Map<String, Object> map = tradeManageService.selectAdminAccountList(accountDeatailVo);	
+    		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+    		
+    		paginationInfo.setTotalRecordCount(totCnt);
+    		
+    		model.addAttribute("resultList", map.get("resultList"));
+    		model.addAttribute("resultCnt", map.get("resultCnt"));
+    		model.addAttribute("accountDeatailVo", accountDeatailVo);
+    		model.addAttribute("paginationInfo", paginationInfo);
+    		
+    		if("D".equals(accountDeatailVo.getTradeType())){
+    			url = ".contents_admin/accountDepositView";
+    		} else {
+    			url = ".contents_admin/accountDrawView";
+    		}
+    	}catch (Exception e){
+    		System.out.print(e.getMessage());
+    	}
+    	
+    	
+	return url;
+    }
+
+
+    /**
+     * 예탁 /인출 수정 화면 호출
+     * 
+     * @param boardVO
+     * @param sessionVO
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/callModifyAccountView.do")
+    public String rippleBuyReqList(AccountDetailVO accountDeatailVo, ModelMap model) throws Exception {
+    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    	AccountDetailVO accountVo = new AccountDetailVO();
+    	try{
+    		accountVo = tradeManageService.selectadminAccountDetail(accountDeatailVo); 
+    	}catch(Exception e){
+    		System.out.print(e.getMessage());
+    	}
+    	
+    	model.addAttribute("accountVo", accountVo);
+    	
+	return ".popup_admin/accountModifyView";
     }
     
-	
+    @RequestMapping(value="ModifyMberAccount")
+    @ResponseBody
+	public HashMap<String, Object> updateMemberAccount(AccountVO accountVo) throws Exception {
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	
+    	try{
+    		tradeManageService.updateMberAccount(accountVo);
+    		
+    		map.put("isSuccess", true);
+    		
+    	} catch (Exception e){
+    		System.out.print(e.getMessage());
+    		map.put("isSuccess", false);
+    	}
+    	
+    	return map;
+	}
     
+    /**
+     * XRPGATE 예탁/인출 정보 삭제
+     * @param accountVo
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/deleteTransactionInfo.do")
+    @ResponseBody
+	public HashMap<String, Object> deleteTransactionInfo(AccountVO accountVo) throws Exception {
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	try{
+    		tradeManageService.deleteTransactionInfo(accountVo);
+    		map.put("isSuccess", true);
+    		
+    	} catch (Exception e){
+    		System.out.print(e.getMessage());
+    		map.put("isSuccess", false);
+    	}
+    	return map;
+	}
+    
+    /**
+     * XRPGATE XRP 거래 관리 화면 호출
+     * @param tradeVo
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/xrpgateTradeMgmt.do")
+    public String xrpgateTradeMgmt(TradeDetailVO tradeVo, ModelMap model) throws Exception {
+	return ".admin_admin/trade/xrpgateTradeMgmt";
+    }
+    
+    /**
+     * XRPGATE XRP 거래 리스트
+     * @param tradeDetailVo
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/xrpgateTradeList.do")
+    public String selectAdminXrpTradeList(TradeDetailVO tradeDetailVo, ModelMap model) throws Exception {
+    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    	String url = "";
+    	try{
+    		
+    		tradeDetailVo.setPageUnit(propertyService.getInt("pageUnit"));
+    		tradeDetailVo.setPageSize(propertyService.getInt("pageSize"));
+        	
+        	PaginationInfo paginationInfo = new PaginationInfo();
+        	
+        	paginationInfo.setCurrentPageNo(tradeDetailVo.getPageIndex());
+        	paginationInfo.setRecordCountPerPage(tradeDetailVo.getPageUnit());
+        	paginationInfo.setPageSize(tradeDetailVo.getPageSize());
+
+        	tradeDetailVo.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        	tradeDetailVo.setLastIndex(paginationInfo.getLastRecordIndex());
+        	tradeDetailVo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+
+    		Map<String, Object> map = tradeManageService.selectAdminXrpTradeList(tradeDetailVo);
+    		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+    		
+    		paginationInfo.setTotalRecordCount(totCnt);
+    		
+    		model.addAttribute("resultList", map.get("resultList"));
+    		model.addAttribute("resultCnt", map.get("resultCnt"));
+    		model.addAttribute("tradeDetailVo", tradeDetailVo);
+    		model.addAttribute("paginationInfo", paginationInfo);
+    		
+    		if("B".equals(tradeDetailVo.getTradeType())){
+    			url = ".contents_admin/trade/xrpBuyTradeView";
+    		} else if("S".equals(tradeDetailVo.getTradeType())){
+    			url = ".contents_admin/trade/xrpSellTradeView";
+    		} else {
+    			url = ".contents_admin/trade/xrpCurrentPriceView";
+    		}
+    	}catch (Exception e){
+    		System.out.print(e.getMessage());
+    	}
+    	
+    	
+	return url;
+    }
+
+
+    
+    /**
+     * XRPGATE XRP 거래 수정 및 인서트 화면 호출
+     * @param tradeDetailVo
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/callXrpTradeView.do")
+    public String callXrpTradeView(TradeDetailVO tradeDetailVo, ModelMap model) throws Exception {
+    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    	TradeDetailVO tradeVo = new TradeDetailVO();
+    	
+    	int totalSum = 0;
+    	try{
+    		tradeVo = tradeManageService.selectAdminXrpTrade(tradeDetailVo);
+    		totalSum = tradeManageService.selectAdminXrpTradeSumQty(tradeDetailVo);
+    		
+    		tradeVo.setMberNm(user.getName());
+    	}catch(Exception e){
+    		System.out.print(e.getMessage());
+    	}
+    	
+    	model.addAttribute("tradeVo", tradeVo);
+    	model.addAttribute("tradeType", tradeDetailVo.getTradeType());
+    	model.addAttribute("totalSum", totalSum);
+    	
+	return ".popup_admin/xrpTradeModifyView";
+    }
+    
+    /**
+     * XRPGATE XRP 거래 등록
+     * @param tradeDetailVo
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/insertXrpTrade.do")
+    @ResponseBody
+	public HashMap<String, Object> insertXrpTrade(TradeDetailVO tradeDetailVo) throws Exception {
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    	try{
+    		tradeDetailVo.setRequestId(user.getId());
+    		tradeManageService.insertAdminXrtTrade(tradeDetailVo);
+    		
+    		map.put("isSuccess", true);
+    		
+    	} catch (Exception e){
+    		System.out.print(e.getMessage());
+    		map.put("isSuccess", false);
+    	}
+    	
+    	return map;
+	}
+    
+    /**
+     * XRPGATE XRP 거래 수정
+     * @param tradeDetailVo
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/modifyXrpTrade.do")
+    @ResponseBody
+	public HashMap<String, Object> updateXrpTrade(TradeDetailVO tradeDetailVo) throws Exception {
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	
+    	try{
+    		tradeManageService.updateAdminXrpTrade(tradeDetailVo);
+    		
+    		map.put("isSuccess", true);
+    		
+    	} catch (Exception e){
+    		System.out.print(e.getMessage());
+    		map.put("isSuccess", false);
+    	}
+    	
+    	return map;
+	}
+    
+    /**
+     * XRPGATE XRP 거래 삭제
+     * @param tradeDetailVo
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/deleteXrpTrade.do")
+    @ResponseBody
+	public HashMap<String, Object> deleteXrpTrade(TradeDetailVO tradeDetailVo) throws Exception {
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	try{
+    		tradeManageService.deleteAdminXrpTrade(tradeDetailVo);
+    		map.put("isSuccess", true);
+    		
+    	} catch (Exception e){
+    		System.out.print(e.getMessage());
+    		map.put("isSuccess", false);
+    	}
+    	return map;
+	}
+    
+    
+    /**
+     * XRPGATE 회원 XRP 거래 관리 화면 호출
+     * @param tradeVo
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/mberXrpTradeMgmt.do")
+    public String mberXrpTradeMgmt(TradeDetailVO tradeVo, ModelMap model) throws Exception {
+	return ".admin_admin/trade/mberXrpTradeMgmt";
+    }
+    
+    /**
+     * XRPGATE 회원 XRP 거래 리스트
+     * @param tradeDetailVo
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/mberXrpTradeList.do")
+    public String selectMberXrpTradeList(TradeDetailVO tradeDetailVo, ModelMap model) throws Exception {
+    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    	String url = "";
+    	try{
+    		
+    		tradeDetailVo.setPageUnit(propertyService.getInt("pageUnit"));
+    		tradeDetailVo.setPageSize(propertyService.getInt("pageSize"));
+        	
+        	PaginationInfo paginationInfo = new PaginationInfo();
+        	
+        	paginationInfo.setCurrentPageNo(tradeDetailVo.getPageIndex());
+        	paginationInfo.setRecordCountPerPage(tradeDetailVo.getPageUnit());
+        	paginationInfo.setPageSize(tradeDetailVo.getPageSize());
+
+        	tradeDetailVo.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        	tradeDetailVo.setLastIndex(paginationInfo.getLastRecordIndex());
+        	tradeDetailVo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+
+    		Map<String, Object> map = tradeManageService.selectMberXrpTradeList(tradeDetailVo);
+    		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+    		
+    		paginationInfo.setTotalRecordCount(totCnt);
+    		
+    		model.addAttribute("resultList", map.get("resultList"));
+    		model.addAttribute("resultCnt", map.get("resultCnt"));
+    		model.addAttribute("tradeDetailVo", tradeDetailVo);
+    		model.addAttribute("paginationInfo", paginationInfo);
+    		
+    		if("B".equals(tradeDetailVo.getTradeType())){
+    			url = ".contents_admin/trade/mberXrpBuyTradeView";
+    		} else {
+    			url = ".contents_admin/trade/mberXrpSellTradeView";
+    		}
+    	}catch (Exception e){
+    		System.out.print(e.getMessage());
+    	}
+    	
+    	
+	return url;
+    }
+
+
+    
+    /**
+     * XRPGATE 회원 XRP 거래 수정 및 인서트 화면 호출
+     * @param tradeDetailVo
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/callMberXrpTradeView.do")
+    public String callMberXrpTradeView(TradeDetailVO tradeDetailVo, ModelMap model
+    		, @ModelAttribute("tradeVo") TradeDetailVO tradeVo) throws Exception {
+    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    	
+    	int totalSum = 0;
+    	try{
+    		tradeVo = tradeManageService.selectMberXrpTrade(tradeDetailVo);
+    		totalSum = tradeManageService.selectMberXrpTradeSumQty(tradeVo);
+    		
+    		// 인서트일경우 tradeVo null로 에러 발생 null이 아닌 상태로 만듬.
+    		tradeVo.setMberNm(user.getName());
+    	}catch(Exception e){
+    		System.out.print(e.getMessage());
+    	}
+    	
+    	model.addAttribute("tradeVo", tradeVo);
+    	model.addAttribute("tradeType", tradeDetailVo.getTradeType());
+    	model.addAttribute("totalSum", totalSum);
+    	
+	return ".popup_admin/xrpMberTradeModifyView";
+    }
+    
+    /**
+     * XRPGATE 회원 XRP 거래 등록
+     * @param tradeDetailVo
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/updateMberXrpTrade.do")
+    @ResponseBody
+	public HashMap<String, Object> updateMberXrpTrade(TradeDetailVO tradeDetailVo) throws Exception {
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    	try{
+    		tradeManageService.updateMberXrpTrade(tradeDetailVo);
+    		
+    		map.put("isSuccess", true);
+    		
+    	} catch (Exception e){
+    		System.out.print(e.getMessage());
+    		map.put("isSuccess", false);
+    	}
+    	
+    	return map;
+	}
+    
+    
+    /**
+     * XRPGATE 회원 XRP 거래 삭제
+     * @param tradeDetailVo
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/deleteMberXrpTrade.do")
+    @ResponseBody
+	public HashMap<String, Object> deleteMberXrpTrade(TradeDetailVO tradeDetailVo) throws Exception {
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	try{
+    		tradeManageService.deleteMberXrpTrade(tradeDetailVo);
+    		map.put("isSuccess", true);
+    		
+    	} catch (Exception e){
+    		System.out.print(e.getMessage());
+    		map.put("isSuccess", false);
+    	}
+    	return map;
+	}
+    
+
 }

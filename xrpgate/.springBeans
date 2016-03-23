@@ -14,18 +14,15 @@
 		<config>src/main/resources/egovframework/spring/com/context-aspect.xml</config>
 		<config>src/main/resources/egovframework/spring/com/context-mail.xml</config>
 		<config>src/main/resources/egovframework/spring/com/idgn/context-idgn-QnaManage.xml</config>
-		<config>src/main/resources/egovframework/spring/com/scheduling/context-scheduling-sts-ust.xml</config>
 		<config>src/main/resources/egovframework/spring/com/idgn/context-idgn-Role.xml</config>
 		<config>src/main/resources/egovframework/spring/com/context-sqlMap.xml</config>
 		<config>src/main/resources/egovframework/spring/com/context-properties.xml</config>
 		<config>src/main/webapp/WEB-INF/config/egovframework/springmvc/egov-com-loginaop.xml</config>
-		<config>src/main/resources/egovframework/spring/com/scheduling/context-scheduling-utl-sys-dbm.xml</config>
 		<config>src/main/resources/egovframework/spring/com/idgn/context-idgn-bbs.xml</config>
 		<config>src/main/resources/egovframework/spring/com/context-security.xml</config>
 		<config>src/main/resources/egovframework/spring/com/idgn/context-idgn-LoginLog.xml</config>
 		<config>src/main/resources/egovframework/spring/com/context-validator.xml</config>
 		<config>src/main/resources/egovframework/spring/com/context-transaction.xml</config>
-		<config>src/main/resources/egovframework/spring/com/scheduling/context-scheduling-utl-sys-htm.xml</config>
 		<config>src/main/webapp/WEB-INF/config/egovframework/springmvc/egov-com-stsaop.xml</config>
 		<config>src/main/resources/egovframework/spring/com/idgn/context-idgn-UsrCnfrm.xml</config>
 		<config>src/main/resources/egovframework/spring/com/context-egovuserdetailshelper.xml</config>
@@ -37,9 +34,7 @@
 		<config>src/main/webapp/WEB-INF/config/egovframework/springmvc/egov-com-servlet.xml</config>
 		<config>src/main/resources/egovframework/spring/com/idgn/context-idgn-File.xml</config>
 		<config>src/main/resources/egovframework/spring/com/idgn/context-idgn-DtaUseStats.xml</config>
-		<config>src/main/resources/egovframework/spring/com/scheduling/context-scheduling-sym-sym-bak.xml</config>
 		<config>src/main/resources/egovframework/spring/com/context-excel.xml</config>
-		<config>src/main/resources/egovframework/spring/com/scheduling/context-scheduling-utl-sys-srm.xml</config>
 		<config>src/main/resources/egovframework/spring/com/idgn/context-idgn-RestDe.xml</config>
 		<config>src/main/resources/egovframework/spring/com/context-common.xml</config>
 		<config>src/main/resources/egovframework/spring/com/idgn/context-idgn-Group.xml</config>

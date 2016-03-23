@@ -1096,10 +1096,10 @@ function BitCommonClass() {
         var dt = new Date().getTime();
         var opts = $.extend({}, defaults, options);
         opts.data.containerId = 'cntr_' + dt.toString();
-        opts.url = opts.url + '?' + $(opts.data).convertQueryStrings();
+        opts.url = opts.url + '?' + $.param(opts.data); //$(opts.data).convertQueryStrings();
 
         var parent = getParent(window);
-        var $div = parent.$('<div id="parent_' + dt.toString() + '"></div>');
+        var $div = parent.$('<div id="parent_' + dt.toString() + '" class="ui-dialog-content ui-widget-content"></div>');
         var $container = null;
         if (opts.iframe) {
             $container = $('<iframe  id="cntr_' + dt.toString() + '" class="modalContainer" frameborder="0" width="100%" height="100%" marginheight="0" marginwidth="0" scrolling="no" src=""/>');
@@ -1119,16 +1119,8 @@ function BitCommonClass() {
             $div.append($container).append('<div style="width:100%;text-align:center; padding:10px 0 0 0;"><p name="modalClose" class="btn_close" style="width:86px;"><span>' + $this.messages.common_modal_close + '</span></p>  <p name="modalApply" style="width:86px;display:none;" class="btn_close" ><span>' + $this.messages.common_modal_apply + '</span></p><p name="modalAsyncApply" style="width:86px;" class="btn_close" style="display:none" ><span>' + $this.messages.common_modal_apply + '</span></p></div>');
         }
 
-        function convertHeightToIntFromPercent(percent) {
-            if (!Number(percent) && percent.substring(percent.length - 1) == '%') {
-                return $('body').height() * 0.01 * parseInt(percent.substring(0, percent.length - 1));
-            } else {
-                return percent;
-            }
-        }
-
         var $dialog = $div.dialog({
-            autoOpen: true,
+            autoOpen: false,
             title: opts.title,
             resizable: false,
             modal: true,
@@ -1143,9 +1135,17 @@ function BitCommonClass() {
             width: opts.width,
             height: convertHeightToIntFromPercent(opts.height)
         });
-
+        
+        function convertHeightToIntFromPercent(percent) {
+            if (!Number(percent) && percent.substring(percent.length - 1) == '%') {
+                return $('body').height() * 0.01 * parseInt(percent.substring(0, percent.length - 1));
+            } else {
+                return percent;
+            }
+        }
+        
         function getSavedData() {
-            var f = $container.contents().find('#_HiddenData');
+            /*var f = $container.contents().find('#_HiddenData');
             if (f != null && f.val() != '' && f.length > 0) {
                 var data = JSON.parse(f.val());
                 if (data != null) {
@@ -1154,7 +1154,8 @@ function BitCommonClass() {
             } else if ($container.data('data') != null) {
                 return $container.data('data');
             }
-            return null;
+            return null;*/
+        	return $container.data('data');
         }
 
         function closeModal() {
@@ -1212,6 +1213,7 @@ function BitCommonClass() {
                     opts.closeCallback(data);
                 }
             }
+            
             // 모달에서 더이상 사용하지 않는 레이어이다.
             $('.modal').addClass('modal_garbage');
 
@@ -1375,7 +1377,7 @@ function BitCommonClass() {
             obj[param] = value;
         }
 
-        return onlyUrl + $(obj).convertQueryStrings();
+        return onlyUrl + $.param(obj);//$(obj).convertQueryStrings();
     };
 
     /*

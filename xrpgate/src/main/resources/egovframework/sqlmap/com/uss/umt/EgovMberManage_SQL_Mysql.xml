@@ -13,9 +13,10 @@
         <result property="infoProvdAgeCn"      column="INFO_PROVD_AGRE_CN"     columnIndex="3"/>
     </resultMap>
     
- <select id="mberManageDAO.selectMberList" parameterClass="userSearchVO" resultClass="egovMap">
+ <select id="mberManageDAO.selectMberList" parameterClass="userSearchVO" resultClass="HashMap">
 SELECT 
-    uniqId, userTy, userId , userNm, emailAdres, areaNo, middleTelno, endTelno, moblphonNo, groupId, sttus, sbscrbDe
+    uniqId, userTy, userId , userNm, emailAdres, areaNo, middleTelno, endTelno, moblphonNo, 
+    groupId, sttus, sbscrbDe, bankId, account, state, rippleTradeEmail, memberGrade, bankNm
 FROM(
     SELECT 
         ESNTL_ID               uniqId,
@@ -29,8 +30,23 @@ FROM(
         MBTLNUM           moblphonNo,
         GROUP_ID              groupId,
         MBER_STTUS            sttus,
-        SBSCRB_DE             sbscrbDe
-    FROM    COMTNGNRLMBER
+        SBSCRB_DE             sbscrbDe,
+        BANK_ID					as bankId,
+        ACCOUNT					as account,
+        STATE					as state,
+        RIPPLE_TRADE_EMAIL		as rippleTradeEmail,
+        MEMBER_GRADE			as memberGrade,
+        CD.CODE_NM				AS bankNm
+    FROM    COMTNGNRLMBER A
+    LEFT OUTER JOIN (
+            select CDT.CODE_ID
+                    , CODE
+                    , CODE_NM
+            from comtccmmncode cd
+            INNER JOIN comtccmmndetailcode cdt
+            ON CD.CODE_ID = CDT.CODE_ID
+            WHERE CD.CODE_ID = 'RIP905') CD
+    ON A.BANK_ID = CD.CODE
     ) A
         WHERE 1=1
         <isNotEqual prepend="AND" property="sbscrbSttus" compareValue="0">
@@ -111,7 +127,13 @@ FROM(
 					ATCHFILEID ,
 					STATE,
 					BANK_ID,
-					ACCOUNT	
+					ACCOUNT	,
+					ATCHFILEID1,
+					ATCHFILEID2,
+					ATCHFILEID3, 
+					TAG_VAL, 
+					BIZ_NO,
+					MEMBER_GRADE
                     )
               VALUES(
                     #uniqId#,
@@ -144,7 +166,13 @@ FROM(
 					#atchFileId#,
 					#state#,
 					#bankId#,
-					#account#
+					#account#,
+					#atchFileId1#,
+					#atchFileId2#,
+					#atchFileId3#,
+					#tagVal#,
+					#bizNo#,
+					#memberGrade#
                      )              
         ]]>
     </insert>
@@ -189,7 +217,7 @@ FROM(
         <![CDATA[
             SELECT
 					MBER_ID                 mberId ,        
-					'USR01' as               userTy        ,     
+					B.MBER_TY_CODE as       userTy,     
                     MBER_NM               mberNm ,
 					PASSWORD             password    ,
                     PASSWORD_HINT     passwordHint,
@@ -221,8 +249,28 @@ FROM(
 					MEMBER_GRADE		AS memberGrade,
 					STATE				AS state,
 					BANK_ID				as bankId,
-					ACCOUNT				as account
-            FROM COMTNGNRLMBER               
+					ACCOUNT				as account,
+					B.AUTHOR_CODE		AS authCode, 
+					ATCHFILEID1			AS atchFileId1,
+					ATCHFILEID2			AS atchFileId2,
+					ATCHFILEID3			AS atchFileId3,
+					TAG_VAL				AS tagVal,
+					date_format(SBSCRB_DE, '%Y/%m/%d')	AS registDt,
+					CD.CODE_NM          AS bankNm,
+					BIZ_NO				AS bizNo
+            FROM COMTNGNRLMBER A
+            LEFT OUTER JOIN COMTNEMPLYRSCRTYESTBS B
+            ON A.ESNTL_ID = B.SCRTY_DTRMN_TRGET_ID
+            LEFT OUTER JOIN (
+				            select CDT.CODE_ID
+				                    , CODE
+				                    , CODE_NM
+				            from comtccmmncode cd
+				            INNER JOIN comtccmmndetailcode cdt
+				            ON CD.CODE_ID = CDT.CODE_ID
+				            WHERE CD.CODE_ID = 'RIP905'
+           					) CD
+            ON A.BANK_ID = CD.CODE
             WHERE MBER_ID=#mberId#           
         ]]>                                  
     </select>    
@@ -230,6 +278,7 @@ FROM(
     <update id="mberManageDAO.updateMber_S" parameterClass="mberVO">
             UPDATE COMTNGNRLMBER 
             SET IHIDNUM          = #ihidnum#,
+            	MBER_NM          = #mberNm#,
                 SEXDSTN_CODE     = #sexdstnCode#,
                 ZIP              = #zip#,
                 ADRES            = #adres#,
@@ -246,7 +295,12 @@ FROM(
 				MEMBER_GRADE	 = #memberGrade#,
 				STATE			 = #state#,
 				BANK_ID			 = #bankId#,
-				ACCOUNT 		 = #account#
+				ACCOUNT 		 = #account#,
+				ATCHFILEID1		 = #atchFileId1#,
+				ATCHFILEID2		 = #atchFileId2#,
+				ATCHFILEID3		 = #atchFileId3#,
+				TAG_VAL			 = #tagVal#,
+				BIZ_NO			 = #bizNo#
             WHERE MBER_ID=#mberId# 
     </update>
     
@@ -289,4 +343,47 @@ FROM(
         ]]>                                  
     </select>    
     
+    <update id="mberManageDAO.updateMberByAdmin" parameterClass="mberVO">
+            UPDATE COMTNGNRLMBER 
+            SET IHIDNUM          = #ihidnum#,
+                MBTLNUM      	 = #moblphonNo#,
+                ATCHFILEID		 = #atchFileId#,
+				MEMBER_GRADE	 = #memberGrade#,
+				STATE			 = #state#,
+				BANK_ID			 = #bankId#,
+				ACCOUNT 		 = #account#,
+				MBER_NM			 = #mberNm#
+            WHERE MBER_ID	= #mberId# 
+    </update>
+    
+    <insert id="mberManageDAO.insertMberAccountInfo">
+    	INSERT INTO RIPPLE_MEMBER_ACCOUNT (MBER_ID, CHARGE) VALUES (#mberId#, 0)
+    </insert>
+    
+    <select id="mberManageDAO.selectSameNameMberCnt" resultClass="Integer">
+    	SELECT COUNT(MBER_NM)
+    	FROM COMTNGNRLMBER
+    	WHERE MBER_NM = #mberNm#
+    </select>
+    
+    <select id="mberManageDAO.selectMberIdByMberNm" resultClass="String">
+    	SELECT MBER_ID
+    	FROM COMTNGNRLMBER
+    	WHERE MBER_NM = #mberNm#
+    	AND MBTLNUM = #moblphonNo#
+    </select>
+    
+    <select id="mberManageDAO.selectMberPassByMberNm" resultClass="Integer">
+    	SELECT COUNT(MBER_ID)
+    	FROM COMTNGNRLMBER
+    	WHERE MBER_NM = #mberNm#
+    	AND MBTLNUM = #moblphonNo#
+    	AND MBER_ID = #mberId#
+    </select>
+    
+    <update id="mberManageDAO.updateMberPassword">
+    	UPDATE COMTNGNRLMBER
+    		SET PASSWORD = #password#
+    	WHERE MBER_ID = #mberId#
+    </update>
 </sqlMap>

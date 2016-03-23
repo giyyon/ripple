@@ -24,11 +24,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
+import xrpgate.admin.web.service.AdminMgmtService;
 import xrpgate.common.model.JsonObject;
 import xrpgate.util.JSONResponseUtil;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.service.EgovFileMngService;
+import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sec.rgm.service.AuthorGroup;
 import egovframework.com.sec.rgm.service.EgovAuthorGroupService;
@@ -94,6 +97,12 @@ public class AdminMberManageController {
 	/** DefaultBeanValidator beanValidator */
 	@Autowired
 	private DefaultBeanValidator beanValidator;
+	
+	@Resource(name="adminMgmtService")
+	private AdminMgmtService adminMgmtService;
+	
+	@Resource(name = "EgovFileMngService")
+    private EgovFileMngService fileMngService;
 
 	/** log */
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminMberManageController.class);
@@ -122,7 +131,7 @@ public class AdminMberManageController {
 		userSearchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
 		List<?> mberList = mberManageService.selectMberList(userSearchVO);
-		model.addAttribute("resultList", mberList);
+		model.addAttribute("mberList", mberList);
 
 		int totCnt = mberManageService.selectMberListTotCnt(userSearchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -143,10 +152,29 @@ public class AdminMberManageController {
 		List<?> mberSe_result = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("mberSe_result", mberSe_result);//회원유형코드목록
 		
-		return ".basic_admin/customer/gnrMberList";
+		return ".admin_admin/gnrMberList";
 	}
 	
-	
+	@RequestMapping(value="/callModifyMber.do")
+	public String callModifyMber(MberManageVO mberManageVO,  
+            ModelMap model) throws Exception{
+		MberManageVO mberVo = new MberManageVO();
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		try{
+			mberVo = mberManageService.selectMberById(mberManageVO.getMberId());
+			// 은행목록
+			vo.setCodeId("RIP905");
+			List<?> bank_result = cmmUseService.selectCmmCodeDetail(vo);
+			
+			model.addAttribute("bank_result", bank_result);
+			model.addAttribute("mberVo", mberVo);
+			
+		}catch(Exception e) {
+			System.out.print(e.getMessage());
+		}
+		
+		return ".popup_admin/modifyMberView";
+	}
 	
 	/**
 	 * 일반회원목록을 조회한다. (pageing)
@@ -268,93 +296,79 @@ public class AdminMberManageController {
 		return ".basic_admin/customer/grnMberDetail";
 	}
 
+	
 	/**
 	 * 일반회원정보 수정-토탈
-	 * @param mberId 상세조회대상 일반회원아이디
-	 * @param userSearchVO 검색조건
-	 * @param model 화면모델
-	 * @return uss/umt/EgovMberSelectUpdt
+	 * @param mberManageVO
+	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/updateGnrMberInfo.do")
-	public String updateGnrMberInfo(
+	@ResponseBody
+	public HashMap<String, Object> updateGnrMberInfo(
 			@ModelAttribute("mberManageVO") MberManageVO mberManageVO, 
-			@RequestParam("isNewRegister") String isNewRegister,
-            
-            @RequestParam(value="compltCd", required=false) List<String> compltCd,
-            @RequestParam(value="enterYear", required=false) List<String> enterYear,
-            @RequestParam(value="enterMonth", required=false) List<String> enterMonth,
-            @RequestParam(value="grdYear", required=false) List<String> grdYear,
-            @RequestParam(value="grdMonth", required=false) List<String> grdMonth,					                                                
-            @RequestParam(value="school", required=false) List<String> school,
-            @RequestParam(value="major", required=false) List<String> major,
-            
-            @RequestParam(value="careerCd", required=false) List<String> careerCd,
-            @RequestParam(value="joinEnterYear", required=false) List<String> joinEnterYear,
-            @RequestParam(value="joinEnterMonth", required=false) List<String> joinEnterMonth,
-            @RequestParam(value="outYear", required=false) List<String> outYear,					                                                
-            @RequestParam(value="outMonth", required=false) List<String> outMonth,
-            @RequestParam(value="commpany", required=false) List<String> commpany,
-            @RequestParam(value="position", required=false) List<String> position,
-            @RequestParam(value="task", required=false) List<String> task,
-            
-            @RequestParam(value="awardCd", required=false) List<String> awardCd,					                                                
-            @RequestParam(value="awardYear", required=false) List<String> awardYear,
-            @RequestParam(value="awardNm", required=false) List<String> awardNm,
-            @RequestParam(value="awardOrg", required=false) List<String> awardOrg,
-            
-            @RequestParam(value="paperCd", required=false) List<String> paperCd,
-            @RequestParam(value="paperYear", required=false) List<String> paperYear,
-            @RequestParam(value="paperMonth", required=false) List<String> paperMonth,
-            @RequestParam(value="paperNm", required=false) List<String> paperNm,
-            @RequestParam(value="paperOrg", required=false) List<String> paperOrg,				
-            
-            @RequestParam(value="activeTyCd", required=false) List<String> activeTyCd,		
-            RedirectAttributes redirectAttributes,
-//            SessionStatus status,
-            HttpServletRequest request,
-            Model model) throws Exception {
-		
-
-		if(isNewRegister.equals("true")){
-			mberManageVO.setPassword(mberManageVO.getOldPassword());
-			//가입상태 초기화 A:요청, P:승인 D:삭제
-			mberManageVO.setMberSttus("P");
-			mberManageService.insertMber(mberManageVO);
+            HttpServletRequest request) throws Exception {
+		AuthorGroup authorGroup = new AuthorGroup();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		try{
+			mberManageService.updateMberByAdmin(mberManageVO);
 			
-			//권한 부여
-			AuthorGroup authorGroup = new AuthorGroup();
 			authorGroup.setUniqId(mberManageVO.getUniqId());
-			authorGroup.setAuthorCode("ROLE_USER");
-			authorGroup.setMberTyCode("USR01");
+			authorGroup.setAuthorCode(mberManageVO.getAuthCode());
+			if("ROLE_ADMIN".equals(mberManageVO.getAuthCode()) ){
+				authorGroup.setMberTyCode("USR03");
+			} else {
+				authorGroup.setMberTyCode("USR01");
+			}
 			
-			egovAuthorGroupService.insertAuthorGroup(authorGroup);
+			egovAuthorGroupService.updateAuthorGroup(authorGroup);
+			
+			map.put("isSuccess", true);
+		} catch(Exception e) {
+			System.out.print(e.getMessage());
+			map.put("isSuccess", false);
 		}
-		mberManageService.updateMber(mberManageVO);	
-		
-//		//권한 부여. 관리자 권한 Role 대상 : A01.A02,A03
-//		String selectRole = mberManageVO.getMberSe();
-//		if(selectRole.equals("A01") || selectRole.equals("A02") || selectRole.equals("A03") ){
-//			LOGGER.debug("관리자 롤 부여 : "+selectRole);
-//			AuthorGroup authorGroup = new AuthorGroup();
-//			authorGroup.setUniqId(mberManageVO.getUniqId());
-//			authorGroup.setAuthorCode("ROLE_ADMIN");
-//			authorGroup.setMberTyCode("USR01");		
-//			egovAuthorGroupService.updateAuthorGroup(authorGroup);
-//		}else{
-//			LOGGER.debug("일반 관리자 롤 부여 : "+selectRole);
-//			AuthorGroup authorGroup = new AuthorGroup();
-//			authorGroup.setUniqId(mberManageVO.getUniqId());
-//			authorGroup.setAuthorCode("ROLE_USER");
-//			authorGroup.setMberTyCode("USR01");		
-//			egovAuthorGroupService.updateAuthorGroup(authorGroup);
-//		}
-		//Exception 없이 진행시 수정성공메시지
-//		model.addAttribute("resultMsg", "정상적으로 수정 처리 되었습니다.");
-		redirectAttributes.addFlashAttribute("mberId",mberManageVO.getMberId());
-		return "redirect:/admin/gnrMberDetail.do";
+
+		return map;
 
 	}
+	
+	/**
+	 * 일반회원정보 삭제-토탈
+	 * @param mberManageVO
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/deleteGnrMberInfo.do")
+	@ResponseBody
+	public HashMap<String, Object> deleteGnrMberInfo(
+			@ModelAttribute("mberManageVO") MberManageVO mberManageVO, 
+            HttpServletRequest request) throws Exception {
+		AuthorGroup authorGroup = new AuthorGroup();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		try{
+			String checkedIdForDel = "USR01:" + mberManageVO.getUniqId();
+			mberManageService.deleteMber(checkedIdForDel);
+			
+			authorGroup.setUniqId(mberManageVO.getUniqId());
+			authorGroup.setAuthorCode(mberManageVO.getAuthCode());
+			if("ROLE_ADMIN".equals(mberManageVO.getAuthCode()) ){
+				authorGroup.setMberTyCode("USR03");
+			} else {
+				authorGroup.setMberTyCode("USR01");
+			}
+			
+			egovAuthorGroupService.deleteAuthorGroup(authorGroup);
+			
+			map.put("isSuccess", true);
+		} catch(Exception e) {
+			System.out.print(e.getMessage());
+			map.put("isSuccess", false);
+		}
+
+		return map;
+
+	} 
 	
 	/**
 	 * 일반회원정보 수정-부가정보
@@ -489,5 +503,92 @@ public class AdminMberManageController {
 
 		return JSONResponseUtil.getJSONResponse(total);
 	}	
+	
+	/**
+	 * 일반회원목록을 조회한다. (pageing)
+	 * @param userSearchVO 검색조건정보
+	 * @param model 화면모델
+	 * @return uss/umt/EgovMberManage
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/memberAttachFileMgmt.do")
+	public String memberAttachFileMgmt(@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
+			                                          ModelMap model) throws Exception {
+		/** EgovPropertyService.sample */
+		userSearchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		userSearchVO.setPageSize(propertiesService.getInt("pageSize"));
 
+		/** pageing */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(userSearchVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(userSearchVO.getPageUnit());
+		paginationInfo.setPageSize(userSearchVO.getPageSize());
+
+		userSearchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		userSearchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		userSearchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		
+		List<?> mberList = mberManageService.selectMberList(userSearchVO);
+		model.addAttribute("mberList", mberList);
+
+		int totCnt = mberManageService.selectMberListTotCnt(userSearchVO);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+
+		//일반회원 상태코드를 코드정보로부터 조회
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		
+		vo.setCodeId("SUP013");
+		List<?> activeTy_result = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("activeTy_result", activeTy_result);//활동분류코드목록
+		
+		vo.setCodeId("SUP011");
+		List<?> mberType_result = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("mberType_result", mberType_result);//회원분류코드목록
+		
+		vo.setCodeId("SUP012");
+		List<?> mberSe_result = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("mberSe_result", mberSe_result);//회원유형코드목록
+		
+		return ".admin_admin/memberAttachFileMgmt";
+	}
+	
+	@RequestMapping(value="/callMberAtchFileView.do")
+	public String callMberAtchFileView(MberManageVO mberManageVO,  
+            ModelMap model) throws Exception{
+		MberManageVO mberVo = new MberManageVO();
+		
+		FileVO fileVo = new FileVO();
+		try{
+			mberVo = mberManageService.selectMberById(mberManageVO.getMberId());
+			
+			List<FileVO> totalList = this.fileMngService.selectFileInfs(fileVo);
+			
+			
+			model.addAttribute("mberVo", mberVo);
+		}catch(Exception e) {
+			System.out.print(e.getMessage());
+		}
+		
+		return ".popup_admin/modifyMberAtchFileView";
+	}
+	
+	@RequestMapping("/updateMberAtchFileInfo.do")
+	@ResponseBody
+	public HashMap<String, Object> updateMberAtchFileInfo(
+			@ModelAttribute("mberManageVO") MberManageVO mberManageVO, 
+            HttpServletRequest request) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		try{
+			adminMgmtService.updateMberAtchFileInfo(mberManageVO);
+			
+			map.put("isSuccess", true);
+		} catch(Exception e) {
+			System.out.print(e.getMessage());
+			map.put("isSuccess", false);
+		}
+
+		return map;
+
+	}
 }

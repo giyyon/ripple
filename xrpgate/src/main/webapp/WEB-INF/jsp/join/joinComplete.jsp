@@ -5,13 +5,13 @@
     <div class="content_in">
         <div class="con_info">
             <div class="join_end">
-                <img src="../../images/sub/mem_join_end.png" />  
+                <img src="/images/sub/mem_join_end.png" />  
 	        </div> 
             <div class="space"></div>
             <div class="space"></div>
             <div class="space"></div>
             <div class="login_btn">
-            	<a href="login.html"><img src="../../images/btn/login_btn.png" /></a>
+            	<a href="${contextPath}/login/loginUsr.do"><img src="/images/btn/login_btn.png" /></a>
             </div>  
                        
         </div>

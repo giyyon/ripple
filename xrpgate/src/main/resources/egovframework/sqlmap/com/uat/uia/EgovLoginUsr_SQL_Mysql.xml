@@ -21,7 +21,8 @@
 		<result property="password" column="password" columnIndex="5"/>
 		<result property="userSe" column="userSe" columnIndex="6"/>
 		<result property="orgnztId" column="orgnztId" columnIndex="7"/>
-		<result property="uniqId" column="uniqId" columnIndex="8"/>		
+		<result property="uniqId" column="uniqId" columnIndex="8"/>
+		<result property="mberGrade" column="mberGrade" columnIndex="9"/>				
 	</resultMap>
 	
 	<!-- 아이디 찾기를 위한 resultMap -->
@@ -101,6 +102,7 @@
 			     , 'GNR' AS userSe
 			     , '-' AS orgnztId
 			     , esntl_id AS uniqId
+			     , MEMBER_GRADE AS mberGrade
 			  FROM COMTNGNRLMBER
 			 WHERE mber_id = #id#
 			   AND password = #password#

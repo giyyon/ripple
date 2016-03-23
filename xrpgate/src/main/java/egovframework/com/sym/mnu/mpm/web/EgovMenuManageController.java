@@ -52,7 +52,7 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
  * </pre>
  */
 
-@Controller
+
 public class EgovMenuManageController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovMenuManageController.class);

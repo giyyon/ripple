@@ -154,9 +154,25 @@ public class MberManageVO extends UserDefaultVO{
 	private String account;	
 	
 	/**
-	 * 사용자 첨부파일
+	 * 사용자 주민등록증 첨부파일
 	 */
 	private String atchFileId;	
+	
+	/**
+	 * 사용자 증명사진 첨부파일
+	 */
+	private String atchFileId1;
+	
+	/**
+	 * 사용자 여권사본 첨부파일
+	 */
+	private String atchFileId2;
+	
+	/**
+	 * 사용자 통장사본첨부파일
+	 */
+	private String atchFileId3;
+	
 	
 	/**
 	 * 최근 로그인 일자
@@ -168,10 +184,32 @@ public class MberManageVO extends UserDefaultVO{
 	 */
 	private String memberGrade;
 	
+	private String authCode;
+	
 	/**
 	 * 국가
 	 */
 	private String state;
+	
+	/**
+	 * 동명이인 구분 필드
+	 */
+	private String tagVal;
+	
+	/**
+	 * 등록일
+	 */
+	private String registDt;
+	
+	/**
+	 * 은행명
+	 */
+	private String baknNm;
+	
+	/**
+	 * 사업자번호
+	 */
+	private String bizNo;
 	
 	public String getBankId() {
 		return bankId;
@@ -559,6 +597,54 @@ public class MberManageVO extends UserDefaultVO{
 	}
 	public void setState(String state) {
 		this.state = state;
+	}
+	public String getAuthCode() {
+		return authCode;
+	}
+	public void setAuthCode(String authCode) {
+		this.authCode = authCode;
+	}
+	public String getAtchFileId1() {
+		return atchFileId1;
+	}
+	public void setAtchFileId1(String atchFileId1) {
+		this.atchFileId1 = atchFileId1;
+	}
+	public String getAtchFileId2() {
+		return atchFileId2;
+	}
+	public void setAtchFileId2(String atchFileId2) {
+		this.atchFileId2 = atchFileId2;
+	}
+	public String getAtchFileId3() {
+		return atchFileId3;
+	}
+	public void setAtchFileId3(String atchFileId3) {
+		this.atchFileId3 = atchFileId3;
+	}
+	public String getTagVal() {
+		return tagVal;
+	}
+	public void setTagVal(String tagVal) {
+		this.tagVal = tagVal;
+	}
+	public String getRegistDt() {
+		return registDt;
+	}
+	public void setRegistDt(String registDt) {
+		this.registDt = registDt;
+	}
+	public String getBaknNm() {
+		return baknNm;
+	}
+	public void setBaknNm(String baknNm) {
+		this.baknNm = baknNm;
+	}
+	public String getBizNo() {
+		return bizNo;
+	}
+	public void setBizNo(String bizNo) {
+		this.bizNo = bizNo;
 	}
 	
 	

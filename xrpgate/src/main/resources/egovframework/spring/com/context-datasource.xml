@@ -10,7 +10,7 @@
             </list>
         </property>
     </bean>
-
+	
 	<!-- DataSource -->
 	<alias name="dataSource-${Globals.DbType}" alias="egov.dataSource"/>
     <alias name="dataSource-${Globals.DbType}" alias="dataSource"/>

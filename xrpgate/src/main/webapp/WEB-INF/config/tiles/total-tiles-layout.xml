@@ -12,6 +12,13 @@
 		 <put-attribute name="body"  value="/WEB-INF/jsp/tiles/total/body.jsp" />
 		 <put-attribute name="footer" value="/WEB-INF/jsp/tiles/total/footer.jsp" />
 	</definition>
+	
+	<definition name="admin" template="/WEB-INF/jsp/tiles/total/templateTotal.jsp">
+		<put-attribute name="import" value="/WEB-INF/jsp/tiles/total/import.jsp" />
+		<put-attribute name="header" value="/WEB-INF/jsp/tiles/total/adminHeader.jsp" />
+		<put-attribute name="body"  value="/WEB-INF/jsp/tiles/total/body.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/tiles/total/adminFooter.jsp" />
+	</definition>
 	 
 	<!--  default를 확장하여 test 라는 URL로 시작되는 호출이 오는 경우 아래 설정에 의해서 페이지를 만들게 됩니다. -->
 	<definition name=".basic_*" extends="basic">
@@ -26,12 +33,16 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
 	</definition>
 	
-	<definition name=".basic_*/*/*/*" extends="basic">
-		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}.jsp" />
+	<definition name=".admin_*" extends="admin">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}.jsp" />
 	</definition>
 	
-	<definition name=".basic_*/*/*/*/*" extends="basic">
-		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}.jsp" />
+	<definition name=".admin_*/*" extends="admin">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+	</definition>
+
+	<definition name=".admin_*/*/*" extends="admin">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
 	</definition>
 
 </tiles-definitions>

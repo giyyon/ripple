@@ -127,7 +127,7 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
 	model.addAttribute("boardVO", boardVO);
 	model.addAttribute("paginationInfo", paginationInfo);
 
-	return ".basic_admin/rippleNewsList";
+	return ".admin_admin/rippleNewsList";
     }
     
     /**
@@ -174,7 +174,7 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
 	model.addAttribute("boardVO", boardVO);
 	model.addAttribute("paginationInfo", paginationInfo);
 
-	return ".basic_admin/rippleNoticeList";
+	return ".admin_admin/rippleNoticeList";
     }
 
     /**
@@ -199,7 +199,7 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
         boardVO.setNtcrNm(user.getName());
 		boardVO.setBbsId("BBSMSTR_000000000003");
     	model.addAttribute("result", boardVO);
-    	return ".basic_admin/rippleNewsModify";
+    	return ".admin_admin/rippleNewsModify";
     }
     
     /**
@@ -224,7 +224,7 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
         boardVO.setNtcrNm(user.getName());
 		boardVO.setBbsId("BBSMSTR_000000000004");
     	model.addAttribute("result", boardVO);
-    	return ".basic_admin/rippleNoticeModify";
+    	return ".admin_admin/rippleNoticeModify";
     }
     
     /**
@@ -257,7 +257,7 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
 					boardVO.setBbsId("BBSMSTR_000000000003");
 		    	    
 		    //board.setNtcrNm("");	// dummy 오류 수정 (익명이 아닌 경우 validator 처리를 위해 dummy로 지정됨)
-		    board.setPassword("");	// dummy 오류 수정 (익명이 아닌 경우 validator 처리를 위해 dummy로 지정됨)
+		    //board.setPassword("");	// dummy 오류 수정 (익명이 아닌 경우 validator 처리를 위해 dummy로 지정됨)
 		    
 		    board.setNtcrId(user.getId()); //게시물 통계 집계를 위해 등록자 ID 저장
 		    board.setNtcrNm(user.getName()); //게시물 통계 집계를 위해 등록자 Name 저장
@@ -281,7 +281,7 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
 		redirectAttributes.addFlashAttribute("nttId",String.valueOf(nttId));
 		
 		//등록
-		return "redirect:/admin/rippleNewsInqire.do";
+		return "redirect:/admin/rippleNewsList.do";
     }    
     
     /**
@@ -314,7 +314,7 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
 					boardVO.setBbsId("BBSMSTR_000000000004");
 		    	    
 		    //board.setNtcrNm("");	// dummy 오류 수정 (익명이 아닌 경우 validator 처리를 위해 dummy로 지정됨)
-		    board.setPassword("");	// dummy 오류 수정 (익명이 아닌 경우 validator 처리를 위해 dummy로 지정됨)
+		    //board.setPassword("");	// dummy 오류 수정 (익명이 아닌 경우 validator 처리를 위해 dummy로 지정됨)
 		    
 		    board.setNtcrId(user.getId()); //게시물 통계 집계를 위해 등록자 ID 저장
 		    board.setNtcrNm(user.getName()); //게시물 통계 집계를 위해 등록자 Name 저장
@@ -338,7 +338,7 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
 		redirectAttributes.addFlashAttribute("nttId",String.valueOf(nttId));
 		
 		//등록
-		return "redirect:/admin/rippleNoticeInqire.do";
+		return "redirect:/admin/rippleNoticeList.do";
     }    
     
     
@@ -386,7 +386,7 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
 	//CommandMap의 형태로 개선????
 
 	model.addAttribute("sessionUniqId", user.getUniqId());
-	return ".basic_admin/rippleNewsInqire";
+	return ".admin_admin/rippleNewsInqire";
     }
     
     /**
@@ -432,7 +432,7 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
 	//CommandMap의 형태로 개선????
 
 	model.addAttribute("sessionUniqId", user.getUniqId());
-	return ".basic_admin/rippleNewsModify";
+	return ".admin_admin/rippleNewsModify";
     }
     
     
@@ -479,7 +479,7 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
 	//CommandMap의 형태로 개선????
 
 	model.addAttribute("sessionUniqId", user.getUniqId());
-	return ".basic_admin/rippleNoticeInqire";
+	return ".admin_admin/rippleNoticeInqire";
     }
 
     /**
@@ -525,7 +525,7 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
 	//CommandMap의 형태로 개선????
 
 	model.addAttribute("sessionUniqId", user.getUniqId());
-	return ".basic_admin/rippleNoticeModify";
+	return ".admin_admin/rippleNoticeModify";
     }
     
     
@@ -560,7 +560,7 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
 	}	
     
     /**
-     * 전화상담/QnA게시물에 대한 목록을 조회한다.
+     * FAQ게시물에 대한 목록을 조회한다.
      * 
      * @param boardVO
      * @param sessionVO
@@ -568,8 +568,8 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
      * @return
      * @throws Exception
      */
-    @RequestMapping("/phoneQnAList.do")
-    public String phoneQnAList(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+    @RequestMapping("/FAQList.do")
+    public String FAQList(BoardVO boardVO, ModelMap model) throws Exception {
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
     	//게시판 아이디 : BBSMSTR_000000000001 / BBSMSTR_000000000002
@@ -603,11 +603,11 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
     	model.addAttribute("boardVO", boardVO);
     	model.addAttribute("paginationInfo", paginationInfo);
 
-    	return ".basic_admin/phoneQnAList";
+    	return ".admin_admin/FAQList";
     }
     
     /**
-     * 리플뉴스에 대한 상세 정보를 조회한다.
+     * 게시물에 대한 수정 화면으로 이동한다.
      * 
      * @param boardVO
      * @param sessionVO
@@ -615,8 +615,33 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
      * @return
      * @throws Exception
      */
-    @RequestMapping("/phoneQnADetail.do")
-    public String phoneQnADetail(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+    @RequestMapping("/FAQCallInsertPage.do")
+    public String FAQCallInsertPage(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    	
+    	boardVO.setFrstRegisterId(user.getId());
+        boardVO.setFrstRegisterNm(user.getName());
+        boardVO.setFrstRegisterPnttm(EgovDateUtil.getCurrentDate("yyyy-MM-dd"));
+        boardVO.setLastUpdusrNm(user.getName());
+        boardVO.setLastUpdusrPnttm(EgovDateUtil.getCurrentDate("yyyy-MM-dd"));
+        boardVO.setNtcrId(user.getId());
+        boardVO.setNtcrNm(user.getName());
+		boardVO.setBbsId("BBSMSTR_000000000001");
+    	model.addAttribute("result", boardVO);
+    	return ".admin_admin/FAQModify";
+    }
+    
+    /**
+     * FAQ에 대한 상세 정보를 조회한다.
+     * 
+     * @param boardVO
+     * @param sessionVO
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/FAQInqire.do")
+    public String FAQInqire(BoardVO boardVO, ModelMap model) throws Exception {
 	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 	// 조회수 증가 여부 지정
@@ -635,22 +660,127 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
 			boardVO.setBbsId("BBSMSTR_000000000001");
 	
 	// 신규 등록 화면에서 등록 후  redirect 된 경우 nttId를 model 객체에서 뽑아와야 한다.
-	if(model.get("nttId") != null){
-		long nttId = (Long.parseLong(model.get("nttId").toString()));
-		if(nttId != 0){
-			boardVO.setNttId(nttId);
-		}	
-	}
-	
-	BoardVO vo = bbsMngService.selectBoardArticle(boardVO);
+		if(model.get("nttId") != null){
+			long nttId = (Long.parseLong(model.get("nttId").toString()));
+			if(nttId != 0){
+				boardVO.setNttId(nttId);
+			}	
+		}
+		
+		BoardVO vo = bbsMngService.selectBoardArticle(boardVO);
 
 	model.addAttribute("result", vo);
 	
 	//CommandMap의 형태로 개선????
 
 	model.addAttribute("sessionUniqId", user.getUniqId());
-	return ".basic_admin/qnaDetailView";
+	return ".admin_admin/FAQInqire";
     }
+    
+    /**
+     * FAQ에 대한 상세 정보를 조회한다.
+     * 
+     * @param boardVO
+     * @param sessionVO
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/FAQModify.do")
+    public String FAQModify(BoardVO boardVO, ModelMap model) throws Exception {
+	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
+	// 조회수 증가 여부 지정
+	boardVO.setPlusCount(true);
+
+	//---------------------------------
+	// 2009.06.29 : 2단계 기능 추가
+	//---------------------------------
+	if (!boardVO.getSubPageIndex().equals("")) {
+	    boardVO.setPlusCount(false);
+	}
+	////-------------------------------
+
+	//QnA 게시판 아이디 : BBSMSTR_000000000001
+	if("".equals(boardVO.getBbsId()))
+			boardVO.setBbsId("BBSMSTR_000000000001");
+	
+	// 신규 등록 화면에서 등록 후  redirect 된 경우 nttId를 model 객체에서 뽑아와야 한다.
+		if(model.get("nttId") != null){
+			long nttId = (Long.parseLong(model.get("nttId").toString()));
+			if(nttId != 0){
+				boardVO.setNttId(nttId);
+			}	
+		}
+		
+		BoardVO vo = bbsMngService.selectBoardArticle(boardVO);
+
+	model.addAttribute("result", vo);
+	
+	//CommandMap의 형태로 개선????
+
+	model.addAttribute("sessionUniqId", user.getUniqId());
+	return ".admin_admin/FAQModify";
+    }
+    
+    /**
+     * 게시물을 등록한다.
+     * 
+     * @param boardVO
+     * @param board
+     * @param sessionVO
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    @RequestMapping("/insertFAQArticle.do")
+    public String insertFAQArticle(
+					//final MultipartHttpServletRequest multiRequest, 
+                      @ModelAttribute("searchVO") BoardVO boardVO,
+                      @ModelAttribute("bdMstr") BoardMaster bdMstr, 
+                      @ModelAttribute("board") Board board, 
+                      RedirectAttributes redirectAttributes,
+	    ModelMap model) throws Exception {
+
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		long nttId = 0;
+		if (isAuthenticated) {
+		    board.setFrstRegisterId(user.getId());
+		    //리플뉴스 게시판 아이디 : BBSMSTR_000000000003
+			if("".equals(boardVO.getBbsId()))
+					boardVO.setBbsId("BBSMSTR_000000000003");
+		    	    
+		    //board.setNtcrNm("");	// dummy 오류 수정 (익명이 아닌 경우 validator 처리를 위해 dummy로 지정됨)
+		    //board.setPassword("");	// dummy 오류 수정 (익명이 아닌 경우 validator 처리를 위해 dummy로 지정됨)
+		    
+		    board.setNtcrId(user.getId()); //게시물 통계 집계를 위해 등록자 ID 저장
+		    board.setNtcrNm(user.getName()); //게시물 통계 집계를 위해 등록자 Name 저장
+		    // 게시물의 진행상태코드 이전에는 답변도 달수 있었지만 현재는 사라진 상태라 고정으로 접수상태로 입력. 
+		    board.setQnaProcessSttusCode("2"); // 게시물의 진행상태코드 
+		    
+		    //board.setNttCn(board.getNttCn());	// XSS 방지
+			//escape된 문자열을 다시 원래 형태로 복원하여 DB에 저장한다. ckEditor의 사용상 화명에 태그 형태 대로 적용하기 위한 처리 방식임.
+		    board.setNttCn(StringEscapeUtils.unescapeHtml(board.getNttCn()));
+		    
+		    nttId = 0;
+			if( board.getNttId() == 0 ){
+				nttId = bbsMngService.insertBoardArticle(board);	
+				board.setNttId(nttId);
+			}else{
+			    board.setLastUpdusrId(user.getId());
+				bbsMngService.updateBoardArticle(board);
+				nttId = board.getNttId();
+			}	
+		}
+		model.addAttribute("result", board);
+		
+		redirectAttributes.addFlashAttribute("nttId",String.valueOf(nttId));
+		
+		//등록
+		return "redirect:/admin/FAQList.do";
+    }    
 	  
        /**
      * 게시물에 대한 내용을 삭제한다.
@@ -680,6 +810,10 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
 			returnUrl = "redirect:/admin/rippleNewsList.do";
 		}else if("BBSMSTR_000000000004".equals(board.getBbsId())){
 			returnUrl = "redirect:/admin/rippleNoticeList.do";
+		}else if("BBSMSTR_000000000001".equals(board.getBbsId())){
+			returnUrl = "redirect:/admin/FAQList.do";
+		} else {
+			returnUrl = "redirect:/admin/referenceList.do";
 		}
 		return returnUrl;
     }
@@ -725,8 +859,227 @@ public class AdminCustomerController implements ApplicationContextAware, Initial
 		return "redirect:/admin/noticeList.do";
     }
     
+    /**
+     * 자료실 게시물 리스트
+     * 
+     * @param boardVO
+     * @param sessionVO
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/referenceList.do")
+    public String selectReferenceList(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
+    	//게시판 아이디 : BBSMSTR_000000000005
+
+    	BoardMasterVO vo = new BoardMasterVO();
+    	
+    	if("".equals(boardVO.getBbsId()))
+    		boardVO.setBbsId("BBSMSTR_000000000005");
+    	
+    	boardVO.setPageUnit(propertyService.getInt("pageUnit"));
+    	boardVO.setPageSize(propertyService.getInt("pageSize"));
+
+    	PaginationInfo paginationInfo = new PaginationInfo();
+    	
+    	paginationInfo.setCurrentPageNo(boardVO.getPageIndex());
+    	paginationInfo.setRecordCountPerPage(boardVO.getPageUnit());
+    	paginationInfo.setPageSize(boardVO.getPageSize());
+
+    	boardVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+    	boardVO.setLastIndex(paginationInfo.getLastRecordIndex());
+    	boardVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+
+    	//Map<String, Object> map = bbsMngService.selectBoardArticles(boardVO, vo.getBbsAttrbCode());
+    	Map<String, Object> map = bbsMngService.selectBoardArticles(boardVO, ""); //
+    	int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+    	
+    	paginationInfo.setTotalRecordCount(totCnt);
+
+
+    	model.addAttribute("resultList", map.get("resultList"));
+    	model.addAttribute("resultCnt", map.get("resultCnt"));
+    	model.addAttribute("boardVO", boardVO);
+    	model.addAttribute("paginationInfo", paginationInfo);
+
+    	return ".admin_admin/referenceList";
+    }
     
+    /**
+     * 리플공지에 대한 상세 정보를 조회한다.
+     * 
+     * @param boardVO
+     * @param sessionVO
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/referenceModify.do")
+    public String referenceModify(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
+	// 조회수 증가 여부 지정
+	boardVO.setPlusCount(true);
+
+	//---------------------------------
+	// 2009.06.29 : 2단계 기능 추가
+	//---------------------------------
+	if (!boardVO.getSubPageIndex().equals("")) {
+	    boardVO.setPlusCount(false);
+	}
+	////-------------------------------
+
+	//리플 공지 게시판 아이디 : BBSMSTR_000000000004
+	if("".equals(boardVO.getBbsId()))
+			boardVO.setBbsId("BBSMSTR_000000000005");
+	
+	// 신규 등록 화면에서 등록 후  redirect 된 경우 nttId를 model 객체에서 뽑아와야 한다.
+	if(model.get("nttId") != null){
+		long nttId = (Long.parseLong(model.get("nttId").toString()));
+		if(nttId != 0){
+			boardVO.setNttId(nttId);
+		}	
+	}
+	
+	BoardVO vo = bbsMngService.selectBoardArticle(boardVO);
+
+	model.addAttribute("result", vo);
+	
+	//CommandMap의 형태로 개선????
+
+	model.addAttribute("sessionUniqId", user.getUniqId());
+	return ".admin_admin/referenceModify";
+    }
     
+    /**
+     * 게시물에 대한 수정 화면으로 이동한다.
+     * 
+     * @param boardVO
+     * @param sessionVO
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/referenceCallInsertPage.do")
+    public String referenceCallInsertPage(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    	
+    	boardVO.setFrstRegisterId(user.getId());
+        boardVO.setFrstRegisterNm(user.getName());
+        boardVO.setFrstRegisterPnttm(EgovDateUtil.getCurrentDate("yyyy-MM-dd"));
+        boardVO.setLastUpdusrNm(user.getName());
+        boardVO.setLastUpdusrPnttm(EgovDateUtil.getCurrentDate("yyyy-MM-dd"));
+        boardVO.setNtcrId(user.getId());
+        boardVO.setNtcrNm(user.getName());
+		boardVO.setBbsId("BBSMSTR_000000000005");
+    	model.addAttribute("result", boardVO);
+    	return ".admin_admin/referenceModify";
+    }
+    
+    /**
+     * 리플뉴스에 대한 상세 정보를 조회한다.
+     * 
+     * @param boardVO
+     * @param sessionVO
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/referenceInqire.do")
+    public String referenceInqire(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
+	// 조회수 증가 여부 지정
+	boardVO.setPlusCount(true);
+
+	//---------------------------------
+	// 2009.06.29 : 2단계 기능 추가
+	//---------------------------------
+	if (!boardVO.getSubPageIndex().equals("")) {
+	    boardVO.setPlusCount(false);
+	}
+	////-------------------------------
+
+	//리플뉴스 게시판 아이디 : BBSMSTR_000000000003
+	if("".equals(boardVO.getBbsId()))
+			boardVO.setBbsId("BBSMSTR_000000000005");
+	
+	// 신규 등록 화면에서 등록 후  redirect 된 경우 nttId를 model 객체에서 뽑아와야 한다.
+	if(model.get("nttId") != null){
+		long nttId = (Long.parseLong(model.get("nttId").toString()));
+		if(nttId != 0){
+			boardVO.setNttId(nttId);
+		}	
+	}
+	
+	BoardVO vo = bbsMngService.selectBoardArticle(boardVO);
+
+	model.addAttribute("result", vo);
+	
+	//CommandMap의 형태로 개선????
+
+	model.addAttribute("sessionUniqId", user.getUniqId());
+	return ".admin_admin/referenceInqire";
+    }
+    
+    /**
+     * 게시물을 등록한다.
+     * 
+     * @param boardVO
+     * @param board
+     * @param sessionVO
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+    @RequestMapping("/insertReferenceArticle.do")
+    public String insertReferenceArticle(
+//    		                                                      final MultipartHttpServletRequest multiRequest, 
+    		                                                      @ModelAttribute("searchVO") BoardVO boardVO,
+	                                                              @ModelAttribute("bdMstr") BoardMaster bdMstr, 
+	                                                              @ModelAttribute("board") Board board, 
+	                                                              RedirectAttributes redirectAttributes,
+	    ModelMap model) throws Exception {
+
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		long nttId = 0;
+		if (isAuthenticated) {
+		    board.setFrstRegisterId(user.getId());
+		    //리플 공지 게시판 아이디 : BBSMSTR_000000000003
+			if("".equals(boardVO.getBbsId()))
+					boardVO.setBbsId("BBSMSTR_000000000005");
+		    	    
+		    //board.setNtcrNm("");	// dummy 오류 수정 (익명이 아닌 경우 validator 처리를 위해 dummy로 지정됨)
+		    //board.setPassword("");	// dummy 오류 수정 (익명이 아닌 경우 validator 처리를 위해 dummy로 지정됨)
+		    
+		    board.setNtcrId(user.getId()); //게시물 통계 집계를 위해 등록자 ID 저장
+		    board.setNtcrNm(user.getName()); //게시물 통계 집계를 위해 등록자 Name 저장
+		    
+		    //board.setNttCn(board.getNttCn());	// XSS 방지
+			//escape된 문자열을 다시 원래 형태로 복원하여 DB에 저장한다. ckEditor의 사용상 화명에 태그 형태 대로 적용하기 위한 처리 방식임.
+		    board.setNttCn(StringEscapeUtils.unescapeHtml(board.getNttCn()));
+		    
+		    nttId = 0;
+			if( board.getNttId() == 0 ){
+				nttId = bbsMngService.insertBoardArticle(board);	
+				board.setNttId(nttId);
+			}else{
+			    board.setLastUpdusrId(user.getId());
+				bbsMngService.updateBoardArticle(board);
+				nttId = board.getNttId();
+			}	
+		}
+		model.addAttribute("result", board);
+		
+		redirectAttributes.addFlashAttribute("nttId",String.valueOf(nttId));
+		
+		//등록
+		return "redirect:/admin/referenceList.do";
+    }    
     
     /**
      * XSS 방지 처리.

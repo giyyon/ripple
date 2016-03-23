@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 
+
 import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -623,4 +624,97 @@ public class CustomerController implements ApplicationContextAware, Initializing
 	public String emailInfoPolicy() throws Exception {
 		return ".basic_customer/emailInfoPolicy";
 	}
+	
+	/**
+     * 자료실 게시물 리스트
+     * 
+     * @param boardVO
+     * @param sessionVO
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/referenceList.do")
+    public String selectReferenceList(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
+    	//게시판 아이디 : BBSMSTR_000000000005
+
+    	BoardMasterVO vo = new BoardMasterVO();
+    	
+    	if("".equals(boardVO.getBbsId()))
+    		boardVO.setBbsId("BBSMSTR_000000000005");
+    	
+    	boardVO.setPageUnit(propertyService.getInt("pageUnit"));
+    	boardVO.setPageSize(propertyService.getInt("pageSize"));
+
+    	PaginationInfo paginationInfo = new PaginationInfo();
+    	
+    	paginationInfo.setCurrentPageNo(boardVO.getPageIndex());
+    	paginationInfo.setRecordCountPerPage(boardVO.getPageUnit());
+    	paginationInfo.setPageSize(boardVO.getPageSize());
+
+    	boardVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+    	boardVO.setLastIndex(paginationInfo.getLastRecordIndex());
+    	boardVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+
+    	//Map<String, Object> map = bbsMngService.selectBoardArticles(boardVO, vo.getBbsAttrbCode());
+    	Map<String, Object> map = bbsMngService.selectBoardArticles(boardVO, ""); //
+    	int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+    	
+    	paginationInfo.setTotalRecordCount(totCnt);
+
+
+    	model.addAttribute("resultList", map.get("resultList"));
+    	model.addAttribute("resultCnt", map.get("resultCnt"));
+    	model.addAttribute("boardVO", boardVO);
+    	model.addAttribute("paginationInfo", paginationInfo);
+
+    	return ".basic_customer/referenceList";
+    }
+    
+    /**
+     * 자료실 상세 정보를 조회한다.
+     * 
+     * @param boardVO
+     * @param sessionVO
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/referenceListInqire.do")
+    public String referenceListInqire(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
+	// 조회수 증가 여부 지정
+	boardVO.setPlusCount(true);
+
+	//---------------------------------
+	// 2009.06.29 : 2단계 기능 추가
+	//---------------------------------
+	if (!boardVO.getSubPageIndex().equals("")) {
+	    boardVO.setPlusCount(false);
+	}
+	////-------------------------------
+
+	
+	if("".equals(boardVO.getBbsId()))
+			boardVO.setBbsId("BBSMSTR_000000000005");
+	
+	// 신규 등록 화면에서 등록 후  redirect 된 경우 nttId를 model 객체에서 뽑아와야 한다.
+	if(model.get("nttId") != null){
+		long nttId = (Long.parseLong(model.get("nttId").toString()));
+		if(nttId != 0){
+			boardVO.setNttId(nttId);
+		}	
+	}
+	
+	BoardVO vo = bbsMngService.selectBoardArticle(boardVO);
+
+	model.addAttribute("result", vo);
+	
+	//CommandMap의 형태로 개선????
+
+	return ".basic_customer/referenceInqire";
+    }   
 }

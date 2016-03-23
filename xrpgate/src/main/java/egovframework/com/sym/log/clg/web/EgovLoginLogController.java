@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  */
 
-@Controller
+
 public class EgovLoginLogController {
 
 	@Resource(name="EgovLoginLogService")

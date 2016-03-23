@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.antlr.grammar.v3.ANTLRParser.exceptionGroup_return;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import xrpgate.admin.web.service.AdminAccountVO;
+import xrpgate.admin.web.service.AdminMgmtService;
 import xrpgate.customer.web.CustomerController;
 import xrpgate.trade.service.AccountVO;
 import xrpgate.trade.service.TradeDetailVO;
@@ -65,6 +68,9 @@ public class TradeController implements ApplicationContextAware, InitializingBea
     
     @Resource(name = "tradeManageService")
     private TradeManageService tradeManageService;
+    
+    @Resource(name = "adminMgmtService")
+    private AdminMgmtService adminMgmtService;
     
     
 	/** mberManageService */
@@ -137,27 +143,37 @@ public class TradeController implements ApplicationContextAware, InitializingBea
      * @throws Exception
      */
     @RequestMapping("/callAccountTransactions.do")
-    public String callRippleTradeBuyModify( ModelMap model) throws Exception {
+    public String callAccountTransactions( ModelMap model, HttpServletRequest request) throws Exception {
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		
     	AccountVO accountVO = new AccountVO();
     	ArrayList<AccountVO> listVo = new ArrayList<AccountVO>();
+    	
+    	LoginVO loginVo = (LoginVO) request.getSession().getAttribute("loginVO");
+    	
+		AdminAccountVO adminAccountVo = new AdminAccountVO();
+		HashMap<String, Object> mapXrpPrice = new HashMap<String, Object>();
     	try {
     		accountVO.setMberId(user.getId());
         	
-        	accountVO = tradeManageService.selectAccountInfo(accountVO);
-        	// 최근 3번째까지의 계좌 예탁/인출 정보
+    		// 최근 3번째까지의 계좌 예탁/인출 정보
         	listVo = tradeManageService.selectTransactionInfo(accountVO);
         	
+        	accountVO = tradeManageService.selectAccountInfo(accountVO);
+        	
+        	//xrpgate 계좌 정보 
+    		adminAccountVo = adminMgmtService.selectRippleAccountInfo();
+    		// 시세 정보 조회
+    		mapXrpPrice = tradeManageService.selectXrpTradePrice();
     	} catch( Exception e){
     		System.out.print(e.getMessage());
     	}
     	
-		
     	model.addAttribute("accountVO", accountVO);
     	model.addAttribute("listVo", listVo);
-		
-    	
+		model.addAttribute("user", loginVo);
+		model.addAttribute("adminAccountVo", adminAccountVo);
+		model.addAttribute("xrpPrice", mapXrpPrice);
     	return ".basic_trade/rippleAccountTrade";
     }	
     
@@ -186,7 +202,38 @@ public class TradeController implements ApplicationContextAware, InitializingBea
     		map.put("listVo", listVo);
     	} catch(Exception e){
     		System.out.print(e.getMessage());
+    		map.put("isSuccess", false);
+    	}
+    	
+    	return map;
+    }
+    
+    /**
+     * 예탁 / 인출 거래 요청 정보를 저장한다.
+     * @param accountVO
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="deleteTransactionInfo.do")
+    @ResponseBody
+    public HashMap<String, Object> deleteTransactionInfo(AccountVO accountVO) throws Exception {
+    	
+    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    	
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	
+    	try{
+    		accountVO.setMberId(user.getId());
+    		
+    		tradeManageService.deleteTransactionInfo(accountVO);
+    		
+    		ArrayList<AccountVO> listVo = tradeManageService.selectTransactionInfo(accountVO);
+    		
     		map.put("isSuccess", true);
+    		map.put("listVo", listVo);
+    	} catch(Exception e){
+    		System.out.print(e.getMessage());
+    		map.put("isSuccess", false);
     	}
     	
     	return map;
@@ -212,7 +259,8 @@ public class TradeController implements ApplicationContextAware, InitializingBea
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-			
+
+		ArrayList<TradeVO> tradeList = new ArrayList<TradeVO>();
 		
 		String message = "";
 		
@@ -220,13 +268,18 @@ public class TradeController implements ApplicationContextAware, InitializingBea
 			tradeDetailVO.setRequestErId(user.getId());
 			tradeManageService.insertRippleTrade(tradeDetailVO);
 			
+			tradeList = tradeManageService.selectXrpTradeList(tradeDetailVO);
+			
 			if("S".equals(tradeDetailVO.getTradeType())){
-				message = "리플 판매 신청이 등록되었습니다. 처리 결과는 마이페이지에서 확인 가능합니다.";
+				message = "리플 판매 신청이 등록되었습니다.\n처리완료되면 게이트허브 개인지갑이나 고객님 개인의 \n계좌내역을 확인해주세요";
+			} else if("B".equals(tradeDetailVO.getTradeType())) {
+				message = "리플 구매 신청이 등록되었습니다.\n처리완료되면 게이트허브 개인지갑이나 고객님 개인의 \n계좌내역을 확인해주세요";
 			} else {
-				message = "리플 구매 신청이 등록되었습니다. 처리 결과는 마이페이지에서 확인 가능합니다.";
+				message = "리플 구매 대행 신청이 등록되었습니다.\n처리완료되면 게이트허브 개인지갑이나 고객님 개인의 \n계좌내역을 확인해주세요";
 			}
 			
 			map.put("isSuccess", true);
+			map.put("tradeList", tradeList);
 			map.put("message", message);
 		} catch(Exception e){
 			map.put("isSuccess", false);
@@ -367,29 +420,73 @@ public class TradeController implements ApplicationContextAware, InitializingBea
     	TradeVO tradeVo = new TradeVO();
     	ArrayList<TradeVO> tradeList = new ArrayList<TradeVO>();
     	
-    	try {
+    	// 최근 매수 목록 호출
+		ArrayList<TradeVO> buyTrade = new ArrayList<TradeVO>();
+		ArrayList<TradeVO> sellTrade = new ArrayList<TradeVO>();
+		ArrayList<TradeVO> completeTrade = new ArrayList<TradeVO>();
+		// 최근 매수, 매도, 시세 호출
+		HashMap<String, Object> mapXrpPrice = new HashMap<String, Object>();
+		
+		AdminAccountVO adminAccountVo = new AdminAccountVO();
+		
+		int chkTrade = 0;
+		
+		try {
     		accountVO.setMberId(user.getId());
     		tradeVo.setRequestErId(user.getId());
     		
         	accountVO = tradeManageService.selectAccountInfo(accountVO);
         	tradeList = tradeManageService.selectXrpTradeList(tradeVo);
         	
+        	buyTrade = tradeManageService.selectXrpBuyTradeList(tradeVo);
+			// 최근 매도 목록 호출
+			sellTrade = tradeManageService.selectXrpSellTradeList(tradeVo);
+			// 최근 거래 완료 목록 호출
+			completeTrade = tradeManageService.selectXrpCompleteTradeList();
+			
+			mapXrpPrice = tradeManageService.selectXrpTradePrice();
+			//xrpgate 계좌 정보 
+			adminAccountVo = adminMgmtService.selectRippleAccountInfo();
+			
+			// 사용자의 마지막 구매 상태 조회
+			chkTrade = tradeManageService.selectChkTradeCntByMber(tradeVo);
+        	
     	} catch( Exception e){
     		System.out.print(e.getMessage());
     	}
     	
-		
     	model.addAttribute("accountVO", accountVO);
     	model.addAttribute("tradeList", tradeList);
-		
+    	model.addAttribute("buyTrade", buyTrade);
+		model.addAttribute("sellTrade", sellTrade);
+		model.addAttribute("completeTrade", completeTrade);
+		model.addAttribute("xrpPrice", mapXrpPrice);
+		model.addAttribute("adminAccountVo", adminAccountVo);
+		model.addAttribute("chkStatus", chkTrade > 0 ? false:true);
     	
     	return ".basic_trade/rippleXrpTrade";
     }	
     
     @RequestMapping(value="/callMarketPriece.do")
-    public String getMarketPrice() throws Exception {
+    public String getMarketPrice(ModelMap model) throws Exception {
     	
     	return ".basic_trade/marketprice";
+    }
+    
+    @RequestMapping(value="/callExcutePurchase.do")
+    public String callExcutePurchase(ModelMap model) throws Exception {
+    	AdminAccountVO adminAccountVo = new AdminAccountVO();
+    	
+    	//xrpgate 계좌 정보 
+		adminAccountVo = adminMgmtService.selectRippleAccountInfo();
+		model.addAttribute("adminAccountVo", adminAccountVo);
+    	return ".basic_trade/executePurchase";
+    }
+    
+    @RequestMapping(value="/callCommissionPolicy.do")
+    public String callPommissionPolicy() throws Exception {
+    	
+    	return ".basic_trade/commissionPolicy";
     }
     
 }

@@ -42,7 +42,7 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
  * </pre>
  */
 
-@Controller
+
 public class EgovMenuCreateManageController {
 
 	/* Validator */

@@ -1,36 +1,25 @@
 package xrpgate.join.web;
 
-import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.poi.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import xrpgate.join.model.KcpCertVO;
@@ -135,9 +124,9 @@ public class JoinMberManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/mem_join_chk.do")
-	public String mem_join_chk()
+	public String mem_join_chk(MberManageVO mberManageVO, Model model)
 			throws Exception {
-		
+		model.addAttribute("mberVo", mberManageVO);
 		return ".basic_join/mem_join_chk";
 	}
 	
@@ -167,8 +156,13 @@ public class JoinMberManageController {
 		//일목록
 		vo.setCodeId("RIP903");
 		List<?> day_result = cmmUseService.selectCmmCodeDetail(vo);
-		
 		model.addAttribute("day_result", day_result);
+		// 은행목록
+		vo.setCodeId("RIP905");
+		List<?> bank_result = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("bank_result", bank_result);
+		
+		model.addAttribute("mberVo", mberManageVO);
 
 		return ".basic_join/mem_join_p";
 	}
@@ -226,12 +220,22 @@ public class JoinMberManageController {
 			// 성별, 지역, 생년월일 설정.
 			mberManageVO.setSexdstnCode(certVO.getSex_code());
 			mberManageVO.setLocalCode(certVO.getLocal_code());
-			mberManageVO.setIhidnum(certVO.getBirth_day());
-			mberManageVO.setMoblphonNo(certVO.getPhone_no());
+			if(!"".equals(certVO.getBirth_day())){
+				mberManageVO.setIhidnum(certVO.getBirth_day());
+			}
+			
+			if(!"".equals(certVO.getPhone_no())){
+				mberManageVO.setMoblphonNo(certVO.getPhone_no());	
+			}
+			
 			mberManageVO.setMberNm(certVO.getUser_name());
+			mberManageVO.setMemberGrade("Gold");
 			//그룹정보 초기화
 			//mberManageVO.setGroupId("1");
 			//일반회원가입신청 등록시 일반회원등록기능을 사용하여 등록한다.
+			// 회원정보 입력전 동명이인에 대한 태그를 생성
+			mberManageVO.setTagVal(mberManageService.selectSameNameMberCnt(mberManageVO));
+			
 			mberManageService.insertMber(mberManageVO);
 			
 			//권한 부여
@@ -239,19 +243,21 @@ public class JoinMberManageController {
 			AuthorGroup authorGroup = new AuthorGroup();
 			authorGroup.setUniqId(afterMberManageVO.getUniqId());
 			authorGroup.setAuthorCode("ROLE_USER");
-			authorGroup.setMberTyCode("USR01");
+			authorGroup.setMberTyCode(mberManageVO.getUserTy());
 			
 			egovAuthorGroupService.insertAuthorGroup(authorGroup);
-        
-			HttpSession sesseion = request.getSession();
+
+			/*HttpSession sesseion = request.getSession();
 			sesseion.setAttribute("mberManageVO", mberManageVO);
 			
 			sesseion.setAttribute("joinUserNm", mberManageVO.getMberNm());
 			sesseion.setAttribute("joinUserId", mberManageVO.getMberId());
 			sesseion.setAttribute("joinUserPw", mberManageVO.getOldPassword());
-			
+			*/
 			model.addAttribute("mberManageVO", mberManageVO); // 회원정보
+			
        	return  ".basic_join/joinComplete";
+       	//return "forward:/login/loginUsr.do";
 	}
 	
 	/**
@@ -459,8 +465,6 @@ public class JoinMberManageController {
 	
 	@RequestMapping("/kcpCertStart.do")
 	public String kcpCertStart(@ModelAttribute("certVO") KcpCertVO certVO, HttpSession session, HttpServletRequest request, Model model) throws Exception{
-		
-		model.addAttribute("certVO", certVO);
 		return ".popup_join/kcpcert_start";
 	}
 	

@@ -7,7 +7,7 @@
   </li>
 </div> 
 
-<form:form commandName="mberManageVO"  id="form" method="POST">
+<form:form commandName="mberManageVO" action="${contextPath}/myInfo/memberPasswordChk.do" id="form" method="POST">
 <div class="content">
     <div class="content_in">
         <div class="con_info">
@@ -20,7 +20,7 @@
                 	<div class="mem_idpw_box"> 
                         <div class="mem_id_box">
                             <li class="mem_title">아이디</li>
-                            <li class="mem_id">홍길동</li>
+                            <li class="mem_id">${loginVO.id }</li>
                         </div>
                         <div class="mem_pw_box">
                             <li class="mem_title">비밀번호</li>
@@ -50,6 +50,12 @@
 			$("#form").submit();
 		});
 		
+		$("[name=password]").on("keyup", function(e){
+			e.preventDefault;
+			if(e.which == 13){
+				$("[name=btnPassChk]").trigger('click');
+			}
+		});
 	});
 
 </script>

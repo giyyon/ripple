@@ -311,6 +311,7 @@
                 }
                 var that = $(this).data('blueimp-fileupload') ||
                         $(this).data('fileupload');
+                debugger;
                 that._resetFinishedDeferreds();
                 that._transition($(this).find('.fileupload-progress')).done(
                     function () {
@@ -508,6 +509,7 @@
         _startHandler: function (e) {
         	
             e.preventDefault();
+            debugger;
             var button = $(e.currentTarget),
                 template = button.closest('.template-upload'),
                 data = template.data('data');

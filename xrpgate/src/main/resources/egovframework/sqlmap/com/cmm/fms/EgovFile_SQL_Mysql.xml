@@ -55,7 +55,8 @@
 			INSERT INTO COMTNFILE
 			(ATCH_FILE_ID, CREAT_DT, USE_AT)
 			VALUES
-			( #atchFileId#, SYSDATE(), 'Y')			
+			( #atchFileId#, SYSDATE(), 'Y')		
+			ON DUPLICATE KEY UPDATE CREAT_DT=SYSDATE()	
 		]]>
 	</insert>
 	

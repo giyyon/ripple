@@ -1,6 +1,7 @@
 package egovframework.com.uss.umt.service.impl;
 
 import java.util.List;
+import java.util.Random;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cop.ems.service.EgovSndngMailRegistService;
@@ -71,6 +72,7 @@ public class EgovMberManageServiceImpl extends EgovAbstractServiceImpl implement
 		mberManageVO.setPassword(pass);
 		
 		String result = mberManageDAO.insertMber(mberManageVO);
+		mberManageDAO.insertMberAccountInfo(mberManageVO);
 		return result;
 	}
 	
@@ -131,9 +133,9 @@ public class EgovMberManageServiceImpl extends EgovAbstractServiceImpl implement
 	 * @param mberManageVO 일반회원수정정보
 	 * @throws Exception
 	 */
-	public void updateMberSub(MberManageVO mberManageVO) throws Exception {
+	public void updateMberByAdmin(MberManageVO mberManageVO) throws Exception {
 		//부가정보 기록
-		mberManageDAO.updateMberSub(mberManageVO);
+		mberManageDAO.updateMberByAdmin(mberManageVO);
 
 	}
 	
@@ -207,4 +209,100 @@ public class EgovMberManageServiceImpl extends EgovAbstractServiceImpl implement
 		MberManageVO mberManageVO = mberManageDAO.selectChkJoinYn(di);		
 		return mberManageVO;
 	}
+	
+	private String makeMberTag(int mberCnt) {
+		String mberTag = "A";
+		
+		char ch = 'A';
+		char ch2 = 'A';
+		if(mberCnt > 0 ) {
+			int f1 = (mberCnt/26);
+			int f2 = mberCnt%26;
+			char[] array = new char[2];
+			for (int i = 0; i < (f1 == 0 ? 1 : f1); i++) {
+				array[0] = (char) (ch+i);
+				for(int j = 0 ; j < f2; j++){
+					array[1] = (char) (ch2+j);
+					//System.out.println("두번째 :  " +array[1]);
+				}
+				//System.out.println("첫번째 :  " + array[0] + "  i ==" + i+f1);
+			}
+			mberTag = String.valueOf(array);
+		}
+		return mberTag;
+	}
+
+	@Override
+	public String selectSameNameMberCnt(MberManageVO mberMnnageVo)
+			throws Exception {
+		// 회원의 정버 입력하기 전에 동명이인의 수 많큼 회원에게 태그를 생성.
+				int mberCnt = mberManageDAO.selectSameNameMberCnt(mberMnnageVo);
+				
+		return makeMberTag(mberCnt);
+	}
+
+	@Override
+	public String selectMberIdByMberNm(MberManageVO mberVo) throws Exception {
+		// TODO Auto-generated method stub
+		return mberManageDAO.selectMberIdByMberNm(mberVo);
+	}
+
+	@Override
+	public String selectMberPassByMberNm(MberManageVO mberVo) throws Exception {
+		// TODO Auto-generated method stub
+		int i = 0;
+		i = mberManageDAO.selectMberPassByMberNm(mberVo);
+		String tempPass = "";
+		if(i > 0 ){
+			tempPass = randomValue("C", 8);
+			//패스워드 암호화
+			String pass = EgovFileScrty.encryptPassword(tempPass, mberVo.getMberId());
+			mberVo.setPassword(pass);
+			mberManageDAO.updatePassword(mberVo);
+		}
+		return tempPass;
+	}
+	
+	public static String randomValue(String type, int cnt) {
+		
+		StringBuffer strPwd = new StringBuffer();
+		char str[] = new char[1];
+		// 특수기호 포함
+		if (type.equals("P")) {
+		for (int i = 0; i < cnt; i++) {
+		str[0] = (char) ((Math.random() * 94) + 33);
+		strPwd.append(str);
+		}
+		// 대문자로만
+		} else if (type.equals("A")) {
+		for (int i = 0; i < cnt; i++) {
+		str[0] = (char) ((Math.random() * 26) + 65);
+		strPwd.append(str);
+		}
+		// 소문자로만
+		} else if (type.equals("S")) {
+		for (int i = 0; i < cnt; i++) {
+		str[0] = (char) ((Math.random() * 26) + 97);
+		strPwd.append(str);
+		}
+		// 숫자형으로
+		} else if (type.equals("I")) {
+		int strs[] = new int[1];
+		for (int i = 0; i < cnt; i++) {
+		strs[0] = (int) (Math.random() * 9);
+		strPwd.append(strs[0]);
+		}
+		// 소문자, 숫자형
+		} else if (type.equals("C")) {
+		Random rnd = new Random();
+		for (int i = 0; i < cnt; i++) {
+		if (rnd.nextBoolean()) {
+		strPwd.append((char) ((int) (rnd.nextInt(26)) + 97));
+		} else {
+		strPwd.append((rnd.nextInt(10)));
+		}
+		}
+		}
+		return strPwd.toString();
+		}    
 }

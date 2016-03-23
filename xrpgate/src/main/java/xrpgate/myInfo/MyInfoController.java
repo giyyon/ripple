@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import xrpgate.login.web.LoginController;
+import xrpgate.trade.service.AccountDetailVO;
 import xrpgate.trade.service.TradeDetailVO;
 import xrpgate.trade.service.TradeManageService;
 import xrpgate.trade.service.TradeVO;
@@ -166,6 +167,11 @@ public class MyInfoController {
 		
 		model.addAttribute("day_result", day_result);
 		
+		// 은행목록
+		vo.setCodeId("RIP905");
+		List<?> bank_result = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("bank_result", bank_result);
+				
 		return ".basic_myInfo/myInfoInqire";
 	}
 	
@@ -178,7 +184,8 @@ public class MyInfoController {
                                                       ModelMap model) throws Exception {
 
     	LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-    	
+    	AccountDetailVO acVo = new AccountDetailVO();
+    	acVo.setMberId(loginVO.getId());
     	tradeDetailVO.setRequestErId(loginVO.getId());	
     	
     	tradeDetailVO.setPageUnit(propertyService.getInt("pageUnit"));
@@ -194,9 +201,10 @@ public class MyInfoController {
     	tradeDetailVO.setLastIndex(paginationInfo.getLastRecordIndex());
     	tradeDetailVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-    	
+    	ArrayList<AccountDetailVO> accountVo = tradeManageService.selectAccountTransactionByMber(acVo);
+    			
 //		tradeDetailVO.setTradeType(""); // 모두 가져오기
-		Map<String, Object> map = tradeManageService.selectRippleTradeList(tradeDetailVO);	
+		/*Map<String, Object> map = tradeManageService.selectRippleTradeList(tradeDetailVO);	
 		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
 		
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -204,9 +212,10 @@ public class MyInfoController {
 		model.addAttribute("resultList", map.get("resultList"));
 		model.addAttribute("resultCnt", map.get("resultCnt"));
 		model.addAttribute("tradeDetailVO", tradeDetailVO);
-		model.addAttribute("paginationInfo", paginationInfo);
+		model.addAttribute("paginationInfo", paginationInfo);*/
 		
 		//model.addAttribute("message", "전화상담이 등록되었습니다. 상담 담당자가 등록하신 연락처로 연락드리겠습니다.");
+    	model.addAttribute("accountVo", accountVo);
 		return ".basic_myInfo/myRippleTradeList";
     }    
 	

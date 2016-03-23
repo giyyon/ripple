@@ -55,7 +55,7 @@ public class TradeDetailVO  extends TradeVO {
     private int lastIndex = 1;
 
     /** 페이지당 레코드 개수 */
-    private int recordCountPerPage = 10;
+    private int recordCountPerPage = 5;
 
     /** 레코드 번호 */
     private int rowNo = 0;

@@ -10,7 +10,7 @@
 <body>
 
 <script type='text/javascript'>
-	window.parent.CKEDITOR.tools.callFunction('${CKEditorFuncNum}', '${url}', '완료');
+	top.CKEDITOR.tools.callFunction('${CKEditorFuncNum}', '${url}', '완료');
 </script>
 
 <%

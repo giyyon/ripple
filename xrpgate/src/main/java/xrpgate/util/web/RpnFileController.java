@@ -63,11 +63,26 @@ public class RpnFileController {
 		 * </pre>
 	 * @return
 	 */
-	@RequestMapping(value = "/uploadPage.do", method = RequestMethod.GET)
-	public String uploadPage(ModelMap model) throws Exception{
-		String atchFileId  = idgenService.getNextStringId();			
-		model.addAttribute("serverAtchFileId", atchFileId);
-		return ".popup_files/upload";
+	@RequestMapping(value = "/uploadPage.do")
+	public String uploadPage(ModelMap model, FileVO fileVo, HttpServletRequest request) throws Exception{
+		String atchFileId  = idgenService.getNextStringId();	
+		String fileMode = request.getParameter("fileMode");
+		String url = "";
+		if("".equals(fileVo.getAtchFileId())){
+			fileVo.setAtchFileId(atchFileId);
+		}
+		
+		if("".equals(fileMode)){
+			model.addAttribute("isUpdate", "false");
+			url	= ".popup_files/fileDown";
+		} else {
+			model.addAttribute("isUpdate", "true");
+			url = ".popup_files/upload";
+		}
+		model.addAttribute("fileVo", fileVo);
+		model.addAttribute("fileMode", fileMode);
+		//model.addAttribute("serverAtchFileId", atchFileId);
+		return url;
 	}
 
 	/**
@@ -120,25 +135,28 @@ public class RpnFileController {
 		// upload to disk
 		List<FileVO> list = FileUtil.uploadFiles(request, atchFileId);
 		
-		// add to DB
-		atchFileId = this.fileMngService.insertFileInfsAdvence(list);
-		
-		//set.  신규로 디비에 저장된 fileSn 정보가를 조회하여 사용자 화면에 response로 보내준다.  
-		List<FileVO> totalList = this.fileMngService.selectFileInfs((FileVO)list.get(0));
-		
-		//fileSn 정보를 갱신
-		FileVO tempVo = null;
-		FileVO tempTotalVo = null;
-		for(int i =0 ; i < list.size() ; i++){
-			tempVo = (FileVO)list.get(i);
-			for(int j=0 ; j < totalList.size() ; j++){
-				tempTotalVo = (FileVO)totalList.get(j);
-				if(tempVo.getStreFileNm().equals(tempTotalVo.getStreFileNm()))
-					tempVo.setFileSn(tempTotalVo.getFileSn());
+		if(list.size() > 0){
+			// add to DB
+			atchFileId = this.fileMngService.insertFileInfsAdvence(list);
+			
+			//set.  신규로 디비에 저장된 fileSn 정보가를 조회하여 사용자 화면에 response로 보내준다.  
+			List<FileVO> totalList = this.fileMngService.selectFileInfs((FileVO)list.get(0));
+			
+			//fileSn 정보를 갱신
+			FileVO tempVo = null;
+			FileVO tempTotalVo = null;
+			for(int i =0 ; i < list.size() ; i++){
+				tempVo = (FileVO)list.get(i);
+				for(int j=0 ; j < totalList.size() ; j++){
+					tempTotalVo = (FileVO)totalList.get(j);
+					if(tempVo.getStreFileNm().equals(tempTotalVo.getStreFileNm()))
+						tempVo.setFileSn(tempTotalVo.getFileSn());
+				}
+				//IE9에서  한글명이 깨지는 것을 막기 위한 조치.
+				tempVo.setOrignlFileNm(URLEncoder.encode(tempVo.getOrignlFileNm(), "UTF-8").replaceAll("\\+", "%20"));
 			}
-			//IE9에서  한글명이 깨지는 것을 막기 위한 조치.
-			tempVo.setOrignlFileNm(URLEncoder.encode(tempVo.getOrignlFileNm(), "UTF-8").replaceAll("\\+", "%20"));
 		}
+		
 		
 		JsonObject jo = new JsonObject();
 		jo.IsSucceed = true;
@@ -183,7 +201,7 @@ public class RpnFileController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/getFiles.do", method = RequestMethod.GET)
-	public JsonObject getFiles(String fileIds) {
+	public JsonObject getFiles(String fileIds , String isUpdate) {
 		FileVO fvo = new FileVO();
 		fvo.setAtchFileId(fileIds);
 		
@@ -191,9 +209,17 @@ public class RpnFileController {
 				
 		JsonObject jo = new JsonObject();
 		jo.IsSucceed = true;
+		jo.isUpdate =  isUpdate;
 		try {
 			fileList = this.fileMngService.selectFileInfs(fvo);
+			for(int i = 0; i< fileList.size(); i++){
+				FileVO vo = new FileVO();
+				vo = fileList.get(i);
+				vo.setIsUpdate(isUpdate);
+				fileList.set(i, vo);
+			}
 			jo.Data = fileList;
+		
 		}
 		catch (Exception e) {
 			// TODO Auto-generated catch block

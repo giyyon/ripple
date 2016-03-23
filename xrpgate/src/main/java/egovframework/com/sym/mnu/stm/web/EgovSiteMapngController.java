@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * </pre>
  */
 
-@Controller
+
 public class EgovSiteMapngController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSiteMapngController.class);

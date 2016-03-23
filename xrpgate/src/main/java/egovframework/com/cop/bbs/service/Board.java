@@ -69,11 +69,11 @@ public class Board implements Serializable {
 	/**
 	 * 게시물 아이디
 	 */
-	private long nttId = 0L;
+	private long nttId ;
 	/**
 	 * 게시물 번호
 	 */
-	private long nttNo = 0L;
+	private long nttNo ;
 	/**
 	 * 게시물 제목
 	 */

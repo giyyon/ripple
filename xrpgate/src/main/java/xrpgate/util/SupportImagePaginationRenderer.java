@@ -37,12 +37,12 @@ public class SupportImagePaginationRenderer extends AbstractPaginationRenderer i
 //        nextPageLabel     = "<a href=\"?pageIndex={1}\"  class=\"direction\"><img src=\"" + servletContext.getContextPath() +  "/img/btn_next.png\"    alt=\"다음\"   border=\"0\"/></a>&#160;";
 //        lastPageLabel     = "<a href=\"?pageIndex={1}\"  class=\"direction\"><img src=\"" + servletContext.getContextPath() +  "/img/btn_next_page.png\" alt=\"마지막\" border=\"0\"/></a>&#160;";
 
-		firstPageLabel    = "<a href=\"#\" onclick=\"{0}({1}); return false;\" class=\"direction\"><img src=\"" + servletContext.getContextPath() +  "/img/btn_pre_page.png\" alt=\"처음\"   border=\"0\"/></a>&#160;";
-        previousPageLabel = "<a href=\"#\" onclick=\"{0}({1}); return false;\"  class=\"direction\"><img src=\"" + servletContext.getContextPath() +  "/img/btn_prev.png\"    alt=\"이전\"   border=\"0\"/></a>&#160;";
-        currentPageLabel  = "<strong>{0}</strong>&#160;";
-        otherPageLabel    = "<a href=\"#\" onclick=\"{0}({1}); return false;\" >{2}</a>&#160;";
-        nextPageLabel     = "<a href=\"#\" onclick=\"{0}({1}); return false;\"  class=\"direction\"><img src=\"" + servletContext.getContextPath() +  "/img/btn_next.png\"    alt=\"다음\"   border=\"0\"/></a>&#160;";
-        lastPageLabel     = "<a href=\"#\" onclick=\"{0}({1}); return false;\"  class=\"direction\"><img src=\"" + servletContext.getContextPath() +  "/img/btn_next_page.png\" alt=\"마지막\" border=\"0\"/></a>&#160;";
+		firstPageLabel    = "<li><a href=\"#\" onclick=\"{0}({1}); return false;\" class=\"direction\">처음</a></li>&#160;";
+        previousPageLabel = "<li><a href=\"#\" onclick=\"{0}({1}); return false;\"  class=\"direction\">이전</a></li>&#160;";
+        currentPageLabel  = "<li class=\"selected\"><a href=\"#\">{0}</a></li>&#160;";
+        otherPageLabel    = "<li><a href=\"#\" onclick=\"{0}({1}); return false;\" >{2}</a></li>&#160;";
+        nextPageLabel     = "<li><a href=\"#\" onclick=\"{0}({1}); return false;\"  class=\"direction\">다음</a></li>&#160;";
+        lastPageLabel     = "<li><a href=\"#\" onclick=\"{0}({1}); return false;\"  class=\"direction\">마지막</a></li>&#160;";
 
 	}
 

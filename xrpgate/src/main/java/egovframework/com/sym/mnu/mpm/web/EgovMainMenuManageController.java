@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * </pre>
  */
 
-@Controller
+
 public class EgovMainMenuManageController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovMainMenuManageController.class);

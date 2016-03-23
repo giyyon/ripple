@@ -17,7 +17,7 @@ body{width:100%;height:100%;font-family: 'Jeju Gothic', sans-serif;}
 
 /*메인 탑 메뉴 스타일*/
 .nav {
-	width:780px;
+	width:700px;
 	float:left;
 	height:58px;
 }
@@ -60,7 +60,7 @@ body{width:100%;height:100%;font-family: 'Jeju Gothic', sans-serif;}
 .subnav li a{color:#fff;display:block;}
 .subnav li:hover{background:#215283;}
 
-.top_small{width:219px;float:right;margin-top:20px;}
+.top_small{width:250px;float:right;margin-top:20px;}
 .top_small li{float:left;width:60px;text-align:center;}
 
 /*거래량,현재가,시세 등등*/
@@ -98,6 +98,10 @@ body{width:100%;height:100%;font-family: 'Jeju Gothic', sans-serif;}
 .chart_2{width:250px; float:left;text-align:center;margin-bottom:15px;}
 .chart_2 img{margin-right:5px;align:center;}
 .chart_2 li{ float:left;color:#336699;font-weight:bold;line-height:20px;}
+
+/*2016/03/07일 추가된 스타일입니다.*/
+.kakao{width:180px;float:right;}
+/*2016/03/07일 추가된 스타일입니다.끝.*/
 
 /*푸터*/
 .footer{width:100%;background:#dfdfdf;height:95px;padding-top:15px;padding-bottom:15px;float:left;}

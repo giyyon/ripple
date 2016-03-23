@@ -27,7 +27,7 @@
                                 	<td class="tab1_table_title">리플지갑주소</td>
                                     <td class="tab1_table_info">
                                     	<li><input type="text" name="rippleTradeEmail" value="${mberManageVO.rippleTradeEmail}"/></li>
-                                        <li><a href="#"><img src="/images/btn/rippleadd_chk.png" /></a></li>
+                                        <!-- <li><a href="#"><img src="/images/btn/rippleadd_chk.png" /></a></li> -->
                                         <li>리플 주소를 입력해 주세요. (ex > rPxU6acYni7FcXzPCMeaPSwKcuS1GTtNVN )</li>
                                     </td>
                                 </tr>
@@ -35,17 +35,18 @@
                                 	<Td class="tab_important">★</Td>
                                 	<td class="tab1_table_title">회원등급</td>
                                     <td class="tab1_table_info">
-                                    	<li>Gold
-                                    		<c:out value="${mberManageVO.rippleTradeEmail}"/>
+                                    	<li>
+                                    		<c:out value="${mberManageVO.memberGrade}"/>
+                                    		<form:hidden path="memberGrade"/>
                                     	</li>
-                                        <li class="table_gray">| Silver,Bronze :  본인인증이 확인되지 않은 고객  /  Gold : 본인인증이 확인된 고객</li>
+                                        <li class="table_gray">| Silver,Gold :  본인인증이 확인되지 않은 고객  /  VVIP : 본인인증이 확인된 고객</li>
                                     </td>
                                 </tr>
                                 <tr>
                                 	<Td class="tab_important">★</Td>
                                 	<td class="tab1_table_title">태그</td>
                                     <td class="tab1_table_info">
-                                    	<li>570</li>
+                                    	<li>${mberManageVO.tagVal}</li>
                                     </td>
                                 </tr>
                                 <tr>
@@ -61,8 +62,18 @@
                                         <li>
                                         	<select name="emailTail2">
 			                                	<option value="">-직접입력-</option>
-			                                    <option value="naver.com">naver.com</option>
+			                                    <option value="gmail.com">gmail.com</option>
 			                                    <option value="hanmail.net">hanmail.net</option>
+			                                    <option value="naver.com">naver.com</option>
+			                                    <option value="nate.com">nate.com</option>
+			                                    <option value="empal.com">empal.com</option>
+			                                    <option value="korea.com">korea.com</option>
+			                                    <option value="yahoo.com">yahoo.com</option>
+			                                    <option value="hotmail.com">hotmail.com</option>
+			                                    <option value="chol.com">chol.com</option>
+			                                    <option value="netian.com">netian.com</option>
+			                                    <option value="dreamwiz.com">dreamwiz.com</option>
+			                                    <option value="outlook.com">outlook.com</option>
 			                                </select>                                        
                                         </li>
                                         <li>정확한 이메일주소를 입력해 주세요.</li>
@@ -72,9 +83,18 @@
                                 	<Td class="tab_important">★</Td>
                                 	<td class="tab1_table_title">성명</td>
                                     <td class="tab1_table_info">
-                                    	<li><input type="text" value="${mberManageVO.mberNm}"/></li>
+                                    	<li><input type="text" name="mberNm" value="${mberManageVO.mberNm}"/></li>
                                     </td>
                                 </tr>
+                                <c:if test="${mberManageVO.userTy == 'USR02' }">
+			                    <tr>
+			                        <Td class="join_important">★</Td>
+			                        <td class="join_table_title">사업자등록번호</td>
+			                        <td class="join_table_info">
+			                            <li><input type="text" name="bizNo" value="${mberManageVO.bizNo}"/></li>
+			                        </td>
+			                    </tr>
+			                    </c:if>
                                 <tr>
                                 	<Td class="tab_important">★</Td>
                                 	<td class="tab1_table_title">국가명</td>
@@ -91,9 +111,9 @@
                                 	<td class="tab1_table_title">주소</td>
                                     <td class="tab1_table_info">
                                     	<li><input type="text" name="zip" value="${mberManageVO.zip}" style="width:60px;"/></li>
-                                    	<li><img src="/images/btn/post_number.png"  style="margin-top:13px;"/></li>
+                                    	<li><img src="/images/btn/post_number.png" id="btnPostSearch" style="margin-top:13px;"/></li>
                                         <li>나머지 주소</li> 
-                                        <li><input type="text" name="adres" value="${mberManageVO.adres}"/></li>
+                                        <li><input type="text" name="adres" style="width:240px;" value="${mberManageVO.adres}"/></li>
                                         <li><input type="text" name="detailAdres" value="${mberManageVO.detailAdres}"/></li>
                                     </td>
                                 </tr>
@@ -125,8 +145,8 @@
                                 	<Td class="tab_important">★</Td>
                                 	<td class="tab1_table_title">성별</td>
                                     <td class="tab1_table_info">
-                                    	<li><input type="radio" value="01" name="sexdstnCode" style="float:left;margin-top:17px;margin-right:5px;"/> 남</li>
-                                        <li><input type="radio" value="02" name="sexdstnCode" style="float:left;margin-top:17px;margin-right:5px;"/> 여</li>
+                                    	<li><input type="radio" value="01" name="sexdstnCode"  style="float:left;margin-top:17px;margin-right:5px;"/> 남</li>
+                                        <li><input type="radio" value="02" name="sexdstnCode"  style="float:left;margin-top:17px;margin-right:5px;"/> 여</li>
                                     </td>
                                 </tr>
                                 <tr>
@@ -135,30 +155,13 @@
                                     <td class="tab1_table_info">
                                     	<li>
                                         	<form:select path="bankId" value="${mberManageVO.bankId}" >
-											<form:option value="02"  label="국민"/>
-											<form:option value="031" label="농협"/>
-											<form:option value="032" label="신한"/>
-											<form:option value="033" label="기업"/>
-											<form:option value="041" label="하나"/>
-											<form:option value="042" label="광주"/>
-											<form:option value="043" label="부산"/>
-											<form:option value="051" label="새마을금고"/>
-										</form:select>                                       
+												<c:forEach var="result" items="${bank_result}" varStatus="status">
+					                        	<form:option value="${result.code}"  label='${result.codeNm}'/>
+					                        	</c:forEach>
+											</form:select>                                       
                                         </li>
                                         <li><input type="text" name="account" value="${mberManageVO.account}"/></li>
                                         <li>'-'제외하고 입력해주세요 / 이름과 계좌의 명의가 같아야 합니다.</li>
-                                    </td>
-                                </tr>
-                                <tr>
-                                	<Td class="tab_important"></Td>
-                                	<td class="tab1_table_title">파일첨부</td>
-                                    <td class="tab1_table_info">
-                                    	<li>
-			                            	<form:hidden path="atchFileId" value="${mberManageVO.atchFileId}"/>
-											<input name="file1_text" type="text" class="w400"/>
-											<img name="btnFileUpload" src="${contextPath}/img/btn_find.png" data_fileMax="1" data_category="news"  data_type="file"  alt="찾아보기"   />
-										</li>
-                                        <li>본인인증이 어려우신 분이나 외국인은 신분증 및 본인을 증명할 수 있는 증명서를 스캔하여 첨부하거나 FAX로 보내주세요.</li>
                                     </td>
                                 </tr>
                                 <tr>
@@ -183,11 +186,13 @@
 			                                </select>
                                         </li>
                                         <li>
+                                        <!-- 휴대폰 인증을 통해서 넘어온 폰번호는 '-' 가 없이 넘어옴.
                                         	<c:set var="hpMIdx" value="${fn:indexOf(mberManageVO.moblphonNo, '-')}"/>
                                         	<c:set var="hpStr" value="${fn:substring(mberManageVO.moblphonNo,hpMIdx+1,13)}"/>
                                     		<c:set var="hpLIdx" value="${fn:indexOf(hpStr, '-')}" />
-                                        	<input type="text" id="mbtlnumMiddle" name="mbtlnumMiddle" value="${fn:substring(mberManageVO.moblphonNo,hpMIdx+1,8)}" style="width:80px;"/> - 
-                                        	<input type="text" id="mbtlnumMTail" name="mbtlnumMTail" value="${fn:substring(mberManageVO.moblphonNo,hpMIdx+hpLIdx+2,13)}" style="width:80px;"/>
+                                    		 -->
+                                        	<input type="text" id="mbtlnumMiddle" name="mbtlnumMiddle" maxlength="4" value="${fn:substring(mberManageVO.moblphonNo,3,7)}" style="width:80px;"/> - 
+                                        	<input type="text" id="mbtlnumMTail" name="mbtlnumMTail" maxlength="4" value="${fn:substring(mberManageVO.moblphonNo,7,13)}" style="width:80px;"/>
                                         </li>
                                     </td>
                                 </tr>
@@ -221,6 +226,54 @@
                                         </li>
                                     </td>
                                 </tr>
+                                <tr>
+                        <Td class="join_important"></Td>
+                        <td class="join_table_title">파일첨부 주민등록증</td>
+                        <td class="join_table_info">
+                            <li>
+                            	<form:hidden path="atchFileId" value="${mberManageVO.atchFileId}"/>
+								<input name="file1_text" type="text" class="w400"/>
+								<img name="btnFileUpload" src="${contextPath}/images/common/btn_searchfile.png" data_fileMax="5" data_category="news"  data_type="img" data_fieldId="atchFileId" alt="찾아보기"   />
+							</li>
+                            <li>본인인증이 어려우신 분이나 외국인은 신분증 및 본인을 증명할 수 있는 증명서를 스캔하여 첨부하거나 FAX로 보내주세요.</li>
+                        </td>
+                    </tr>
+                    <tr>
+                        <Td class="join_important"></Td>
+                        <td class="join_table_title">파일첨부 증명사진</td>
+                        <td class="join_table_info">
+                            <li>
+                            	<form:hidden path="atchFileId1" value="${mberManageVO.atchFileId1}"/>
+								<input name="file1_text" type="text" class="w400"/>
+								<img name="btnFileUpload" src="${contextPath}/images/common/btn_searchfile.png" data_fileMax="5" data_category="news"  data_type="img" data_fieldId="atchFileId1" alt="찾아보기"   />
+							</li>
+                            <li>본인인증이 어려우신 분이나 외국인은 신분증 및 본인을 증명할 수 있는 증명서를 스캔하여 첨부하거나 FAX로 보내주세요.</li>
+                        </td>
+                    </tr>
+                    <tr>
+                        <Td class="join_important"></Td>
+                        <td class="join_table_title">파일첨부 여권사본</td>
+                        <td class="join_table_info">
+                            <li>
+                            	<form:hidden path="atchFileId2" value="${mberManageVO.atchFileId2}"/>
+								<input name="file1_text" type="text" class="w400"/>
+								<img name="btnFileUpload" src="${contextPath}/images/common/btn_searchfile.png" data_fileMax="5" data_category="news"  data_type="img" data_fieldId="atchFileId2" alt="찾아보기"   />
+							</li>
+                            <li>본인인증이 어려우신 분이나 외국인은 신분증 및 본인을 증명할 수 있는 증명서를 스캔하여 첨부하거나 FAX로 보내주세요.</li>
+                        </td>
+                    </tr>
+                    <tr>
+                        <Td class="join_important"></Td>
+                        <td class="join_table_title">파일첨부 통장사본</td>
+                        <td class="join_table_info">
+                            <li>
+                            	<form:hidden path="atchFileId3" value="${mberManageVO.atchFileId3}"/>
+								<input name="file1_text" type="text" class="w400"/>
+								<img name="btnFileUpload" src="${contextPath}/images/common/btn_searchfile.png" data_fileMax="5" data_category="news"  data_type="img" data_fieldId="atchFileId3" alt="찾아보기"   />
+							</li>
+                            <li>본인인증이 어려우신 분이나 외국인은 신분증 및 본인을 증명할 수 있는 증명서를 스캔하여 첨부하거나 FAX로 보내주세요.</li>
+                        </td>
+                    </tr>
                             </table>
                             <div class="info_text">
                             	<li> - 해당 아이디로 등록된 컨텐츠 내용은 연관된 관련데이터(답변/댓글) 등에 의해 삭제되지 않습니다.</li>
@@ -231,15 +284,15 @@
                             </div>
                         </div>
                         <div class="info_btn">
-	                    	<li><a href="#"><img name="btnUpdate" src="/images/btn/info_change.png" /></a></li>
-                            <li><a href="#"><img name="btnCancle" src="/images/btn/info_cancle.png" /></a></li>
+	                    	<li><a href="#" name="btnUpdate"><img src="/images/btn/info_change.png" /></a></li>
+                            <li><a href="#" name="btnCancle"><img src="/images/btn/info_cancle.png" /></a></li>
 	                    </div>
                     </div>
                     <div id="tab2" class="tab_content">
                     	<h2>보안을 위해 아래 안내문을 읽어보신 후 설정해 주십시오.</h2>                       
                         <div class="tab2_con">
                         	<div class="pw_info">
-	                            <li>★ 영문/숫자 4자 ~ 16자로 설정 가능합니다.</li>
+	                            <li>★ 영문/숫자 8자 ~ 16자로 설정 가능합니다.</li>
                                 <li>★ 전화번호, 생년월일 등 개인정보와 관련된 숫자로 설정하면 보안에 취약합니다.</li>
                                 <li>★ 연속된 숫자 또는 타인이 알아내기 쉬운 비밀번호로 설정하면 보안에 취약합니다.</li>
                             </div>
@@ -271,8 +324,8 @@
                             
                             </div>
                             <div class="pw_btn">
-                                <li><a href="#"><img name="btnChangePass" src="/images/btn/info_change.png" /></a></li>
-                                <li><a href="#"><img src="/images/btn/info_cancle.png" /></a></li>
+                                <li><a href="#" name="btnChangePass"><img src="/images/btn/info_change.png" /></a></li>
+                                <li><a href="#" name="btnCancle"><img src="/images/btn/info_cancle.png" /></a></li>
 		                    </div>
                         </div>
                     </div>
@@ -285,6 +338,12 @@
 	<input type="hidden" id="moblphonNo"  name="moblphonNo" value="${mberManageVO.moblphonNo}"  > <!--핸드폰번호 -->
 	<input type="hidden" id="mberEmailAdres"  name="mberEmailAdres" value="${mberManageVO.mberEmailAdres}" > <!--이메일주소 -->
 </form:form>
+
+<div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
+<img src="//i1.daumcdn.net/localimg/localimages/07/postcode/320/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()" alt="닫기 버튼">
+</div>
+
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
   <script type="text/javaScript" language="javascript"> 
   
   $(function(){
@@ -293,6 +352,12 @@
 	  var birthYear = birth.substring(0,4);
 	  var birthMonth = birth.substring(4,6);
 	  var birthDay = birth.substring(6,8);
+	  var mbtlnumHead = "${fn:substring(mberManageVO.moblphonNo,0,3)}";
+	  $( "#mbtlnumHead").val(mbtlnumHead);
+	  var sexCode = "${mberManageVO.sexdstnCode}";
+	  
+	  
+	  $('[name=sexdstnCode][value='+sexCode+']').prop('checked', true);
 	  
 	  $( "#birthYear").val(birthYear);
 	  $( "#month_select").val(birthMonth);
@@ -301,9 +366,11 @@
 	  var emailTail = $("[name=emailTail]").val();
 	  
 	  var $email = $("[name=emailTail2] option");
-	  $email.each(function(e){
+	  $email.each(function(i){
 		  if($(this).val() == emailTail) {
 			  $("[name=emailTail2]").val(emailTail);
+			  //$("[name=emailTail2] option").eq(i).attr("selected", "selected");
+			  return false;
 		  } else {
 			  $("[name=emailTail2] option:eq(0)").attr("selected", "selected");
 		  }
@@ -316,23 +383,30 @@
 		
 		// 핸드폰 번호 
 		$( "#mbtlnumHead, #mbtlnumMiddle,  #mbtlnumMTail" ) .change(function () {
-			$("#moblphonNo").val(  $( "#mbtlnumHead" ).val() +'-'+ $( "#mbtlnumMiddle" ).val() +'-'+ $( "#mbtlnumMTail" ).val() );
-			alert($("#moblphonNo").val());
+			$("#moblphonNo").val(  $( "#mbtlnumHead" ).val() + $( "#mbtlnumMiddle" ).val() + $( "#mbtlnumMTail" ).val() );
+			
 		});
 		
-		$( "#emailHead, [name='emailTail'], [name='emailTail2']").change(function(){
+		$( "#emailHead, [name='emailTail2']").change(function(){
 			
 			var $emailAddr =  $("input[name='emailTail']");
 			
 			if($(this).val() == "" ||  $(this).val() == null) {
 				$emailAddr.prop("readOnly", false);
 			} else { 
-				$emailAddr.prop("readOnly", true);
+				//$emailAddr.prop("readOnly", true);
 				$emailAddr.val($(this).val());
 			}
 			
 			$("#mberEmailAdres").val( $("#emailHead").val() + '@' + $emailAddr.val());
 			
+		});
+		
+		$( "[name=emailTail]").change(function(){
+			
+			var $emailAddr =  $("input[name=emailTail]");
+			$( "[name=emailTail2]").val('');
+			$("#mberEmailAdres").val( $("#emailHead").val() + '@' + $emailAddr.val());
 		});
 		
 	  $(".topnav").hover(function() {                    //마우스를 topnav에 오버시
@@ -360,66 +434,30 @@
 		
 		//파일 업로드 처리
 		$("img[name=btnFileUpload]").on("click", function(e) {
-			
 			var offset = $(this).offset();
-			var currPlace = $('body').scrollTop();
-			var thisType = $(this).attr('data_type');
-			var category = $(this).attr('data_category');
-			var fileMax = $(this).attr('data_fileMax');
-			
-			var $imgId = $(this).parent().find(':hidden');
-			var $fileNmme = $(this).parent('').find('[name=file1_text]');
-			var $imgDiv = $(this).closest('dl').find('dt');
-			
-			var params = fn_dataParamSetting(category, fileMax, thisType, $imgId.val());
-			e.preventDefault();
-					
-			var options = {
-				url : '<c:url value="/files/uploadPage.do" />',
-				width : 650,
-				height : 350,
-				closeCallback : closeCallback,
-				title : '[파일 올리기]',
-				data : params,
-				buttonType : 0
-			};
-			var $dialog = BIT.modalDialog(options);
-			
-			function closeCallback(returnValue) {
-				if (returnValue != null && returnValue.length > 0) {
-					var files = returnValue;
-					var fileIds = '';
-					var fileNames = '';
-					//단일 이미지 처리시에만 적용 올려진 썸네일 이미지를 리턴받아 화면상에 이미지 영역에 뿌려줌
-					var imgUrl = "";
-					
-					for (var i = 0; i < files.length; i++) {
-						if (fileIds) {
-							fileIds = files[i].atchFileId;
-							fileNames += ',' + files[i].orignlFileNm;
-						} else {
-							fileIds = files[i].atchFileId;
-							fileNames = files[i].orignlFileNm;
-							imgUrl =   '<c:url value="/files/imageSrc.do?path=" />'+files[i].category  +'/thumnails&physical=' + files[i].streFileNm;    
-	// 						imgUrl =  '<c:url value="/webAttach/thumnails/" />' + files[i].streFileNm;
-						}
-					}
-					var options = {"background":"url("+imgUrl+")", 'background-repeat' : 'no-repeat', 'background-position':'center'};
-					$imgId.val(fileIds);
-					$fileNmme.val(fileNames);
-					if(thisType == 'img'){
-						$imgDiv.css(options);
-					}
-					
-				} else {
-					$imgId.val('');
-					$fileNmme.val('');
-					if(thisType == 'img'){
-						$imgDiv.css('background', 'url(/img/noimg.png)');
-					}
-					
-				}
+    		var fieldId = $(this).attr('data_fieldId');
+    		var thisType = $(this).attr('data_type');
+    		var category = $(this).attr('data_category');
+    		var fileMax = $(this).attr('data_fileMax');
+    		var fileMode = "U";
+    		
+    		var $imgId = $(this).parent().find(':hidden');
+    		
+    		e.preventDefault();
+    				
+    		var url = "${contextPath}/files/uploadPage.do?";
+			var atchFileId = $(this).parent().find(':hidden').val();
+			var param = {
+					atchFileId : atchFileId
+					, contentType : thisType
+					, category : category
+					, size : fileMax
+					, fieldId : fieldId
+					, fileMode : fileMode
 			}
+			
+			window.open(url+ $.param(param), 'popUpWindow','height=300, width=650, left=300, top=100, resizable=no, scrollbars=yes, toolbar=yes, menubar=no, location=no, directories=no, status=yes');
+    		
 		});
 
 		$('[name=btnFileDownload]').click(function(e) {
@@ -434,46 +472,51 @@
 			$(this).parent('').find('[name=file1_text]').val('');
 		});
 		
-		$('[name=btnFileDelete]').click(function(e){
-			var $imgId = $(this).parent().find(':hidden');
-			var $fileNmme = $(this).parent('').find('[name=file1_text]');
-			var $imgDiv = $(this).closest('dl').find('dt');
-			
-			$imgId.val('');
-			$fileNmme.val('')
-			var basicImg = '<c:url value="/webAttach/thumnails/" />'
-			$imgDiv.css
-		});
 		
-		$("img[name=btnUpdate]").on("click", function(e) {
+		$("[name=btnUpdate]").on("click", function(e) {
 			e.preventDefault();
+			
+			var rippleWallet = $("[name=rippleTradeEmail]").val();
+			var account = $("[name=account]").val();
+			var userNmae = $("[name=mberNm]").val();
+			if(rippleWallet == '' || rippleWallet== null){
+				alert('리플 지갑 주소를 입력하여 주십시오.');
+				return false;
+			}
+			
+			if(account == '' || account== null){
+				alert('계좌 번호를 입력하여 주십시오.');
+				return false;
+			}
+			
+			if(userNmae == '' || userNmae== null){
+				alert('성명을 입력하여 주십시오.');
+				return false;
+			}
+			
 			$("#form").attr({action:"${contextPath}/myInfo/updateGnrMyInfo.do"});
 			$("#form").submit();
 		});
 		
-		$("#passwordChk").focusout(function(){
-			var newPass = $("[name=password]").val();
-			var chkPass = $("#passwordChk").val();
-			if(newPass  != chkPass){
-				$("[name=passValid]").show();
-				return false;
-			} else {
-				$("[name=passValid]").hide();
-			}
+		$("[name=btnCancle]").click(function(e){
+			e.preventDefault;
+			
+			location.href = "/";
 		});
 		
-		$("img[name=btnChangePass]").on("click", function(e) {
+		
+		$("[name=btnChangePass]").on("click", function(e) {
 			e.preventDefault();
 			
-			// 비밀번호 null 여부 체크
-			if(!chkPassword()) {
-				
-				return;
+			if(!isValidFormPassword($("[name=password]").val(), $("#passwordChk").val())){
+				return false;
 			}
 			// 비밀번호 일치여부 체크
-			if(!$("#passwordChk").trigger("focusout")){
+			/* if(!$("#passwordChk").trigger("focusout")){
 				return;
-			}
+			} */
+			
+			
 			
 			$.ajax({
 	            url: "${contextPath}/myInfo/jsonGnrPasswordChange.do",
@@ -498,6 +541,11 @@
 	            	
 	            }
 	        });
+		});
+		
+		$("#btnPostSearch").click(function(e){
+			e.preventDefault;
+			execDaumPostcode();
 		});
   });
    
@@ -538,6 +586,104 @@
    	function doSync(){
 //		 goJsonSave();
  //  		goPost('01');
+	}
+   	
+    // 우편번호 찾기 화면을 넣을 element
+    var element_layer = document.getElementById('layer');
+
+    function closeDaumPostcode() {
+        // iframe을 넣은 element를 안보이게 한다.
+        element_layer.style.display = 'none';
+    }
+
+    function execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var fullAddr = data.address; // 최종 주소 변수
+                var extraAddr = ''; // 조합형 주소 변수
+
+                // 기본 주소가 도로명 타입일때 조합한다.
+                if(data.addressType === 'R'){
+                    //법정동명이 있을 경우 추가한다.
+                    if(data.bname !== ''){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있을 경우 추가한다.
+                    if(data.buildingName !== ''){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
+                    fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                $("[name=zip]").val( data.zonecode); //5자리 새우편번호 사용
+                $("[name=adres]").val(fullAddr);
+                //$("[name=detailAdres]").val();
+                //document.getElementById('sample2_postcode').value = data.zonecode; 
+                //document.getElementById('sample2_address').value = fullAddr;
+                //document.getElementById('sample2_addressEnglish').value = data.addressEnglish;
+
+                // iframe을 넣은 element를 안보이게 한다.
+                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+                element_layer.style.display = 'none';
+            },
+            width : '100%',
+            height : '100%'
+        }).embed(element_layer);
+
+        // iframe을 넣은 element를 보이게 한다.
+        element_layer.style.display = 'block';
+
+        // iframe을 넣은 element의 위치를 화면의 가운데로 이동시킨다.
+        initLayerPosition();
+    }
+
+    // 브라우저의 크기 변경에 따라 레이어를 가운데로 이동시키고자 하실때에는
+    // resize이벤트나, orientationchange이벤트를 이용하여 값이 변경될때마다 아래 함수를 실행 시켜 주시거나,
+    // 직접 element_layer의 top,left값을 수정해 주시면 됩니다.
+    function initLayerPosition(){
+        var width = 300; //우편번호서비스가 들어갈 element의 width
+        var height = 460; //우편번호서비스가 들어갈 element의 height
+        var borderWidth = 5; //샘플에서 사용하는 border의 두께
+
+        // 위에서 선언한 값들을 실제 element에 넣는다.
+        element_layer.style.width = width + 'px';
+        element_layer.style.height = height + 'px';
+        element_layer.style.border = borderWidth + 'px solid';
+        // 실행되는 순간의 화면 너비와 높이 값을 가져와서 중앙에 뜰 수 있도록 위치를 계산한다.
+        element_layer.style.left = (((window.innerWidth || document.documentElement.clientWidth) - width)/2 - borderWidth) + 'px';
+        element_layer.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2 - borderWidth) + 'px';
+    }
+    
+	function dataApply(returnValue, fieldId) {
+		
+		if (returnValue != null ) {
+			var $fieldId = $('#'+ fieldId+'');
+			var files = returnValue;
+			var fileNmme = "";
+			var $fileNmme = $fieldId.parent().find('[name=file1_text]');
+			if(files.length == 0){
+				$fileNmme.val('');
+				return;
+			}
+			$fieldId.val(files[0].atchFileId);
+			for(var i = 0; i < files.length; i++){
+				if(fileNmme == ""){
+					fileNmme += files[i].realName;
+				} else {
+					fileNmme += ","+files[i].realName;
+				}
+			}
+			$fileNmme.val(fileNmme);
+		} else {
+			$imgId.val('');
+			$fileNmme.val('');
+		}
 	}
    	
   </script> 

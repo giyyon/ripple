@@ -1,13 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=euc-kr" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
     /* ============================================================================== */
-    /* =   PAGE : ÀÎÁõ ¿äÃ» PAGE                                                    = */
+    /* =   PAGE : ì¸ì¦ ìš”ì²­ PAGE                                                    = */
     /* = -------------------------------------------------------------------------- = */
     /* =   Copyright (c)  2012.02   KCP Inc.   All Rights Reserved.                 = */
     /* ============================================================================== */
 
     /* ============================================================================== */
-    /* =   È¯°æ ¼³Á¤ ÆÄÀÏ Include                                                   = */
+    /* =   í™˜ê²½ ì„¤ì • íŒŒì¼ Include                                                   = */
     /* = -------------------------------------------------------------------------- = */
 %>
 <%@ page import="kr.co.kcp.CT_CLI"%>
@@ -15,33 +15,33 @@
 <%@ page import="java.util.*" %>
 <%
     /* = -------------------------------------------------------------------------- = */
-    /* =   È¯°æ ¼³Á¤ ÆÄÀÏ Include END                                               = */
+    /* =   í™˜ê²½ ì„¤ì • íŒŒì¼ Include END                                               = */
     /* ============================================================================== */
 
     /* ============================================================================== */
-    /* =   Hash µ¥ÀÌÅÍ »ı¼º ÇÊ¿ä µ¥ÀÌÅÍ                                             = */
+    /* =   Hash ë°ì´í„° ìƒì„± í•„ìš” ë°ì´í„°                                             = */
     /* = -------------------------------------------------------------------------- = */
-    /* = »çÀÌÆ®ÄÚµå ( up_hash »ı¼º½Ã ÇÊ¿ä )                                         = */
+    /* = ì‚¬ì´íŠ¸ì½”ë“œ ( up_hash ìƒì„±ì‹œ í•„ìš” )                                         = */
     /* = -------------------------------------------------------------------------- = */
 
-    //  ¿î¿µ¹İ¿µ½Ã¿¡¸¸ ¿î¿µ»çÀÌÆ® ÄÚµå Àû¿ë
+    //  ìš´ì˜ë°˜ì˜ì‹œì—ë§Œ ìš´ì˜ì‚¬ì´íŠ¸ ì½”ë“œ ì ìš©
     String site_cd   = "V3704";
-	// °³¹ß½Ã »ç¿ë ÄÚµå
+	// ê°œë°œì‹œ ì‚¬ìš© ì½”ë“œ
 	//String site_cd   = "S6186";
 
 
     /* = -------------------------------------------------------------------------- = */
-    /* = ÁÖ¹®¹øÈ£  ( up_hash »ı¼º½Ã ÇÊ¿ä )                                           = */
+    /* = ì£¼ë¬¸ë²ˆí˜¸  ( up_hash ìƒì„±ì‹œ í•„ìš” )                                           = */
     /* = -------------------------------------------------------------------------- = */
 
-    String ordr_idxx = "TEST" + (new SimpleDateFormat("yyyyMMddHHmmssSSSSSSS").format(new Date())); // ÁÖ¹®¹øÈ£ »ı¼º ¿¹Á¦
+    String ordr_idxx = "TEST" + (new SimpleDateFormat("yyyyMMddHHmmssSSSSSSS").format(new Date())); // ì£¼ë¬¸ë²ˆí˜¸ ìƒì„± ì˜ˆì œ
 
     /* = -------------------------------------------------------------------------- = */
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>*** KCP Online Payment System [JSP Version] ***</title>
         <link href="/css/kcp/sample.css" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="${contextPath}/js/jquery-1.9.1.min.js"></script>
@@ -56,127 +56,127 @@
                     <tr>
                         <td style="background-image:url('/img/kcp/boxbg589.gif')">
         
-                            <!-- »ó´Ü Å×ÀÌºí Start -->
+                            <!-- ìƒë‹¨ í…Œì´ë¸” Start -->
                             <table width="551px" align="center" cellspacing="0" cellpadding="16">
                                 <tr style="height:17px">
                                     <td style="background-image:url('/img/kcp/ttbg551.gif');border:0px " class="white">
-                                        <span class="bold big">[ÀÎÁõ¿äÃ»]</span> ÀÌ ÆäÀÌÁö´Â ÈŞ´ëÆù ÀÎÁõ¿äÃ» ÆäÀÌÁöÀÔ´Ï´Ù.
+                                        <span class="bold big">[ì¸ì¦ìš”ì²­]</span> ì´ í˜ì´ì§€ëŠ” íœ´ëŒ€í° ì¸ì¦ìš”ì²­ í˜ì´ì§€ì…ë‹ˆë‹¤.
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="background-image:url('/img/kcp/boxbg551.gif') ;">
-                                        <p class="align_left">¼Ò½º ¼öÁ¤ ½Ã °¡¸ÍÁ¡ÀÇ »óÈ²¿¡ ¸Â°Ô ÀûÀıÈ÷ ¼öÁ¤ Àû¿ëÇÏ½Ã±æ ¹Ù¶ø´Ï´Ù.</p>
-                                        <p class="align_left">°áÁ¦¿¡ ÇÊ¿äÇÑ Á¤º¸¸¦ Á¤È®ÇÏ°Ô ÀÔ·ÂÇÏ½Ã¾î ÀÎÁõ¸¦ ÁøÇàÇÏ½Ã±â ¹Ù¶ø´Ï´Ù.</p>
+                                        <p class="align_left">ì†ŒìŠ¤ ìˆ˜ì • ì‹œ ê°€ë§¹ì ì˜ ìƒí™©ì— ë§ê²Œ ì ì ˆíˆ ìˆ˜ì • ì ìš©í•˜ì‹œê¸¸ ë°”ëë‹ˆë‹¤.</p>
+                                        <p class="align_left">ê²°ì œì— í•„ìš”í•œ ì •ë³´ë¥¼ ì •í™•í•˜ê²Œ ì…ë ¥í•˜ì‹œì–´ ì¸ì¦ë¥¼ ì§„í–‰í•˜ì‹œê¸° ë°”ëë‹ˆë‹¤.</p>
                                     </td>
                                 </tr>
                                 <tr style="height:11px"><td style="background:url('/img/kcp/boxbtm551.gif') no-repeat;"></td></tr>
                             </table>
-                            <!-- »ó´Ü Å×ÀÌºí End -->
+                            <!-- ìƒë‹¨ í…Œì´ë¸” End -->
         
-                            <!-- ÁÖ¹® Á¤º¸ Ãâ·Â Å×ÀÌºí Start -->
+                            <!-- ì£¼ë¬¸ ì •ë³´ ì¶œë ¥ í…Œì´ë¸” Start -->
                             <table width="527" align="center" cellspacing="0" cellpadding="0" class="margin_top_20">
-                                <tr><td colspan="2"  class="title">ÀÎ Áõ Á¤ º¸</td></tr>
-                                <!-- ÁÖ¹®¹øÈ£(ordr_idxx) -->
+                                <tr><td colspan="2"  class="title">ì¸ ì¦ ì • ë³´</td></tr>
+                                <!-- ì£¼ë¬¸ë²ˆí˜¸(ordr_idxx) -->
                                 <tr>
-                                    <td class="sub_title1">ÁÖ¹® ¹øÈ£</td>
+                                    <td class="sub_title1">ì£¼ë¬¸ ë²ˆí˜¸</td>
                                     <td class="sub_input1">&nbsp&nbsp<input type="text" name="ordr_idxx" class="frminput" value="<%=ordr_idxx%>" size="40" readonly="readonly" maxlength="40"/></td>
                                 </tr>
-                                <!-- ¸íÀÇÀÚ¸í -->
+                                <!-- ëª…ì˜ìëª… -->
                                 <tr>
-                                    <td class="sub_title1">¼º¸í</td>
+                                    <td class="sub_title1">ì„±ëª…</td>
                                     <td class="sub_content1"><input type="text" name="user_name" value="${certVO.user_name }" size="20" maxlength="20" class="frminput" /></td>
                                 </tr>
-                                <!-- »ı³â¿ùÀÏ -->
+                                <!-- ìƒë…„ì›”ì¼ -->
                                 <tr>
-                                    <td class="sub_title1">»ı³â¿ùÀÏ</td>
+                                    <td class="sub_title1">ìƒë…„ì›”ì¼</td>
                                     <td class="sub_content1" id="year_month_day">
                                     </td>
                                 </tr>
-                                <!-- ¼ºº°±¸ºĞ
+                                <!-- ì„±ë³„êµ¬ë¶„
                                 <tr>
-                                    <td class="sub_title1">¼ºº°±¸ºĞ</td>
+                                    <td class="sub_title1">ì„±ë³„êµ¬ë¶„</td>
                                     <td class="sub_content1 bold">
-                                        <input type="radio" name="sex_code" value="01" />³²¼º
-                                        <input type="radio" name="sex_code" value="02" />¿©¼º
+                                        <input type="radio" name="sex_code" value="01" />ë‚¨ì„±
+                                        <input type="radio" name="sex_code" value="02" />ì—¬ì„±
                                          -->
-                                        <!-- ³»/¿Ü±¹ÀÎ±¸ºĞ
+                                        <!-- ë‚´/ì™¸êµ­ì¸êµ¬ë¶„
                                         <select name='local_code' class="frmselect">
-                                            <option value='01'>³»±¹ÀÎ</option>
-                                            <option value='02'>¿Ü±¹ÀÎ</option>
+                                            <option value='01'>ë‚´êµ­ì¸</option>
+                                            <option value='02'>ì™¸êµ­ì¸</option>
                                         </select>
                                     </td>
                                 </tr>
          -->
                                 <tr class="height_1px"><td colspan="2" bgcolor="#0f75ac"></td></tr>
                             </table>
-                            <!-- ÁÖ¹® Á¤º¸ Ãâ·Â Å×ÀÌºí End -->
+                            <!-- ì£¼ë¬¸ ì •ë³´ ì¶œë ¥ í…Œì´ë¸” End -->
         
-                            <!-- °áÁ¦ ¹öÆ° Å×ÀÌºí Start -->
+                            <!-- ê²°ì œ ë²„íŠ¼ í…Œì´ë¸” Start -->
                             <table width="527" align="center" cellspacing="0" cellpadding="0" class="margin_top_20">
-                                <!-- °áÁ¦ ¿äÃ»/Ã³À½À¸·Î ÀÌ¹ÌÁö ¹öÆ° -->
+                                <!-- ê²°ì œ ìš”ì²­/ì²˜ìŒìœ¼ë¡œ ì´ë¯¸ì§€ ë²„íŠ¼ -->
                                 <tr id="show_pay_btn">
                                     <td colspan="2" align="center">
-                                        <input type="image" src="/img/kcp/btn_certi.gif" onclick="return auth_type_check();" width="108" height="37" alt="°áÁ¦¸¦ ¿äÃ»ÇÕ´Ï´Ù" />
+                                        <input type="image" src="/img/kcp/btn_certi.gif" onclick="return auth_type_check();" width="108" height="37" alt="ê²°ì œë¥¼ ìš”ì²­í•©ë‹ˆë‹¤" />
                                     </td>
                                 </tr>
                             </table>
-                            <!-- °áÁ¦ ¹öÆ° Å×ÀÌºí End -->
+                            <!-- ê²°ì œ ë²„íŠ¼ í…Œì´ë¸” End -->
                         </td>
                     </tr>
                     <tr><td></img src="/img/kcp/boxbtm589.gif" alt="Copyright(c) KCP Inc. All rights reserved."/></td></tr>
                 </table>
         
-                <!-- ¿äÃ»Á¾·ù -->
+                <!-- ìš”ì²­ì¢…ë¥˜ -->
                 <input name="sex_code" type="hidden" value="${certVO.sex_code }"/>
                 <input name="local_code" type="hidden" value="${certVO.local_code }"/>
                 <input name="year" type="hidden" value="${certVO.year }"/>
                 <input name="month" type="hidden" value="${certVO.month }"/>
                 <input name="day" type="hidden" value="${certVO.day }"/>
                 <input type="hidden" name="req_tx"       value="cert"/>
-                <!-- ¿äÃ»±¸ºĞ -->
+                <!-- ìš”ì²­êµ¬ë¶„ -->
                 <input type="hidden" name="cert_method"  value="01"/>
-                <!-- À¥»çÀÌÆ®¾ÆÀÌµğ -->
+                <!-- ì›¹ì‚¬ì´íŠ¸ì•„ì´ë”” -->
                 <input type="hidden" name="web_siteid"   value="J15070800859"/> 
-                <!-- ³ëÃâ Åë½Å»ç default Ã³¸®½Ã ¾Æ·¡ÀÇ ÁÖ¼®À» ÇØÁ¦ÇÏ°í »ç¿ëÇÏ½Ê½Ã¿ä 
+                <!-- ë…¸ì¶œ í†µì‹ ì‚¬ default ì²˜ë¦¬ì‹œ ì•„ë˜ì˜ ì£¼ì„ì„ í•´ì œí•˜ê³  ì‚¬ìš©í•˜ì‹­ì‹œìš” 
                      SKT : SKT , KT : KTF , LGU+ : LGT
                 <input type="hidden" name="fix_commid"      value="KTF"/>
                 -->
-                <!-- »çÀÌÆ®ÄÚµå -->
+                <!-- ì‚¬ì´íŠ¸ì½”ë“œ -->
                 <input type="hidden" name="site_cd"      value="<%= site_cd %>" />
-                <!-- Ret_URL : ÀÎÁõ°á°ú ¸®ÅÏ ÆäÀÌÁö ( °¡¸ÍÁ¡ URL ·Î ¼³Á¤ÇØ ÁÖ¼Å¾ß ÇÕ´Ï´Ù. ) -->
-				<input type="hidden" name="Ret_URL" value="http://219.254.215.233:8081/join/kcpCertProcRes.do" />      
-                <!-- <input type="hidden" name="Ret_URL"      value="http://xrpgate.com/join/kcpCertProcRes.do" />  -->
-                <!-- cert_otp_use ÇÊ¼ö ( ¸Ş´º¾ó Âü°í)
-                     Y : ½Ç¸í È®ÀÎ + OTP Á¡À¯ È®ÀÎ , N : ½Ç¸í È®ÀÎ only
+                <!-- Ret_URL : ì¸ì¦ê²°ê³¼ ë¦¬í„´ í˜ì´ì§€ ( ê°€ë§¹ì  URL ë¡œ ì„¤ì •í•´ ì£¼ì…”ì•¼ í•©ë‹ˆë‹¤. ) -->
+				<!--<input type="hidden" name="Ret_URL" value="http://219.254.215.233:8081/join/kcpCertProcRes.do" />    --> 
+                 <input type="hidden" name="Ret_URL"      value="http://xrpgate.com/join/kcpCertProcRes.do" />   
+                <!-- cert_otp_use í•„ìˆ˜ ( ë©”ë‰´ì–¼ ì°¸ê³ )
+                     Y : ì‹¤ëª… í™•ì¸ + OTP ì ìœ  í™•ì¸ , N : ì‹¤ëª… í™•ì¸ only
                 -->
                 <input type="hidden" name="cert_otp_use" value="Y"/>
-                <!-- cert_enc_use ÇÊ¼ö (°íÁ¤°ª : ¸Ş´º¾ó Âü°í) -->
+                <!-- cert_enc_use í•„ìˆ˜ (ê³ ì •ê°’ : ë©”ë‰´ì–¼ ì°¸ê³ ) -->
                 <input type="hidden" name="cert_enc_use" value="Y"/>
 
                 <input type="hidden" name="res_cd"       value=""/>
                 <input type="hidden" name="res_msg"      value=""/>
 
-                <!-- up_hash °ËÁõ À» À§ÇÑ ÇÊµå -->
+                <!-- up_hash ê²€ì¦ ì„ ìœ„í•œ í•„ë“œ -->
                 <input type="hidden" name="veri_up_hash" value=""/>
 
-                <!-- º»ÀÎÈ®ÀÎ input ºñÈ°¼ºÈ­ -->
+                <!-- ë³¸ì¸í™•ì¸ input ë¹„í™œì„±í™” -->
                 <input type="hidden" name="cert_able_yn" value=""/>
 
-                <!-- web_siteid °ËÁõ À» À§ÇÑ ÇÊµå -->
+                <!-- web_siteid ê²€ì¦ ì„ ìœ„í•œ í•„ë“œ -->
                 <input type="hidden" name="web_siteid_hashYN" value=""/>
 
-                <!-- °¡¸ÍÁ¡ »ç¿ë ÇÊµå (ÀÎÁõ¿Ï·á½Ã ¸®ÅÏ)-->
+                <!-- ê°€ë§¹ì  ì‚¬ìš© í•„ë“œ (ì¸ì¦ì™„ë£Œì‹œ ë¦¬í„´)-->
                 <input type="hidden" name="param_opt_1"  value="opt1"/> 
                 <input type="hidden" name="param_opt_2"  value="opt2"/> 
                 <input type="hidden" name="param_opt_3"  value="opt3"/> 
             </form>
         </div>
 	 <script type="text/javascript">
-		 $(document).ready(function(){ 
-			 	
+		 $(document).ready(function(){
 			 
+			 	
 		 });
-            // °áÁ¦Ã¢ Á¾·áÈÄ ÀÎÁõµ¥ÀÌÅÍ ¸®ÅÏ ÇÔ¼ö
+            // ê²°ì œì°½ ì¢…ë£Œí›„ ì¸ì¦ë°ì´í„° ë¦¬í„´ í•¨ìˆ˜
             function auth_data( frm )
             {
                 var auth_form     = document.form_auth;
@@ -184,14 +184,14 @@
                 var response_data = "";
                 var map = new Map();
 
-                // up_hash °ËÁõ 
+                // up_hash ê²€ì¦ 
                 if( frm.up_hash.value != auth_form.veri_up_hash.value )
                 {
-                    alert("up_hash º¯Á¶ À§ÇèÀÖÀ½");
-                    // ¿À·ù Ã³¸® ( dn_hash º¯Á¶ À§ÇèÀÖÀ½)
+                    alert("up_hash ë³€ì¡° ìœ„í—˜ìˆìŒ");
+                    // ì˜¤ë¥˜ ì²˜ë¦¬ ( dn_hash ë³€ì¡° ìœ„í—˜ìˆìŒ)
                 }
                 
-               /* ¸®ÅÏ °ª È¸¿ø°¡ÀÔ ÆäÀÌÁö·Î Àü´Ş. */
+               /* ë¦¬í„´ ê°’ íšŒì›ê°€ì… í˜ì´ì§€ë¡œ ì „ë‹¬. */
 //                 var form_value = "";
 
                 for ( i = 0 ; i < frm.length ; i++ )
@@ -200,24 +200,24 @@
 //                     console.log(form_value);
                     map.put(frm.elements[i].name, frm.elements[i].value);
                 }
-                parent.fn_mappingAuthData(map);
+                top.fn_mappingAuthData(map);
                 
             }
             
-            // ÀÎÁõÃ¢ È£Ãâ ÇÔ¼ö
+            // ì¸ì¦ì°½ í˜¸ì¶œ í•¨ìˆ˜
             function auth_type_check()
             {
                 var auth_form = document.form_auth;
     
                 if( auth_form.ordr_idxx.value == "" )
                 {
-                    alert( "ÁÖ¹®¹øÈ£´Â ÇÊ¼ö ÀÔ´Ï´Ù." );
+                    alert( "ì£¼ë¬¸ë²ˆí˜¸ëŠ” í•„ìˆ˜ ì…ë‹ˆë‹¤." );
     
                     return false;
                 }
                 else
                 {
-                    if( ( navigator.userAgent.indexOf("Android") > - 1 || navigator.userAgent.indexOf("iPhone") > - 1 ) == false ) // ½º¸¶Æ®ÆùÀÌ ¾Æ´Ñ°æ¿ì
+                    if( ( navigator.userAgent.indexOf("Android") > - 1 || navigator.userAgent.indexOf("iPhone") > - 1 ) == false ) // ìŠ¤ë§ˆíŠ¸í°ì´ ì•„ë‹Œê²½ìš°
                     {
 	                    var return_gubun;
 	                    var width  = 410;
@@ -230,29 +230,30 @@
 	                    var position = ",left=" + leftpos + ", top="    + toppos;
 	                    var AUTH_POP = window.open('','auth_popup', winopts + position);
                     }
-                    
-                    auth_form.target = "auth_popup"; // !!ÁÖÀÇ °íÁ¤°ª ( ¸®ÅÏ¹ŞÀ»¶§ »ç¿ëµÇ´Â Å¸°Ù¸íÀÔ´Ï´Ù.)
-                    auth_form.action = "${contextPath}/join/kcpCertProcReq.do"; // ÀÎÁõÃ¢ È£Ãâ ¹× °á°ú°ª ¸®ÅÏ ÆäÀÌÁö ÁÖ¼Ò
+                    console.log($("[name=user_name]").val());
+                    auth_form.target = "auth_popup"; // !!ì£¼ì˜ ê³ ì •ê°’ ( ë¦¬í„´ë°›ì„ë•Œ ì‚¬ìš©ë˜ëŠ” íƒ€ê²Ÿëª…ì…ë‹ˆë‹¤.)
+                    auth_form.action = "${contextPath}/join/kcpCertProcReq.do"; // ì¸ì¦ì°½ í˜¸ì¶œ ë° ê²°ê³¼ê°’ ë¦¬í„´ í˜ì´ì§€ ì£¼ì†Œ
                     auth_form.submit();
                     return true;
                 }
             }
     
-            /* ¿¹Á¦ */
+            /* ì˜ˆì œ */
             window.onload=function()
             {
+
             	auth_type_check();
             	//setTimeout('auth_type_check()',100);
-            	//³¯Â¥ ¼±ÅÃ ¸øÇÔ.
+            	//ë‚ ì§œ ì„ íƒ ëª»í•¨.
             	return;
                 var today            = new Date();
                 var year             = today.getFullYear();
                 var month            = today.getMonth() + 1;
                 var date             = today.getDate();
                 var time             = today.getTime();
-                var year_select_box  = "<option value=''>¼±ÅÃ (³â)</option>";
-                var month_select_box = "<option value=''>¼±ÅÃ (¿ù)</option>";
-                var day_select_box   = "<option value=''>¼±ÅÃ (ÀÏ)</option>";
+                var year_select_box  = "<option value=''>ì„ íƒ (ë…„)</option>";
+                var month_select_box = "<option value=''>ì„ íƒ (ì›”)</option>";
+                var day_select_box   = "<option value=''>ì„ íƒ (ì¼)</option>";
                 
                 if(parseInt(month) < 10) {
                     month = "0" + month;
@@ -263,41 +264,41 @@
                 }
     
                 year_select_box = "<select name='year' class='frmselect' id='year_select'>";
-                year_select_box += "<option value=''>¼±ÅÃ (³â)</option>";
+                year_select_box += "<option value=''>ì„ íƒ (ë…„)</option>";
        
                 for(i=year;i>(year-100);i--)
                 {
-                    year_select_box += "<option value='" + i + "'>" + i + " ³â</option>";
+                    year_select_box += "<option value='" + i + "'>" + i + " ë…„</option>";
                 }
                 
                 year_select_box  += "</select>";
                 month_select_box  = "<select name=\"month\" class=\"frmselect\" id=\"month_select\">";
-                month_select_box += "<option value=''>¼±ÅÃ (¿ù)</option>";
+                month_select_box += "<option value=''>ì„ íƒ (ì›”)</option>";
                 
                 for(i=1;i<13;i++)
                 {
                     if(i < 10)
                     {
-                        month_select_box += "<option value='0" + i + "'>" + i + " ¿ù</option>";
+                        month_select_box += "<option value='0" + i + "'>" + i + " ì›”</option>";
                     }
                     else
                     {
-                        month_select_box += "<option value='" + i + "'>" + i + " ¿ù</option>";
+                        month_select_box += "<option value='" + i + "'>" + i + " ì›”</option>";
                     }
                 }
                 
                 month_select_box += "</select>";
                 day_select_box    = "<select name=\"day\"   class=\"frmselect\" id=\"day_select\"  >";
-                day_select_box   += "<option value=''>¼±ÅÃ (ÀÏ)</option>";
+                day_select_box   += "<option value=''>ì„ íƒ (ì¼)</option>";
                 for(i=1;i<32;i++)
                 {
                     if(i < 10)
                     {
-                        day_select_box += "<option value='0" + i + "'>" + i + " ÀÏ</option>";
+                        day_select_box += "<option value='0" + i + "'>" + i + " ì¼</option>";
                     }
                     else
                     {
-                        day_select_box += "<option value='" + i + "'>" + i + " ÀÏ</option>";
+                        day_select_box += "<option value='" + i + "'>" + i + " ì¼</option>";
                     }
                 }
                 

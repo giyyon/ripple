@@ -32,12 +32,12 @@ public class AccountVO  implements Serializable {
 		/**
 		 *  예탁금
 		 */
-		public long deposit;
+		public double deposit;
 		
 		/**
 		 * XRP 예탁금
 		 */
-		public long xrpDeposit;
+		public double xrpDeposit;
 		
 		/**
 		 * 수수료율
@@ -47,7 +47,7 @@ public class AccountVO  implements Serializable {
 		/**
 		 * 거래 ID
 		 */
-		public int traidId;
+		public int tradeId;
 		
 		/**
 		 * 거래 유형
@@ -82,7 +82,7 @@ public class AccountVO  implements Serializable {
 		/**
 		 * 수수료
 		 */
-		public String fee;
+		public double fee;
 		
 		/**
 		 * 거래 완료 일자
@@ -93,6 +93,20 @@ public class AccountVO  implements Serializable {
 		 * 비고
 		 */
 		public String remark;
+		
+		/**
+		 * 리플 지갑 주소
+		 */
+		public String rippleTradeEmail;
+		
+		public String mberNm;
+		
+		public String rowNum;
+		
+		/**
+		 * 진행상태 명
+		 */
+		private String statusNm;
 
 		public String getMberId() {
 			return mberId;
@@ -102,28 +116,28 @@ public class AccountVO  implements Serializable {
 			this.mberId = mberId;
 		}
 
-		public long getDeposit() {
+		public double getDeposit() {
 			return deposit;
 		}
 
-		public void setDeposit(long deposit) {
+		public void setDeposit(double deposit) {
 			this.deposit = deposit;
 		}
 
-		public long getXrpDeposit() {
+		public double getXrpDeposit() {
 			return xrpDeposit;
 		}
 
-		public void setXrpDeposit(long xrpDeposit) {
+		public void setXrpDeposit(double xrpDeposit) {
 			this.xrpDeposit = xrpDeposit;
 		}
 
-		public int getTraidId() {
-			return traidId;
+		public int getTradeId() {
+			return tradeId;
 		}
 
-		public void setTraidId(int traidId) {
-			this.traidId = traidId;
+		public void setTradeId(int tradeId) {
+			this.tradeId = tradeId;
 		}
 
 		public String getTradeType() {
@@ -159,11 +173,11 @@ public class AccountVO  implements Serializable {
 			this.requestDt = requestDt;
 		}
 
-		public String getFee() {
+		public double getFee() {
 			return fee;
 		}
 
-		public void setFee(String fee) {
+		public void setFee(double fee) {
 			this.fee = fee;
 		}
 
@@ -205,6 +219,38 @@ public class AccountVO  implements Serializable {
 
 		public void setTradeCharge(double tradeCharge) {
 			this.tradeCharge = tradeCharge;
+		}
+
+		public String getRippleTradeEmail() {
+			return rippleTradeEmail;
+		}
+
+		public void setRippleTradeEmail(String rippleTradeEmail) {
+			this.rippleTradeEmail = rippleTradeEmail;
+		}
+
+		public String getMberNm() {
+			return mberNm;
+		}
+
+		public void setMberNm(String mberNm) {
+			this.mberNm = mberNm;
+		}
+
+		public String getRowNum() {
+			return rowNum;
+		}
+
+		public void setRowNum(String rowNum) {
+			this.rowNum = rowNum;
+		}
+
+		public String getStatusNm() {
+			return statusNm;
+		}
+
+		public void setStatusNm(String statusNm) {
+			this.statusNm = statusNm;
 		}
 
 		

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../include/taglib.jsp" %>
 
+<%@ include file="../tiles/total/middleTop.jsp" %>
 
 <div class="con_title">
 	  <li>
@@ -10,13 +11,14 @@
 <div class="content">
     	<div class="content_in">
             <div class="con_info">
-            <!-- 데이타 갱신 버튼 시작 -->
+            <!-- 데이타 갱신 버튼 시작 
             <ul class="time" style="margin-left:40px">
 				<li><a href="#2222" onclick="drawingChart(0, 0, -1)">1h</a></li>
 				<li><a href="#2222" onclick="drawingChart(0, 0, -4)">1h</a></li>
 				<li><a href="#2222" onclick="drawingChart(0, -1, 0)">1h</a></li>
 				<li><a href="#2222" onclick="drawingChart(0, -7, 0)">1h</a></li>
 			</ul>
+			-->
 <!-- 데이타 갱신 버튼 종료 -->
             	<div class="marketprice_box" id="container" >
                 
@@ -25,34 +27,34 @@
                 <div class="market_info">
                 	<div class="market_info_box">
                     	<li class="market_title"><img src="/images/sub/price_1.png" /></li>
-                        <li class="no_box"><p>5.0999</p></li>
+                        <li class="no_box"><p id="close"></p></li>
                     </div>
                     
                     <div class="market_info_box">
                     	<li class="market_title"><img src="/images/sub/price_2.png" /></li>
-                        <li class="no_box"><p>5.0999</p></li>
+                        <li class="no_box"><p id="high"></p></li>
                     </div>
                     
                     <div class="market_info_box">
                     	<li class="market_title"><img src="/images/sub/price_3.png" /></li>
-                        <li class="no_box"><p>5.0999</p></li>
+                        <li class="no_box"><p id="low"></p></li>
                     </div>
                 </div>
                 
                 <div class="market_info">
                 	<div class="market_info_box_down">
                     	<li class="market_title"><img src="/images/sub/price_4.png" /></li>
-                        <li class="no_box"><p>5.0999</p></li>
+                        <li class="no_box"><p id="base" class="numberic"></p></li>
                     </div>
                     
                     <div class="market_info_box_down">
                     	<li class="market_title"><img src="/images/sub/price_5.png" /></li>
-                        <li class="no_box"><p>5.0999</p></li>
+                        <li class="no_box"><p id="asks"></p></li>
                     </div>
                     
                     <div class="market_info_box_down">
                     	<li class="market_title"><img src="/images/sub/price_6.png" /></li>
-                        <li class="no_box"><p>5.0999</p></li>
+                        <li class="no_box"><p id="bids"></p></li>
                     </div>
                 </div>
             </div>
@@ -62,16 +64,39 @@
 <script type="text/javaScript" language="javascript">
 
 	$(document).ready(function(){
-	    drawingChart(0,-7,0);
+	    /* drawingChart(0,-7,0);
 	    exrp.GetRippleCurrentData();
 	    exrp.GetRippleChartData();
 	    exrp.asks(1, 'M');
-	    exrp.asks(2, 'M');
-	
-	
+	    exrp.a sks(2, 'M');
+	    */
+	    sendPost("${contextPath}/main/selectXrpTradeInfo.do", "", "fn_setXrpTradeInfo");
 	});
 	
-	function getWorldDate(txOffSet, dayDiff) {
+	function fn_setXrpTradeInfo(data){
+		
+		if(data.isSuccess){
+			$("#asks").html(data.xrpVo.asksVolume);
+			$("#bids").html(data.xrpVo.bidsVolume);
+			$("#base").html(data.xrpVo.baseVolume);
+			//$("#counterVolume").html(data.xrpVo.counterVolume + '<img src="/images/common/krw_small.png" />');
+			$("#high").html(data.xrpVo.highVolume);
+			$("#low").html(data.xrpVo.lowVolume);
+			$("#close").html(data.xrpVo.closeVolume );
+			
+			//gapClose = data.xrpVo.closeVolume - data.xrpVo.beforeCloseVolume;
+        	
+        	//$("#gapVolume").html(exrp.r8round(gapClose,2));
+        	//$("#gapVolumePer").html(exrp.r8round(gapClose*10,2));
+        	
+        	//$("#spreadVolume").html(fn_numberRound(data.xrpVo.bidsVolume - data.xrpVo.asksVolume,4));
+        	
+		} else {
+			alert("조회 실패");
+		}
+	}
+	
+	/* function getWorldDate(txOffSet, dayDiff) {
 	  var now = new Date();
 	  var tz = now.getTime() + (now.getTimezoneOffset() * 60000) + (txOffSet * 3600000);
 	  now.setTime(tz);
@@ -242,7 +267,7 @@
 		            useUTC: true
 		        }
 		    }); 
-		}
+		} */
 
 
 </script>

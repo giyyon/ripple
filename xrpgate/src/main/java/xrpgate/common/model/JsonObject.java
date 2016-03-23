@@ -48,4 +48,9 @@ public class JsonObject {
 	 * 파일의 삭제 여부 성공시 true
 	 */
 	public boolean IsDeleted;
+	
+	/**
+	 * 수정모드 판별
+	 */
+	public String isUpdate;
 }

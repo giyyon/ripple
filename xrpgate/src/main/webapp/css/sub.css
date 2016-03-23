@@ -17,7 +17,16 @@
 .con_title{margin:0 auto;width:1200px;}
 .con_title li{float:left; margin-top:20px;margin-bottom:10px;width:1200px;}
 .con_info{width:1200px;padding:10px 20px 20px 20px;float:left;}
+/* 20160315 추가 */
+.con_info_foot{width:1200px;padding:10px 20px 20px 20px;float:left;border:1px solid #333;font-size:11px;}
+.law_title{font-size:14px;color:#336699;float:left;margin-bottom:10px;width:100%;font-weight:bold;}
+.law_info{font-size:12px;color:#333;float:left;line-height:17px;width:100%;}
 
+.law_table{width:1200px;float:left; text-align:center;}
+.law_table td{padding-left:5px;padding-top:5px;}
+.law-table-title{font-size:14px;height:35px;font-weight:bold;}
+.law-table-info{font-size:13px;color:#666;}
+/* 20160315 종료 */
 /*회사소개*/
 .year_box{width:558px;float:left;}
 .year_box li{float:left;}
@@ -89,7 +98,7 @@
 .market_title{width:53px;float:left;}
 
 /*예탁,인출 페이지*/
-.wallet_box{width:380px;height:225px; border:1px solid #d4d4d4;background:#f4f4f4; border-radius:10px;padding:15px 25px 15px 15px;float:left;margin-right:210px;margin-left:50px;}
+.wallet_box{width:380px;height:170px; border:1px solid #d4d4d4;background:#f4f4f4; border-radius:10px;padding:15px 25px 15px 15px;float:left;margin-right:210px;margin-left:50px;}
 .wallet_box_title{margin-bottom:20px;}
 .wallet_line{width:390px;float:left;height:45px;margin-bottom:15px;}
 .wallet_title{width:100px;float:left;margin-right:15px;}
@@ -110,7 +119,7 @@
 .deposit_title{text-align:center;width:600px;margin-top:20px;margin-bottom:20px;}
 .deposit_info{
 	width:410px;
-	height:230px;
+	height:250px;
 	padding:10px;
 	float:left;
 	border:1px solid #d4d4d4;
@@ -132,7 +141,7 @@
 .draw_title{text-align:center;width:578px;margin-top:20px;margin-bottom:20px;}
 .draw_info{
 	width:410px;
-	height:230px;
+	height:250px;
 	padding:10px;
 	float:left;
 	border:1px solid #d4d4d4;
@@ -151,8 +160,8 @@
 .dr_table_title{font-size:14px;color:#666;border-bottom:1px solid #999;width:140px;font-weight:400;}
 .draw_btn{float:left; margin-top:30px;width:578px; text-align:center;}
 
-.mylist{width:1200px;float:left;margin-top:50px;}
-.mylist_title{float:left;width:1200px;margin-bottom:20px;}
+.mylist{width:1200px;float:left;margin-top:20px;}
+.mylist_title{float:left;width:1200px;}
 .mylist_table{width:1200px;float:left;border-top:1px solid #333;}
 .mylist_table td{height:25px;}
 .my_title{font-size:14px; text-align:center;}
@@ -169,21 +178,27 @@
 .list_01 li,.list_02 li,.list_03 li,.list_04 li,.list_05 li,.list_06 li
 {word-break:break-all;overflow:hidden;height:13px;margin-top:4px;text-align:center;}
 .my_title td.list_07,.my_info td.list_07{width:185px;border-right:0;}
+.depositdrawinfo{width:1200px;float:left;font-size:12px;margin-top:5px;}
+.godeal{width:1200px; text-align:center;float:left; margin-top:40px;}
 
 /*거래하기 페이지*/
 .simeple_wrap,.high_wrap{width:1200px;float:left;}
 .simple_deal,.high_deal{width:1170px; padding:15px; border:1px solid #336699;float:left;background:#fff;}
 .simple_title,.high_title{width:1200px;float:left;height:40px; font-size:16px; color:#336699; font-weight:bold;line-height:40px;margin-top:20px;}
-.simple_info{float:left; font-size:14px; color:#666;}
+.simple_info{float:left; font-size:14px; color:#666;margin-bottom:20px;}
+.simple_info_box{width:100%;float:left;}
 .simple_gray{float:right; font-size:13px; color:#999;margin-left:5px;}
-.simple_volume,.simple_sell{width:100%;float:left; margin-bottom:30px;margin-top:20px;}
+.simple_volume{width:450px; border:1px solid #d4d4d4; border-radius:5px;background:#f4f4f4;float:left;padding-bottom:15px;}
+.simple_sell{width:550px;float:left;margin-top:30px;}
 .volume_title{font-size:14px; font-weight:bold; color:#333;float:left; margin-right:10px; line-height:22px; }
-.simple_volume li{float:left;}
-.simple_volume input{width:130px;float:left; margin-right:10px;text-align:right;}
-.simple_volume select{width:150px; float:left; height:22px;}
+.simple_number{width:350px;float:left; font-size:25px;color:#666;text-align:right;padding-right:10px;line-height:38px;height:38px;}
 .add_gateway a{float:left; font-size:13px;line-height:24px;margin-left:10px;color:#336699;}
+.simple_deal_standard{width:200px;height:150px;float:left; border:1px solid #336699;margin-right:10px;margin-left:10px;margin-top:95px;}
+.simple_deal_standard li{float:left; width:100%; font-size:30px;text-align:center;font-weight:bold;}
+.simple_deal_standard li p{color:#666;float:right;margin-right:10px; font-size:25px;line-height:33px;}
+.stand_title{font-size:20px; color:#fff;background:#336699;height:50px; line-height:50px; text-align:center;margin-bottom:30px;}
 
-.sell_title{font-size:14px; font-weight:bold; color:#333;float:left; margin-right:10px; line-height:22px;width:100%;margin-bottom:10px;}
+.sell_title{font-size:14px; font-weight:bold; color:#333;float:left; margin-right:10px; line-height:22px;margin-bottom:10px;}
 .sell_box{width:150px;float:left;background:#f5f5f5;padding:10px;border:1px solid #d4d4d4}
 .sell_1{width:100%;text-align:center; font-size:20px; font-weight:bold;margin-bottom:10px;}
 .sell_2{width:100%; text-align:center;font-size:16px; color:#666;float:left;margin-bottom:10px;}
@@ -202,17 +217,24 @@
 
 .sell_xrp{width:450px; border:1px solid #d4d4d4; border-radius:5px;background:#f4f4f4;float:left;height:450px;margin-left:70px;}
 .sell_xrp_title{width:450px;background:#e5e5e5;float:left; height:40px;line-height:40px;text-align:center;font-weight:bold;border-bottom:1px solid #d4d4d4}
-.sell_xrp_box{width:100%;float:left;padding:15px;margin-bottom:20px;}
+.sell_xrp_box{width:430px;float:left;padding:10px;margin-bottom:10px;}
+.sell_xrp_box li{float:left;}
 .sell_xrp_box_title{width:100%;float:left; font-size:14px; color:#666;margin-bottom:10px;}
-.sell_xrp_box input{width:350px;float:left;height:30px;margin-right:10px;border-radius:5px;font-size:20px;}
-.unit{float:left; font-size:28px; font-weight:bold;line-height:38px;}
+.sell_xrp_box input{width:340px;float:left;height:30px;margin-right:10px;border-radius:5px;font-size:20px;}
+.unit{float:right; font-size:28px; font-weight:bold;line-height:38px;text-align:right;width:69px;}
+.xrpgate_bank{font-size:20px; color:#336699; font-weight:bold; margin-right:10px;}
+.xrpgate_bank_no{font-size:20px; font-weight:bold;}
 
 .sell_xrp_btn{float:left;width:450px;width:183px;height:45px;background:#336699;border:1px solid #0e2d4c;text-align:center; line-height:45px; margin-left:130px;}
 .sell_xrp_btn a{color:#fff;font-weight:bold;display:block;}
 
 .myorder{width:1200px; float:left; margin-top:20px;}
 .myorder_title{width:100%;float:left;margin-bottom:20px;}
-.myorder_table{float:left; width:1195px;border-top:1px solid #d4d4d4;border-left:1px solid #d4d4d4}
+/* 20160315 시작 */
+.myorder_table{float:left;border-top:1px solid #d4d4d4;border-left:1px solid #d4d4d4}
+.myorder_table img{margin-top:2.5px;}
+/* 20160315 종료*/
+
 .table_title{background:#f1f1f1;height:30px;line-height:30px;font-size:14px;text-align:center;}
 .table_title td{border-right:1px solid #d4d4d4;width:238px; border-bottom:1px solid #d4d4d4}
 .table_text{background:#fff;height:25px;line-height:25px;font-size:12px;text-align:center;}
@@ -304,7 +326,7 @@
 
 }
 .sub_news .date,.sub_news .hit{padding:0;font-family:Tahoma, Geneva, sans-serif;font-size:11px;line-height:normal;}
-.sub_news .title{text-align:left; padding-left:15px; font-size:13px;}
+.sub_news .title{text-align:left; padding-left:15px; font-size:13px;cursor:pointer;}
 .sub_news .title a{width:900px;overflow:hidden;word-break:break-all;height:14px;float:left;}
 
 /*페이징*/
@@ -317,7 +339,7 @@
 /*게시글 보기*/
 .board_view{width:1000px;margin:0 auto;}
 .board_view table{width:1000px; border-top:1px solid #666}
-/*.board_view table td{height:25px;line-height:25px;} */
+.board_view table td{height:25px;line-height:25px;}
 .board_view thead{background:#fcfcfc}
 .board_view thead td{border-bottom:1px solid #d4d4d4;}
 .board_view table td li{float:left;}
@@ -327,7 +349,7 @@
 .hit_box{width:650px;float:left;}
 .who_box{width:200px;float:left;}
 .date_box{width:140px;float:left;}
-.board_view tbody{width:970px; border-bottom:1px solid #d4d4d4;float:left; height:500px;border-top:0;padding:15px;}
+.board_view tbody{width:970px; border-bottom:1px solid #d4d4d4;float:left; min-height:500px;border-top:0;padding:15px;}
 .view_btn{width:100px;margin:0 auto;}
 .view_btn li{float:left; width:100px; height:30px; background:#fcfcfc;border:1px solid #0a3157;margin-top:15px;text-align:center;line-height:30px;}
 .view_btn li a{display:block;color:#0a3157;font-size:14px;}'

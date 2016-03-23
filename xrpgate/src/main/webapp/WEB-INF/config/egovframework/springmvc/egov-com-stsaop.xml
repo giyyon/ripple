@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
-	<!--  자료이용현황 통계자료 생성 --> 
+	<!--  자료이용현황 통계자료 생성
     <aop:config>
         <aop:aspect id="dtaUseStatsManageAspect" ref="egovDtaUseStatsService">
             <aop:after method="insertDtaUseStats"
@@ -12,5 +12,5 @@
                   />
         </aop:aspect>
     </aop:config>
-
+ --> 
 </beans>

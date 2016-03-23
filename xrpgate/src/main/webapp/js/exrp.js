@@ -3094,7 +3094,7 @@ var exrp = {
 };
 
 //START 리플유효성검사 추가 20150221
-BigInteger.valueOf = nbv;
+/*BigInteger.valueOf = nbv;
 BigInteger.prototype.toByteArrayUnsigned = function () {
     var ba = this.toByteArray();
     if (ba.length) {
@@ -3105,11 +3105,11 @@ BigInteger.prototype.toByteArrayUnsigned = function () {
         });
     } else
         return ba;
-};
+};*/
 
 var Ripple = {};
 
-(function () {
+/*(function () {
     var B58 = Ripple.Base58 = {
         alphabet: "rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz",
         base: BigInteger.valueOf(58),
@@ -3132,7 +3132,7 @@ var Ripple = {};
         if (browser.indexOf("msie") != -1 && getInternetExplorerVersion() <= 8) {
             $("#registration-ie8").css("display","block");
         }        
-})();
+})();*/
 
 Ripple.Address = function (bytes) {
     if ("string" == typeof bytes)

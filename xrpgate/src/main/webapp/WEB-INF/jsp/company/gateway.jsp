@@ -43,18 +43,18 @@
                     </a>
             	</li>
                 <li>
-                    <a href="${contextPath}/company/ripplebalance.do">
-                        <img src="/images/sub/side_07_off.png" onmouseover="this.src='/images/sub/side_07_on.png'"onmouseout="this.src='/images/sub/side_07_off.png'"/>
+                    <a href="${contextPath}/company/ripplePersonCert.do">
+                        <img src="../images/sub/side_07_off.png" onmouseover="this.src='../images/sub/side_07_on.png'"onmouseout="this.src='../images/sub/side_07_off.png'"/>
                     </a>
             	</li>
                 <li>
-                    <a href="${contextPath}/company/ripplepw.do">
-                        <img src="/images/sub/side_08_off.png" onmouseover="this.src='/images/sub/side_08_on.png'"onmouseout="this.src='/images/sub/side_08_off.png'"/>
+                    <a href="${contextPath}/company/ripplePwChgCert.do">
+                        <img src="../images/sub/side_08_off.png" onmouseover="this.src='../images/sub/side_08_on.png'"onmouseout="this.src='../images/sub/side_08_off.png'"/>
                     </a>
             	</li>
                 <li>
-                    <a href="${contextPath}/company/rippledouble.do">
-                        <img src="/images/sub/side_09_off.png" onmouseover="this.src='/images/sub/side_09_on.png'"onmouseout="this.src='/images/sub/side_09_off.png'"/>
+                    <a href="${contextPath}/company/ripplePwRestore.do">
+                        <img src="../images/sub/side_09_off.png" onmouseover="this.src='../images/sub/side_09_on.png'"onmouseout="this.src='../images/sub/side_09_off.png'"/>
                     </a>
             	</li>
                 <li>

@@ -7,37 +7,47 @@
 <%
 
 %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>FileDown List</title>
 
-
+</head>
+<body></body>
 <!--<title>파일목록</title> -->
 
 
 		<c:forEach var="fileVO" items="${fileList}" varStatus="status">
-			<div class="calSize"  fileSize='${fileVO.fileMg}'><script>document.write(decodeURIComponent('${fileVO.orignlFileNm}') )</script> &nbsp; 
-			<script>document.write('('+BIT.formatFileSize(${fileVO.fileMg})+')')</script> </div>
+			<div class="calSize"  fileSize='${fileVO.fileMg}'>
+			<!--	<a href="#" name="btnDown"data-atchFileId="${fileVO.atchFileId}" data-fileSn="${fileVO.fileSn}">${fileVO.orignlFileNm}</a>-->
+			 <script>document.write(decodeURIComponent('${fileVO.orignlFileNm}') )</script> &nbsp; 
+			<script>document.write('('+BIT.formatFileSize(${fileVO.fileMg})+')')</script> 
+			
+			</div>
 		</c:forEach>
 		<c:if test="${fn:length(fileList) == 0}">
 	    </c:if>
-
-
-<!-- 	<table> -->
-<%-- 		<c:forEach var="fileVO" items="${fileList}" varStatus="status"> --%>
-<!-- 		<tr> -->
-<!-- 			<td>                                                                                                                -->
-<%-- 					<div class="calSize"  fileSize='${fileVO.fileMg}'><script>document.write(decodeURIComponent('${fileVO.orignlFileNm}') )</script> &nbsp;  --%>
-<!-- 					<script>document.write('('+BIT.formatFileSize(${fileVO.fileMg})+')')</script> </div> -->
-<!-- 			</td> -->
-<!-- 		</tr> -->
-<%-- 		</c:forEach> --%>
-<%-- 		<c:if test="${fn:length(fileList) == 0}"> --%>
-<!-- 			<tr> -->
-<!-- 				<td></td> -->
-<!-- 			</tr> -->
-<%-- 	    </c:if> --%>
-<!-- 	</table> -->
-	
+<form id="fileForm" >
+<input type="hidden" name="fileSn" >
+</form>
+	    
 <script type="text/javascript">
-
+	
+	$("[name=btnDown]").on("click", function(e){
+		e.preventDefault;
+		
+		var atchFileId = $(this).attr('data-atchFileId');
+		var fileSn = $(this).attr('data-fileSn');
+		
+		$("[name=atchFileId]").val(atchFileId);
+		$("[name=fileSn]").val(fileSn);
+		
+		$('#fileForm').attr({'action': '${contextPath}/files/download.do', "method": "get"}); 
+		alert($('#fileForm').serialize());
+		$("#fileForm").submit(); 
+        
+	});
 	function fn_egov_downFile(atchFileId, fileSn){
 // 		window.open("<c:url value='/files/download.do?atchFileId="+atchFileId+"&fileSn="+fileSn+"'/>");
 	}

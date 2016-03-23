@@ -15,12 +15,12 @@
             <div class="join_person">
             	<div class="personal">
                 	<li><img src="/images/sub/per_mem.png" /></li>
-                    <li><a href="${contextPath}/join/mem_join_chk.do"><img src="/images/btn/per_mem_btn.png" /></a></li>
+                    <li><a href="${contextPath}/join/mem_join_chk.do?userTy=USR01"><img src="/images/btn/per_mem_btn.png" /></a></li>
                 </div>
                 <div class="join-line"></div>
                 <div class="company">
                 	<li><img src="/images/sub/com_mem.png" /></li>
-                    <li><a href="${contextPath}/join/mem_join_chk.do"><img src="/images/btn/com_mem_btn.png" /></a></li>
+                    <li><a href="${contextPath}/join/mem_join_chk.do?userTy=USR02"><img src="/images/btn/com_mem_btn.png" /></a></li>
                 </div>
             </div>
         </div>

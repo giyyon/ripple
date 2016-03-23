@@ -22,7 +22,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 @SuppressWarnings("serial")
 public class TradeVO  implements Serializable {
 
-	private long tradeId = 0L;
+	private long tradeId ;
 
 	private String tradeType = "";
 		
@@ -57,11 +57,20 @@ public class TradeVO  implements Serializable {
 	private String rippleTradeEmail = "";
 	
 	private String dumPointCardNo = "";
+	
+	private String requestId;
+	
+	private String requestTime;
+	
+	/**
+	 * 누적 수량
+	 */
+	private String accumulateQty;
 
 	/**
 	 * 요청 수량
 	 */
-	private String requestQty = "";
+	private double requestQty = 0L;
 	
 	/**
 	 * 요청 금액
@@ -74,9 +83,21 @@ public class TradeVO  implements Serializable {
 	private String productType;
 	
 	/**
+	 * 고객 은행
+	 */
+	private String bankNm;
+	
+	/**
+	 * 고객 계좌 번호
+	 */
+	private String account;
+	
+	/**
 	 * 결재 통화 유형
 	 */
 	private String paymentCurrency;
+	
+	private double rowSum = 0;
 	
 	public String getMoblphonNo() {
 		return moblphonNo;
@@ -238,11 +259,11 @@ public class TradeVO  implements Serializable {
 		this.dumPointCardNo = dumPointCardNo;
 	}
 
-	public String getRequestQty() {
+	public double getRequestQty() {
 		return requestQty;
 	}
 
-	public void setRequestQty(String requestQty) {
+	public void setRequestQty(double requestQty) {
 		this.requestQty = requestQty;
 	}
 
@@ -273,5 +294,54 @@ public class TradeVO  implements Serializable {
 	public void setRequestBuyMoney(double requestBuyMoney) {
 		this.requestBuyMoney = requestBuyMoney;
 	}
+
+	public double getRowSum() {
+		return rowSum;
+	}
+
+	public void setRowSum(double rowSum) {
+		this.rowSum = rowSum;
+	}
+
+	public String getRequestId() {
+		return requestId;
+	}
+
+	public void setRequestId(String requestId) {
+		this.requestId = requestId;
+	}
+
+	public String getRequestTime() {
+		return requestTime;
+	}
+
+	public void setRequestTime(String requestTime) {
+		this.requestTime = requestTime;
+	}
+
+	public String getAccumulateQty() {
+		return accumulateQty;
+	}
+
+	public void setAccumulateQty(String accumulateQty) {
+		this.accumulateQty = accumulateQty;
+	}
+
+	public String getBankNm() {
+		return bankNm;
+	}
+
+	public void setBankNm(String bankNm) {
+		this.bankNm = bankNm;
+	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+	
 	
 }

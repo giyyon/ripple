@@ -1,5 +1,7 @@
 package xrpgate.main.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import xrpgate.admin.web.service.AdminMgmtService;
+import xrpgate.admin.web.service.XrpChartVO;
 import xrpgate.common.model.JsonObject;
 import xrpgate.login.web.LoginController;
 import xrpgate.trade.service.TradeDetailVO;
@@ -59,6 +63,9 @@ public class MainController implements ApplicationContextAware, InitializingBean
     
     @Resource(name = "EgovBBSManageService")
     private EgovBBSManageService bbsMngService;
+    
+    @Resource(name = "adminMgmtService")
+    private AdminMgmtService adminMgmtService;
 
     //---------------------------------
     // 2009.06.29 : 2단계 기능 추가
@@ -92,6 +99,7 @@ public class MainController implements ApplicationContextAware, InitializingBean
 	
 	@RequestMapping(value="/index.do", method = RequestMethod.GET)
 	public String index(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model)  throws Exception{
+		TradeVO tradeVo = new TradeVO();
 		if(EgovUserDetailsHelper.isAuthenticated()){
 			LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 	
@@ -101,16 +109,31 @@ public class MainController implements ApplicationContextAware, InitializingBean
 			//일반 회원
 			if(loginVO.getUserSe().equals("GNR")){			
 				TradeDetailVO tradeDetailVO = new TradeDetailVO();
-				TradeVO tradeVO = new TradeVO();
+				
 				tradeDetailVO.setRequestErId(loginVO.getId());
 				
 				MberManageVO mberManageVO = mberManageService.selectMberById(loginVO.getId());
-				tradeVO = tradeManageService.selectTotalBookingRippleTrade(tradeDetailVO);
+				//tradeVO = tradeManageService.selectTotalBookingRippleTrade(tradeDetailVO);
 				
 				model.addAttribute("mberManageVO", mberManageVO);		
-				model.addAttribute("tradeVO", tradeVO);
+				//model.addAttribute("tradeVO", tradeVO);
 			}
 		}
+		// 최근 매수 목록 호출
+		ArrayList<TradeVO> buyTrade = new ArrayList<TradeVO>();
+		ArrayList<TradeVO> sellTrade = new ArrayList<TradeVO>();
+		ArrayList<TradeVO> completeTrade = new ArrayList<TradeVO>();
+		
+		buyTrade = tradeManageService.selectXrpBuyTradeList(tradeVo);
+		// 최근 매도 목록 호출
+		sellTrade = tradeManageService.selectXrpSellTradeList(tradeVo);
+		// 최근 거래 완료 목록 호출
+		completeTrade = tradeManageService.selectXrpCompleteTradeList();
+		
+		model.addAttribute("buyTrade", buyTrade);
+		model.addAttribute("sellTrade", sellTrade);
+		model.addAttribute("completeTrade", completeTrade);
+		
 		return ".basic_main/potal";
 		
 //		return "main/potal";
@@ -225,4 +248,90 @@ public class MainController implements ApplicationContextAware, InitializingBean
 		}
 		return jo;
     }
+	
+	@RequestMapping(value="/fileupload.do")
+	public String fileUploadTest() throws Exception {
+		
+		return ".body_main/fileupload";
+	}
+	
+	@RequestMapping(value="/selectXrpTradeInfo.do")
+	@ResponseBody
+	public HashMap<String, Object> selectXrpTradeInfo() throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		XrpChartVO xrpVo = new XrpChartVO();
+		
+		try{
+			xrpVo = adminMgmtService.selectXrpTradeInfo();
+			map.put("isSuccess", true);
+			map.put("xrpVo", xrpVo);
+		}catch(Exception e){
+			System.out.print(e.getMessage());
+			map.put("isSuccess", false);
+		}
+		return map;
+	}
+	
+	@RequestMapping(value="/selectXrpChartData.do")
+	@ResponseBody
+	public HashMap<String, Object> selectXrpChartData(String chartType) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		HashMap<String, Object> chart = new HashMap<String, Object>();
+		try{
+			chart = adminMgmtService.selectXrpChartDat(chartType);
+			map.put("isSuccess", true);
+			map.put("chartDataW", chart.get("chartDataW"));
+			map.put("chartDataD", chart.get("chartDataD"));
+		}catch(Exception e){
+			System.out.print(e.getMessage());
+			map.put("isSuccess", false);
+		}
+		return map;
+	}
+	
+	@RequestMapping(value="/siteMap.do")
+	public String callSiteMap()throws Exception {
+		
+		return ".basic_main/siteMap";
+	}
+	
+	/**
+	 * 이용약관
+	 * @param 
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "/agreeOfUse.do")
+	public String getAgreeOfUse() throws Exception {
+		return ".basic_main/agreeOfUse";
+	}
+	
+	/**
+	 * 개인정보 정책
+	 * @param 
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "/userInfoPolicy.do")
+	public String getUserInfoPolicy() throws Exception {
+		return ".basic_main/userInfoPolicy";
+	}
+	
+	/**
+	 * 위험고지
+	 * @param 
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "/notiDanger.do")
+	public String getNotiDanger() throws Exception {
+		return ".basic_main/notiDanger";
+	}
+	
+	/**
+	 * 법령준수
+	 * @param 
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "/observeLaw.do")
+	public String getObserveLaw() throws Exception {
+		return ".basic_main/observeLaw";
+	}
 }

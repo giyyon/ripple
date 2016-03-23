@@ -18,4 +18,16 @@
 	<definition name=".contents_*/*/*" extends="contents">
 		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
 	</definition>
+	
+	<definition name="body" template="/WEB-INF/jsp/tiles/body/Body.jsp">
+		<put-attribute name="header" value="/WEB-INF/jsp/tiles/body/header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/tiles/body/content.jsp" />
+	</definition>
+	
+	<definition name=".body_*" extends="body">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}.jsp" />
+	</definition>
+	<definition name=".body_*/*" extends="body">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+	</definition>
 </tiles-definitions>

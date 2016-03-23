@@ -74,7 +74,7 @@ public interface EgovMberManageService {
 	 * @param mberManageVO 일반회원수정정보
 	 * @throws Exception
 	 */
-	public void updateMberSub(MberManageVO mberManageVO) throws Exception;
+	public void updateMberByAdmin(MberManageVO mberManageVO) throws Exception;
 	
 	/**
 	 * 화면에 조회된 사용자의 정보를 데이터베이스에서 삭제
@@ -120,5 +120,29 @@ public interface EgovMberManageService {
 	 * @throws Exception
 	 */
 	public MberManageVO selectChkJoinYn(String di) throws Exception;
+	
+	 /**
+	  * 회원의 동명이인의 숫자를 파악 개별 태그 생성
+	 * @param mberMnnageVo
+	 * @return
+	 * @throws Exception
+	 */
+	public String selectSameNameMberCnt(MberManageVO mberMnnageVo) throws Exception;
+	
+	/**
+	 * 회원 id찾기
+	 * @param mberVo
+	 * @return
+	 * @throws Exception
+	 */
+	public String selectMberIdByMberNm(MberManageVO mberVo) throws Exception;
+	
+	/**
+	 * 회원의 임시 비밀번호 발급
+	 * @param mberVo
+	 * @return
+	 * @throws Exception
+	 */
+	public String selectMberPassByMberNm(MberManageVO mberVo) throws Exception;
 		
 }

@@ -16,6 +16,7 @@ import egovframework.com.cmm.service.Globals;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.ems.service.SndngMailVO;
 import egovframework.com.uat.uia.service.EgovLoginService;
+import egovframework.com.uss.umt.service.EgovMberManageService;
 import egovframework.com.uss.umt.service.MberManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovClntInfo;
@@ -34,6 +35,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import xrpgate.util.JSONResponseUtil;
 import xrpgate.util.SupportUtil;
@@ -80,6 +82,9 @@ public class LoginController {
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
+	
+	@Resource(name = "mberManageService")
+	private EgovMberManageService mberManageService;
 
 	/** log */
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
@@ -420,9 +425,10 @@ public class LoginController {
 		return "redirect:/j_spring_security_logout";*/
 
 		request.getSession().setAttribute("loginVO", null);
-
+		String main_page = Globals.MAIN_PAGE;
+		
 		//return "redirect:/egovDevIndex.jsp";
-		return "redirect:/EgovContent.do";
+		return "redirect:/main/index.do";
 	}
 
 	/**
@@ -638,5 +644,41 @@ public class LoginController {
 		}
 		*/
 		return "egovframework/com/uat/uia/EgovGpkiRegist";
+	}
+	
+	@RequestMapping(value="/findIdByMber.do")
+	@ResponseBody
+	public HashMap<String, Object> findIdByMber(MberManageVO mberVo) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		String mberId = mberManageService.selectMberIdByMberNm(mberVo);
+		
+		if("".equals(mberId) || mberId == null){
+			map.put("message", "등록된 ID가 존재하지 않습니다.");
+			map.put("isSuccess", false);
+		} else {
+			map.put("isSuccess", true);
+			map.put("mberId", mberId);
+		}
+		
+		return map;
+	}
+	
+	@RequestMapping(value="/findPassByMber.do")
+	@ResponseBody
+	public HashMap<String, Object> findPassByMber(MberManageVO mberVo) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		String tempPass = mberManageService.selectMberPassByMberNm(mberVo);
+		
+		if("".equals(tempPass) || tempPass == null){
+			map.put("message", "임시 비밀번호 발급에 실패하였습니다.");
+			map.put("isSuccess", false);
+		} else {
+			map.put("isSuccess", true);
+			map.put("tempPass", tempPass);
+		}
+		
+		return map;
 	}
 }

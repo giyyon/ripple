@@ -52,6 +52,11 @@ public class LoginVO implements Serializable{
 	private String ip;
 	/** GPKI인증 DN */
 	private String dn;
+	
+	/**
+	 * 회원 등급
+	 */
+	private String mberGrade;
 	/**
 	 * id attribute 를 리턴한다.
 	 * @return String
@@ -245,6 +250,12 @@ public class LoginVO implements Serializable{
 	 */
 	public void setOrgnztNm(String orgnztNm) {
 		this.orgnztNm = orgnztNm;
+	}
+	public String getMberGrade() {
+		return mberGrade;
+	}
+	public void setMberGrade(String mberGrade) {
+		this.mberGrade = mberGrade;
 	}
 	
 }

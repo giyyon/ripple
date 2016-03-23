@@ -7,28 +7,27 @@
 <div class="footer">
 	<div class="footer-in">
     	<div class="footer_btn">
-        	<li><a href="#"><img src="/images/common/footer_01.png" /></a></li>
+        	<li><a href="${contextPath}/main/agreeOfUse.do"><img src="../images/common/footer_01.png" /></a></li>
             <li class="foot_bar">|</li>
-            <li><a href="#"><img src="/images/common/footer_02.png" /></a></li>
+            <li><a href="${contextPath}/main/userInfoPolicy.do"><img src="../images/common/footer_02.png" /></a></li>
             <li class="foot_bar">|</li>
-            <li><a href="#"><img src="/images/common/footer_03.png" /></a></li>
+            <li><a href="${contextPath}/main/notiDanger.do"><img src="../images/common/footer_03.png" /></a></li>
             <li class="foot_bar">|</li>
-            <li><a href="#"><img src="/images/common/footer_04.png" /></a></li>
-            <li class="foot_bar">|</li>
-            <li><a href="#"><img src="/images/common/footer_05.png" /></a></li>
+            <li><a href="${contextPath}/main/observeLaw.do"><img src="../images/common/footer_04.png" /></a></li>
+            
         </div>
         <div class="footer_info">
-        	<li>사업자 등록번호 : 689-87-00027</li>
+        	<li>사업자 등록번호 : 130-43-97652</li>
             <li class="foot_bar"> | </li>
-            <li>대표자 : 김찬식</li>
-            <li>대표번호 : 1899-0696(업무시간 : 평일 오전 09시~18시)</li>
+            <li>대표자 : 김주현</li>
             <li class="foot_bar"> | </li>
-            <li>통신판매업신고 : 2015-11-1111호</li>
-            <li>더엑스알피글로벌 - 서울특별시 강남구 테헤란로 151, 1914호(역삼동,역삼하이츠)</li>
+            <li>통신판매업신고 :2012-경기부천-0311호</li>
+            <li>대표번호 : 1899-0696(업무시간 : 평일 오전 09시~17시)</li>            
+            <li>비즈월드 트레이딩 - 경기도 부천시 소사구 송내대로 30번길 13 105호</li>
         </div>
         <div class="icon">
-            <li><a href="#" target="_blank"><img src="/images/common/youtube.png" /></a></li>
-            <li><a href="#" target="_blank"><img src="/images/common/blog.png" /></a></li>
+            <li><a href="#" target="_blank"><img src="../images/common/youtube.png" /></a></li>
+            <li><a href="#" target="_blank"><img src="../images/common/blog.png" /></a></li>
             <li>
             <!-- KB에스크로 이체 인증마크 적용 시작 -->
 				<script>

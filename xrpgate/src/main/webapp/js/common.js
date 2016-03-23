@@ -1,13 +1,3 @@
-$(document).on("click", ".btn_toggle", function(){
-  $("#search_area").toggle(function(){
-    if($(".btn_toggle").val() == "Close Search Area"){
-      $(".btn_toggle").val("Open  Search Area");
-    }else{
-      $(".btn_toggle").val("Close Search Area");
-    }
-    
-  });
-});
 
 $(document).on("click", ".btn_reset", function() {
 
@@ -28,6 +18,7 @@ $(document).on("click", ".btn_date", function() {
 });
 
 
+
 // post 동기화 로딩 이미지 추가
 function sendPost(url, para, callbackFuncName) {
 	$.ajax({
@@ -46,48 +37,26 @@ function sendPost(url, para, callbackFuncName) {
 		error : function(xmlHttpRequest, textStatus, errorThrown) {
 			// debugger;
 			//$.unblockUI();
-			//alert(xmlHttpRequest.responseText);
-			alert("에러가 발생하였습니다. 관리자에게 문의 하세요.");
+			alert(xmlHttpRequest.responseText
+					+ '\n' + textStatus + ' errorThrown '+errorThrown);
+			//alert("에러가 발생하였습니다. 관리자에게 문의 하세요.");
 		}
 	});
 }
 
 //전자우편 주소 체크 
-function email_chk(mail){
+function isValidEmail(email){
 
-	if(mail.lengh == 0) {
-		//alert("0");
+	var regex=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;   
+	
+	if(email == '' || email == null){
+		alert("이메일을 입력하여 주십시오.");
 		return false;
 	}
-	var email = mail.split('@');
-	if(email.length != 2)	{
-		//alert("1");
-		return false;
+	if(regex.test(email) === false) {  
+	    alert("잘못된 이메일 형식입니다.");  
+	    return false;  
 	}
-	
-	var id = escape(email[0]).replace(/-/gi, "");
-	var domain = escape(email[1]).replace(/-/gi, "");
-	
-	if(id.match(/^(\w+)$/ig) == null && id.match(/^(\w+)[.](\w+)$/ig) == null && id.match(/^(\w+)[.](\w+)[.](\w+)$/ig) == null){
-		//alert("2");
-		return false;
-	} else {
-		if(password_chk(id.replace(/./gi, "").replace(/-/gi, ""))){
-			//alert("3");
-			return false;
-		}
-	}
-	
-	if(domain.match(/^(\w+)[.](\w+)$/ig) == null && domain.match(/^(\w+)[.](\w+)[.](\w+)$/ig) == null){
-		//alert("4");
-		return false;
-	} else {
-		if(password_chk(domain.replace(/./gi, "").replace(/-/gi, ""))){
-			//alert("5");
-			return false;
-		}
-	}
-	
 	return true;
 }
 
@@ -110,4 +79,39 @@ function num_chk(str) {
     }
   }
   return true;
+}
+
+//패스워드 체크 영문대문자 숫자 최소 하나 포함
+function isValidFormPassword(pw, chkPw) {
+	 //var check = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,16}$/;
+	
+		if( pw == null  ||  pw == '' ) {
+			alert("비밀번호를 입력하여 주십시오.");
+				return false;	
+		}
+		
+		if( pw  != chkPw){
+			alert("비밀번호가 일치하지 않습니다.");
+			return false;
+		}
+		
+	 var check = /^(?=.*[a-z])(?=.*[0-9]).{8,16}$/i;
+	 
+	 if (!check.test(pw))     {
+	        alert("비밀번호는 영문/숫자 8자 ~ 16자로 입력해주세요.");
+	        return false;
+	    }
+	         
+	 if (pw.length < 8 || pw.length > 16) {
+	  alert("비밀번호는 8 ~ 16 자리로 입력해주세요.");
+	  return false;
+	 }
+	 
+	    return true;
+	}
+
+function fn_numberRound(num, pointDigit) {
+	var digitNumber = Math.pow(10, pointDigit);
+	
+	return Math.round(num*digitNumber)/digitNumber;
 }

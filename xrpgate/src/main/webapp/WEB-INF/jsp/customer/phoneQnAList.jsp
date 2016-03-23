@@ -13,11 +13,8 @@
     <div class="content_in">
         <div class="con_info">
             <div class="faq_search">
-            	<li><input type="text" /></li>
-                <li class="search_btn"><a href="#">검색</a></li>
-            </div>
-            <div class="board_write_btn"><!--관리자에게만 보이는 버튼 입니다.-->
-            	<a href="/html/board_write.html">글쓰기</a>            
+            	<li><input type="text" name="searchTxt" value="<c:out value='${searchVO.searchWrd}'/>"/></li>
+                <li class="search_btn"><a href="#" name="btnSearch">검색</a></li>
             </div>
 			<div cass="faq_table">
             	<table class="sub_news" border="1" cellpadding="0" cellspacing="0">
@@ -45,7 +42,7 @@
                             </td>
                             <td class="name"><c:out value="${result.ntcrId}"/></td>
                             <td class="date"><c:out value="${result.frstRegisterPnttm}"/></td>
-                            <td class="hit"></td>
+                            <td class="hit">${result.inqireCo}</td>
                             <!-- 
 							<span class="num"><c:out value="${result.nttId}"/></span>
 							<span class="num"><c:out value="${result.bbsNm}"/></span>
@@ -76,7 +73,9 @@
                 </table>
                
                 <div class="paging">
+                	<ul class="page">
 					<ui:pagination paginationInfo="${paginationInfo}" type="supportImage" jsFunction="linkPage" />
+					</ul>
 				</div>
             </div>
         </div>
@@ -87,18 +86,30 @@
 	<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
 	<input type="hidden" name="bbsId" value="" />
 	<input type="hidden" name="nttId"  value="" />
+	<input type="hidden" name="searchCnd"  value="0" />
+	<input type="hidden" name="searchWrd"  value="" />
 </form>
 
 <script type="text/javaScript" language="javascript">
 	$(function(){
 		
-		$("subForm").attr({action:"${contextPath}/customer/insertPhoneCouncelArticle.do", target:""});
+		$("[name=btnSearch]").click(function(e){
+			var pageNo = $(".selected").find("a").html();
+			
+			$("#subForm input[name=pageIndex]").val(pageNo); 
+			$("#subForm input[name=nttId]").val('0');
+			$("#subForm input[name=searchWrd]").val($("input[name=searchTxt]").val());
+			//$('#subForm').attr('action', '${contextPath}/customer/phoneQnAList.do'); 
+			$("#subForm").attr({action:"${contextPath}/customer/rippleNewsList.do", target:""});
+			$("#subForm").submit();
+		});
 		
 	});
 	
 	// 네비게시이션 이동
 	function linkPage(pageNo){
 		$("#subForm input[name=pageIndex]").val(pageNo); 
+		$("#subForm input[name=nttId]").val('0');
 		//$('#subForm').attr('action', '${contextPath}/customer/phoneQnAList.do'); 
 		$("#subForm").attr({action:"${contextPath}/customer/phoneQnAList.do", target:""});
 		$("#subForm").submit();

@@ -188,7 +188,7 @@
                 try
                 {
                     var auth_form = document.forms[0];
-					debugger;
+					
 					opener.auth_data( auth_form ); // 부모창으로 값 전달
                     setTimeout('fn_close()',100);
                    

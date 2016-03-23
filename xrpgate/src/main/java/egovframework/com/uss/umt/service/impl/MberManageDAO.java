@@ -88,11 +88,11 @@ public class MberManageDAO extends EgovComAbstractDAO{
     }
 
     /**
-     * 화면에 조회된일반회원의 기본정보를 수정하여 항목의 정합성을 체크하고 수정된 데이터를 데이터베이스에 반영
+     * 화면에 조회된일반회원의 기본정보를 관리자가 수정
      * @param mberManageVO 일반회원수정정보
      */
-    public void updateMberSub(MberManageVO mberManageVO){
-        update("mberManageDAO.updateMber_Sub",mberManageVO);
+    public void updateMberByAdmin(MberManageVO mberManageVO){
+        update("mberManageDAO.updateMberByAdmin",mberManageVO);
     }
     
     /**
@@ -137,5 +137,47 @@ public class MberManageDAO extends EgovComAbstractDAO{
     public MberManageVO selectChkJoinYn(String di){
     	return (MberManageVO) select("mberManageDAO.selectMberIdByDi", di);
     }
+    
+    /**
+     * 회원 가입시 회원의 계좌 상태 정보 등록
+     * @param mberManageVo
+     * @throws Exception
+     */
+    public void insertMberAccountInfo(MberManageVO mberManageVo) throws Exception {
+    	insert("mberManageDAO.insertMberAccountInfo", mberManageVo);
+    }
+    
+    /**
+     * 같은 이름을 가진 회원의 수 파악
+     * @param mberMnnageVo
+     * @return
+     * @throws Exception
+     */
+    public int selectSameNameMberCnt(MberManageVO mberMnnageVo) throws Exception {
+    	return (Integer) select("mberManageDAO.selectSameNameMberCnt", mberMnnageVo);
+    }
+    
+    /**
+     * 회원 id 찾기
+     * @param mberVo
+     * @return
+     * @throws Exception
+     */
+    public String selectMberIdByMberNm(MberManageVO mberVo) throws Exception{
+    	return (String) select("mberManageDAO.selectMberIdByMberNm", mberVo);
+    }
+    
+    /**
+     * 회원 존재여부
+     * @param mberVo
+     * @return
+     * @throws Exception
+     */
+    public Integer selectMberPassByMberNm(MberManageVO mberVo) throws Exception {
+    	
+    	return (Integer) select("mberManageDAO.selectMberPassByMberNm", mberVo);
+    }
+    
+    
 
 }

@@ -28,9 +28,9 @@
 	                    </div>
 	                </div>
 	             	<div class="find_idpw">
-	                    <li><a href="javascript:goSave();">회원가입</a></li>
+	                    <li><a href="javascript:join();">회원가입</a></li>
 	                    <li> | </li>
-	                    <li><a href="javascript:goSave();">아이디/비밀번호 찾기</a></li>
+	                    <li><a href="javascript:findId();">아이디/비밀번호 찾기</a></li>
 	                </div>
 	            </div>
 	        </div>
@@ -47,7 +47,7 @@
 		$("#loginForm").attr({action:"${contextPath}/login/actionLogin.do", target:""});
 // 		$("#loginForm input[name=userSe]").val("GNR");
 		
-		$('#password').keypress(function(e){
+		$('#password , #id').keypress(function(e){
 			if(e.which == 13){
 				$("#loginForm").submit();
 				return false;
@@ -77,7 +77,7 @@
 	});
 	
 	function join() {
-    	$("#loginForm").attr({action:"${contextPath}/join/UserSeChoose.do", target:""});		
+    	$("#loginForm").attr({action:"${contextPath}/join/joinStep1.do", target:""});		
     	$("#loginForm").submit();
 	}
 	

@@ -14,11 +14,9 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.Globals;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.cop.ems.service.SndngMailVO;
 import egovframework.com.uat.uia.service.EgovLoginService;
 import egovframework.com.uss.umt.service.EgovMberManageService;
 import egovframework.com.uss.umt.service.MberManageVO;
-import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovClntInfo;
 
 import javax.annotation.Resource;
@@ -38,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import xrpgate.util.JSONResponseUtil;
-import xrpgate.util.SupportUtil;
+import xrpgate.util.MailSend;
 import xrpgate.common.model.JsonObject;
 
 /*
@@ -85,6 +83,9 @@ public class LoginController {
 	
 	@Resource(name = "mberManageService")
 	private EgovMberManageService mberManageService;
+	
+	@Resource(name = "mailSend")
+	MailSend mailSend;
 
 	/** log */
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
@@ -668,15 +669,20 @@ public class LoginController {
 	@ResponseBody
 	public HashMap<String, Object> findPassByMber(MberManageVO mberVo) throws Exception {
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		LOGGER.debug("패스워드 찾기 스타트");
+		Map<String, Object> mapInfo = mberManageService.selectMberPassByMberNm(mberVo);
+		LOGGER.debug("패스워드 찾기 종료");
 		
-		String tempPass = mberManageService.selectMberPassByMberNm(mberVo);
-		
-		if("".equals(tempPass) || tempPass == null){
+		if("".equals(mapInfo.get("tempPass")) || mapInfo.get("tempPass") == null){
 			map.put("message", "임시 비밀번호 발급에 실패하였습니다.");
 			map.put("isSuccess", false);
 		} else {
+			
+			MberManageVO mberInfo = (MberManageVO) mapInfo.get("mberInfo");
+			
+			mailSend.send(mberInfo, mapInfo.get("tempPass").toString());
 			map.put("isSuccess", true);
-			map.put("tempPass", tempPass);
+			//map.put("tempPass", tempPass);
 		}
 		
 		return map;

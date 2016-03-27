@@ -1,6 +1,8 @@
 package egovframework.com.uss.umt.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import egovframework.com.cmm.LoginVO;
@@ -248,8 +250,12 @@ public class EgovMberManageServiceImpl extends EgovAbstractServiceImpl implement
 	}
 
 	@Override
-	public String selectMberPassByMberNm(MberManageVO mberVo) throws Exception {
+	public Map<String, Object> selectMberPassByMberNm(MberManageVO mberVo) throws Exception {
 		// TODO Auto-generated method stub
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		MberManageVO mberInfo = new MberManageVO();
+		
 		int i = 0;
 		i = mberManageDAO.selectMberPassByMberNm(mberVo);
 		String tempPass = "";
@@ -259,8 +265,14 @@ public class EgovMberManageServiceImpl extends EgovAbstractServiceImpl implement
 			String pass = EgovFileScrty.encryptPassword(tempPass, mberVo.getMberId());
 			mberVo.setPassword(pass);
 			mberManageDAO.updatePassword(mberVo);
+			
+			mberInfo = mberManageDAO.selectMberById(mberVo.getMberId());
+			
+			map.put("tempPass", tempPass);
+			map.put("mberInfo", mberInfo);
+			
 		}
-		return tempPass;
+		return map;
 	}
 	
 	public static String randomValue(String type, int cnt) {

@@ -1,6 +1,7 @@
 package egovframework.com.uss.umt.service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 일반회원관리에 관한 인터페이스클래스를 정의한다.
@@ -143,6 +144,6 @@ public interface EgovMberManageService {
 	 * @return
 	 * @throws Exception
 	 */
-	public String selectMberPassByMberNm(MberManageVO mberVo) throws Exception;
+	public Map<String, Object> selectMberPassByMberNm(MberManageVO mberVo) throws Exception;
 		
 }

@@ -12,8 +12,8 @@
             	<div class="volume">
                 	<div class="middle_title"><img src="/images/common/volume_blue.png" /></div>
                     <div class="volume_number">
-                    	<li id="counterVolume" class="numberic"><img src="/images/common/krw_small.png" /></li>
-                        <li id="baseVolume" class="numberic"><img src="/images/common/xrp_small.png" /></li>
+                    	<li id="counterVolume" style="width:220px" class="numberic"></li><img style="float:right; margin-top: 13px;" src="/images/common/krw_small.png" />
+                        <li id="baseVolume" style="width:220px" class="numberic"></li><img <img style="float:right; margin-top: 13px;" src="/images/common/xrp_small.png" />
                     </div>
                     <div class="kakao">
 					<img src="/images/common/kakao.png" />
@@ -22,8 +22,8 @@
 				
                 <div class="present">
                 	<div class="present_title"><img src="/images/common/present_value.png" /></div>
-                    <div class="present_number">
-                    	<li id="closeVolume" class="numberic"><img src="/images/common/krw_big.png" /></li>                        
+                    <div class="present_number" style="text-align:right;">
+                    	<li id="closeVolume" style="width:175px;margin-right:10px" class="numberic"></li><img style="float:right; margin-top: 15px;" src="/images/common/krw_big.png" />
                     </div>    
                     <div class="contrast">
                     	<li class="contrast_title"><img src="/images/common/24h_contrast.png" /></li>

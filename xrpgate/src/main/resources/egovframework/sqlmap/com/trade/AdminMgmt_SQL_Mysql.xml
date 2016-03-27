@@ -102,8 +102,8 @@
 						    SELECT MAX(TRADE_ID)
 						    FROM RIPPLE_ADMIN_XRP_TRADE
 						    WHERE TRADE_TYPE = 'C'
-						    AND REQUEST_DT = (
-							SELECT DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -1 DAY), '%Y%m%d')
+						    AND CONCAT(REQUEST_DT, REQUEST_TIME) = (
+								SELECT CONCAT(DATE_FORMAT(DATE_ADD(SYSDATE(), INTERVAL -56 HOUR), '%Y%m%d%H') , '00')
 							)
 						)
  	</select>

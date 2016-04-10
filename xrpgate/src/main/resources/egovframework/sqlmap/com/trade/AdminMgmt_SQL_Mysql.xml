@@ -85,14 +85,21 @@
  	<select id="AdminManageDAO.selectXrpCloseVolume" resultClass="java.lang.String">
  		SELECT IFNULL(REQUEST_MONEY,0) AS closeVolume
 		FROM RIPPLE_ADMIN_XRP_TRADE
-		WHERE TRADE_ID = (
-						    SELECT MAX(TRADE_ID)
-						    FROM RIPPLE_ADMIN_XRP_TRADE
-						    WHERE TRADE_TYPE = 'C'
-						    AND REQUEST_DT = (
-							SELECT DATE_FORMAT(SYSDATE(), '%Y%m%d')
+		WHERE TRADE_ID = IFNULL(
+							  (
+					            SELECT MAX(TRADE_ID)
+					            FROM RIPPLE_ADMIN_XRP_TRADE
+					            WHERE TRADE_TYPE = 'C'
+					            AND REQUEST_DT = (
+					            SELECT DATE_FORMAT(SYSDATE(), '%Y%m%d')
+					            )
+					            ) 
+					            , 
+					            (SELECT MAX(TRADE_ID)
+											    FROM RIPPLE_ADMIN_XRP_TRADE
+											    WHERE TRADE_TYPE = 'C'
+								)
 							)
-						)
  	</select>
  	
  	<select id="AdminManageDAO.selectXrpYesterDatCloseVolume" resultClass="java.lang.String">
@@ -103,7 +110,7 @@
 						    FROM RIPPLE_ADMIN_XRP_TRADE
 						    WHERE TRADE_TYPE = 'C'
 						    AND CONCAT(REQUEST_DT, REQUEST_TIME) = (
-								SELECT CONCAT(DATE_FORMAT(DATE_ADD(SYSDATE(), INTERVAL -56 HOUR), '%Y%m%d%H') , '00')
+								SELECT CONCAT(DATE_FORMAT(DATE_ADD(SYSDATE(), INTERVAL -24 HOUR), '%Y%m%d%H') , '00')
 							)
 						)
  	</select>
@@ -125,7 +132,18 @@
 		WHERE TRADE_TYPE = 'C'
 		<isNotEmpty >
 			<isEqual  compareValue="d">
-			AND REQUEST_DT >= DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -1 DAY), '%Y%m%d')
+			AND REQUEST_DT >= (
+								SELECT IFNULL(	@REDT , @RQDT) 
+								FROM (	
+									SELECT @REDT := (SELECT REQUEST_DT 
+									                FROM RIPPLE_ADMIN_XRP_TRADE
+									                WHERE REQUEST_DT= DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -1 DAY), '%Y%m%d')
+									                GROUP BY REQUEST_DT
+									                ) AS REDT
+									        , @RQDT := (SELECT MAX(REQUEST_DT)
+														FROM RIPPLE_ADMIN_XRP_TRADE) AS RDT
+									) T
+								)
 			</isEqual>
 			<isEqual  compareValue="w">
 			AND REQUEST_DT >= DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -6 DAY), '%Y%m%d')
@@ -145,7 +163,18 @@
 		        , STR_TO_DATE(CONCAT( REQUEST_DT, REQUEST_TIME),'%Y%m%d%k%i') AS startTime
 		FROM RIPPLE_ADMIN_XRP_TRADE
 		WHERE TRADE_TYPE = 'C'
-		AND REQUEST_DT >= DATE_FORMAT(SYSDATE(), '%Y%m%d')
+		AND REQUEST_DT >= (
+							SELECT IFNULL(	@REDT , @RQDT) 
+							FROM(	
+							SELECT @REDT := (SELECT REQUEST_DT 
+							                FROM RIPPLE_ADMIN_XRP_TRADE
+							                WHERE REQUEST_DT= DATE_FORMAT(SYSDATE(), '%Y%m%d')
+							                GROUP BY REQUEST_DT
+							                ) AS REDT
+							        , @RQDT := (SELECT MAX(REQUEST_DT)
+												FROM RIPPLE_ADMIN_XRP_TRADE) AS RDT
+							) T
+							)
 		ORDER BY TRADE_ID
 	</select>
 	
